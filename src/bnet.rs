@@ -13,8 +13,35 @@ pub struct DestinyArtDyeReferenceDefinition {
     art_dye_channel_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Common.DestinyIconSequenceDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyPlaceDefinition {}
+pub struct DestinyIconSequenceDefinition {
+    frames: Vec<String>,
+}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Common.DestinyDisplayPropertiesDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyDisplayPropertiesDefinition {
+    description: String,
+    name: String,
+    icon: String,
+    #[serde(rename = "iconSequences")]
+    icon_sequences: Vec<DestinyIconSequenceDefinition>,
+    #[serde(rename = "highResIcon")]
+    high_res_icon: String,
+    #[serde(rename = "hasIcon")]
+    has_icon: bool,
+}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyPlaceDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyPlaceDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 #[derive(Debug, Deserialize)]
 struct DestinyActivityDefinition {}
