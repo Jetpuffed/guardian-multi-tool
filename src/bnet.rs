@@ -51,7 +51,7 @@ struct DestinyActivityDefinition {
     #[serde(rename = "originalDisplayProperties")]
     original_display_properties: DestinyDisplayPropertiesDefinition,
     #[serde(rename = "selectionScreenDisplayProperties")]
-    display_properties: DestinyDisplayPropertiesDefinition,
+    selection_screen_display_properties: DestinyDisplayPropertiesDefinition,
     #[serde(rename = "releaseIcon")]
     release_icon: String,
     #[serde(rename = "releaseTime")]
@@ -101,8 +101,15 @@ struct DestinyActivityDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityTypeDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyActivityTypeDefinition {}
+struct DestinyActivityTypeDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 #[derive(Debug, Deserialize)]
 struct DestinyClassDefinition {}
