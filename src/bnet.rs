@@ -102,7 +102,7 @@ pub struct DestinyActivityGraphDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityModeDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyActivityModeDefinition {
+pub struct DestinyActivityModeDefinition {
     #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     #[serde(rename = "pgcrImage")]
@@ -130,7 +130,17 @@ struct DestinyActivityModeDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.ActivityModifiers.DestinyActivityModifierDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyActivityModifierDefinition {}
+pub struct DestinyActivityModifierDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "displayInNavMode")]
+    display_in_nav_mode: bool,
+    #[serde(rename = "displayInActivitySelection")]
+    display_in_activity_selection: bool,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityTypeDefinition
 #[derive(Debug, Deserialize)]
