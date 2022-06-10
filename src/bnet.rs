@@ -65,7 +65,7 @@ pub struct DestinyActivityDefinition {
     #[serde(rename = "directActivityModeHash")]
     direct_activity_mode_hash: u32,
     #[serde(rename = "directActivityModeType")]
-    direct_activity_mode_type: i32,  // will need to make an enum for all valid values
+    direct_activity_mode_type: i32,
     loadouts: Vec<DestinyActivityLoadoutRequirementSet>,
     #[serde(rename = "activityModeHashes")]
     activity_mode_hashes: Vec<u32>,
@@ -102,7 +102,31 @@ pub struct DestinyActivityGraphDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityModeDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyActivityModeDefinition {}
+struct DestinyActivityModeDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "pgcrImage")]
+    pgcr_image: String,
+    #[serde(rename = "modeType")]
+    mode_type: i32,
+    #[serde(rename = "activityModeCategory")]
+    activity_mode_category: i32,
+    #[serde(rename = "isTeamBased")]
+    is_team_based: bool,
+    #[serde(rename = "isAggregateMode")]
+    is_aggregate_mode: bool,
+    #[serde(rename = "parentHashes")]
+    parent_hashes: Vec<u32>,
+    #[serde(rename = "friendlyName")]
+    friendly_name: String,
+    #[serde(rename = "activityModeMappings")]
+    activity_mode_mappings: HashMap<u32, i32>,
+    display: bool,
+    order: i32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.ActivityModifiers.DestinyActivityModifierDefinition
 #[derive(Debug, Deserialize)]
