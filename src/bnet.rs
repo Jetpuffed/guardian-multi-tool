@@ -84,7 +84,21 @@ pub struct DestinyActivityDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyActivityGraphDefinition {}
+pub struct DestinyActivityGraphDefinition {
+    nodes: Vec<DestinyActivityGraphNodeDefinition>,
+    #[serde(rename = "artElements")]
+    art_elements: Vec<DestinyActivityGraphArtElementDefinition>,
+    connections: Vec<DestinyActivityGraphConnectionDefinition>,
+    #[serde(rename = "displayObjectives")]
+    display_objectives: Vec<DestinyActivityGraphDisplayObjectiveDefinition>,
+    #[serde(rename = "displayProgressions")]
+    display_progressions: Vec<DestinyActivityGraphDisplayProgressionDefinition>,
+    #[serde(rename = "linkedGraphs")]
+    linked_graphs: Vec<DestinyLinkedGraphDefinition>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityModeDefinition
 #[derive(Debug, Deserialize)]
