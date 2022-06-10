@@ -249,7 +249,19 @@ pub struct DestinyCollectibleDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDamageTypeDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyDamageTypeDefinition {}
+struct DestinyDamageTypeDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "transparentIconPath")]
+    transparent_icon_path: String,
+    #[serde(rename = "showIcon")]
+    show_icon: bool,
+    #[serde(rename = "enumValue")]
+    enum_value: i32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDestinationDefinition
 #[derive(Debug, Deserialize)]
