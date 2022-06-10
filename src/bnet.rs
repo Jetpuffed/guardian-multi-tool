@@ -43,8 +43,63 @@ pub struct DestinyPlaceDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyActivityDefinition {}
+struct DestinyActivityDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "originalDisplayProperties")]
+    original_display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "selectionScreenDisplayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "releaseIcon")]
+    release_icon: String,
+    #[serde(rename = "releaseTime")]
+    release_time: i32,
+    #[serde(rename = "activityLightLevel")]
+    activity_light_level: i32,
+    #[serde(rename = "destinationHash")]
+    destination_hash: u32,
+    #[serde(rename = "placeHash")]
+    place_hash: u32,
+    #[serde(rename = "activityTypeHash")]
+    activity_type_hash: u32,
+    tier: i32,
+    #[serde(rename = "pgcrImage")]
+    pgcr_image: String,
+    rewards: Vec<DestinyActivityRewardDefinition>,
+    modifiers: Vec<DestinyActivityModifierReferenceDefinition>,
+    #[serde(rename = "isPlaylist")]
+    is_playlist: bool,
+    challenges: Vec<DestinyActivityChallengeDefinition>,
+    #[serde(rename = "optionalUnlockStrings")]
+    optional_unlock_strings: Vec<DestinyActivityUnlockStringDefinition>,
+    #[serde(rename = "playlistItems")]
+    playlist_items: Vec<DestinyActivityPlaylistItemDefinition>,
+    #[serde(rename = "activityGraphList")]
+    activity_graph_list: Vec<DestinyActivityGraphListEntryDefinition>,
+    matchmaking: DestinyActivityMatchmakingBlockDefinition,
+    #[serde(rename = "guidedGame")]
+    guided_game: DestinyActivityGuidedBlockDefinition,
+    #[serde(rename = "directActivityModeHash")]
+    direct_activity_mode_hash: u32,
+    #[serde(rename = "directActivityModeType")]
+    direct_activity_mode_type: i32,  // will need to make an enum for all valid values
+    loadouts: Vec<DestinyActivityLoadoutRequirementSet>,
+    #[serde(rename = "activityModeHashes")]
+    activity_mode_hashes: Vec<u32>,
+    #[serde(rename = "activityModeTypes")]
+    activity_mode_types: Vec<i32>,
+    #[serde(rename = "isPvP")]
+    is_pvp: bool,
+    #[serde(rename = "insertionPoints")]
+    insertion_points: Vec<DestinyActivityInsertionPointDefinition>,
+    #[serde(rename = "activityLocationMappings")]
+    activity_location_mappings: Vec<DestinyEnvironmentLocationMapping>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 #[derive(Debug, Deserialize)]
 struct DestinyActivityTypeDefinition {}
