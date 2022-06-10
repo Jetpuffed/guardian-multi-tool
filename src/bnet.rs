@@ -161,7 +161,7 @@ pub struct DestinyArtDyeReferenceDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Artifacts.DestinyArtifactDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyArtifactDefinition {
+pub struct DestinyArtifactDefinition {
     #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     #[serde(rename = "translationBlock")]
@@ -174,7 +174,15 @@ struct DestinyArtifactDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.BreakerTypes.DestinyBreakerTypeDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyBreakerTypeDefinition {}
+pub struct DestinyBreakerTypeDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "enumValue")]
+    enum_value: i32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Checklists.DestinyChecklistDefinition
 #[derive(Debug, Deserialize)]
