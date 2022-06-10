@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
@@ -111,8 +113,23 @@ struct DestinyActivityTypeDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyClassDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyClassDefinition {}
+struct DestinyClassDefinition {
+    #[serde(rename = "classType")]
+    class_type: i32,
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "genderedClassNames")]
+    gendered_class_names: HashMap<i32, String>,
+    #[serde(rename = "genderedClassNamesByGenderHash")]
+    gendered_class_names_by_gender_hash: HashMap<u32, String>,
+    #[serde(rename = "mentorVendorHash")]
+    mentor_vendor_hash: u32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 #[derive(Debug, Deserialize)]
 struct DestinyGenderDefinition {}
