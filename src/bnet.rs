@@ -6,8 +6,12 @@ struct DestinyNodeStepSummaryDefinition {}
 #[derive(Debug, Deserialize)]
 struct DestinyArtDyeChannelDefinition {}
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyArtDyeReference
 #[derive(Debug, Deserialize)]
-struct DestinyArtDyeReferenceDefinition {}
+pub struct DestinyArtDyeReferenceDefinition {
+    #[serde(rename = "artDyeChannelHash")]
+    art_dye_channel_hash: u32,
+}
 
 #[derive(Debug, Deserialize)]
 struct DestinyPlaceDefinition {}
