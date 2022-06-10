@@ -47,7 +47,7 @@ pub struct DestinyPlaceDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyActivityDefinition {
+pub struct DestinyActivityDefinition {
     #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     #[serde(rename = "originalDisplayProperties")]
@@ -105,7 +105,7 @@ struct DestinyActivityDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityTypeDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyActivityTypeDefinition {
+pub struct DestinyActivityTypeDefinition {
     #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     hash: u32,
@@ -115,7 +115,7 @@ struct DestinyActivityTypeDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyClassDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyClassDefinition {
+pub struct DestinyClassDefinition {
     #[serde(rename = "classType")]
     class_type: i32,
     #[serde(rename = "displayProperties")]
@@ -131,8 +131,17 @@ struct DestinyClassDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyGenderDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyGenderDefinition {}
+pub struct DestinyGenderDefinition {
+    #[serde(rename = "genderType")]
+    gender_type: i32,
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 #[derive(Debug, Deserialize)]
 struct DestinyInventoryBucketDefinition {}
