@@ -2,48 +2,27 @@ use std::collections::HashMap;
 
 use serde::Deserialize;
 
-#[derive(Debug, Deserialize)]
-struct DestinyNodeStepSummaryDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyArtDyeChannelDefinition {}
-
-/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyArtDyeReference
-#[derive(Debug, Deserialize)]
-pub struct DestinyArtDyeReferenceDefinition {
-    #[serde(rename = "artDyeChannelHash")]
-    art_dye_channel_hash: u32,
-}
-
-/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Common.DestinyIconSequenceDefinition
-#[derive(Debug, Deserialize)]
-pub struct DestinyIconSequenceDefinition {
-    frames: Vec<String>,
-}
-
-/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Common.DestinyDisplayPropertiesDefinition
-#[derive(Debug, Deserialize)]
-pub struct DestinyDisplayPropertiesDefinition {
-    description: String,
-    name: String,
-    icon: String,
-    #[serde(rename = "iconSequences")]
-    icon_sequences: Vec<DestinyIconSequenceDefinition>,
-    #[serde(rename = "highResIcon")]
-    high_res_icon: String,
-    #[serde(rename = "hasIcon")]
-    has_icon: bool,
-}
-
-/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyPlaceDefinition
-#[derive(Debug, Deserialize)]
-pub struct DestinyPlaceDefinition {
-    #[serde(rename = "displayProperties")]
-    display_properties: DestinyDisplayPropertiesDefinition,
-    hash: u32,
-    index: i32,
-    redacted: bool,
-}
+/* Definitions with no known documentation:
+ *     DestinyAchievementDefinition
+ *     DestinyArtDyeChannelDefinition
+ *     DestinyActivityInteractableDefinition
+ *     DestinyBondDefinition
+ *     DestinyCharacterCustomizationCategoryDefinition
+ *     DestinyCharacterCustomizationOptionDefinition
+ *     DestinyEntitlementOfferDefinition
+ *     DestinyInventoryItemLiteDefinition
+ *     DestinyNodeStepSummaryDefinition
+ *     DestinyPlatformBucketMappingDefinition
+ *     DestinyRewardAdjusterPointerDefinition
+ *     DestinyRewardAdjusterProgressionMapDefinition
+ *     DestinyRewardItemListDefinition
+ *     DestinyRewardMappingDefinition
+ *     DestinyRewardSheetDefinition
+ *     DestinySackRewardItemListDefinition
+ *     DestinyUnlockCountMappingDefinition
+ *     DestinyUnlockEventDefinition
+ *     DestinyUnlockExpressionMappingDefinition
+ */
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityDefinition
 #[derive(Debug, Deserialize)]
@@ -103,6 +82,18 @@ pub struct DestinyActivityDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyActivityGraphDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityModeDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyActivityModeDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.ActivityModifiers.DestinyActivityModifierDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyActivityModifierDefinition {}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityTypeDefinition {
@@ -112,6 +103,25 @@ pub struct DestinyActivityTypeDefinition {
     index: i32,
     redacted: bool,
 }
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyArtDyeReference
+#[derive(Debug, Deserialize)]
+pub struct DestinyArtDyeReferenceDefinition {
+    #[serde(rename = "artDyeChannelHash")]
+    art_dye_channel_hash: u32,
+}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Artifacts.DestinyArtifactDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyArtifactDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.BreakerTypes.DestinyBreakerTypeDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyBreakerTypeDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Checklists.DestinyChecklistDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyChecklistDefinition {}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyClassDefinition
 #[derive(Debug, Deserialize)]
@@ -131,6 +141,44 @@ pub struct DestinyClassDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Collectibles.DestinyCollectibleDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyCollectibleDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDamageTypeDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyDamageTypeDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDestinationDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyDestinationDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Common.DestinyDisplayPropertiesDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyDisplayPropertiesDefinition {
+    description: String,
+    name: String,
+    icon: String,
+    #[serde(rename = "iconSequences")]
+    icon_sequences: Vec<DestinyIconSequenceDefinition>,
+    #[serde(rename = "highResIcon")]
+    high_res_icon: String,
+    #[serde(rename = "hasIcon")]
+    has_icon: bool,
+}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.EnergyTypes.DestinyEnergyTypeDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyEnergyTypeDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyEquipmentSlotDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyEquipmentSlotDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyFactionDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyFactionDefinition {}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyGenderDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyGenderDefinition {
@@ -143,197 +191,162 @@ pub struct DestinyGenderDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Common.DestinyIconSequenceDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyInventoryBucketDefinition {}
+pub struct DestinyIconSequenceDefinition {
+    frames: Vec<String>,
+}
 
-#[derive(Debug, Deserialize)]
-struct DestinyRaceDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyTalentGridDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyUnlockDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinySandboxPerkDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyStatGroupDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyProgressionMappingDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyFactionDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyVendorGroupDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyRewardSourceDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyUnlockValueDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyRewardMappingDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyRewardSheetDefinition {}
-
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemCategoryDefinition
 #[derive(Debug, Deserialize)]
 struct DestinyItemCategoryDefinition {}
 
-#[derive(Debug, Deserialize)]
-struct DestinyDamageTypeDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyActivityModeDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyMedalTierDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyAchievementDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyActivityGraphDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyActivityInteractableDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyBondDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyCharacterCustomizationCategoryDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyCharacterCustomizationOptionDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyCollectibleDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyDestinationDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyEntitlementOfferDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyEquipmentSlotDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyStatDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyInventoryItemDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyInventoryItemLiteDefinition {}
-
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemTierTypeDefinition
 #[derive(Debug, Deserialize)]
 struct DestinyItemTierTypeDefinition {}
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryBucketDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyInventoryBucketDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryItemDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyInventoryItemDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyLocationDefinition
 #[derive(Debug, Deserialize)]
 struct DestinyLocationDefinition {}
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Lore.DestinyLoreDefinition
 #[derive(Debug, Deserialize)]
 struct DestinyLoreDefinition {}
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyMaterialRequirementSetDefinition
 #[derive(Debug, Deserialize)]
 struct DestinyMaterialRequirementSetDefinition {}
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyMedalTierDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyMedalTierDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Metrics.DestinyMetricDefinition
 #[derive(Debug, Deserialize)]
 struct DestinyMetricDefinition {}
 
-#[derive(Debug, Deserialize)]
-struct DestinyObjectiveDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyPlatformBucketMappingDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyPlugSetDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyPowerCapDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyPresentationNodeDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyProgressionDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyProgressionLevelRequirementDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyRecordDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyRewardAdjusterPointerDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyRewardAdjusterProgressionMapDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyRewardItemListDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinySackRewardItemListDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinySandboxPatternDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinySeasonDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinySeasonPassDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinySocketCategoryDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinySocketTypeDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyTraitDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyTraitCategoryDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyUnlockCountMappingDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyUnlockEventDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyUnlockExpressionMappingDefinition {}
-
-#[derive(Debug, Deserialize)]
-struct DestinyVendorDefinition {}
-
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneDefinition
 #[derive(Debug, Deserialize)]
 struct DestinyMilestoneDefinition {}
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyActivityModifierDefinition {}
+struct DestinyObjectiveDefinition {}
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyPlaceDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyPlaceDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinyPlugSetDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyPlugSetDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.PowerCaps.DestinyPowerCapDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyPowerCapDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyPresentationNodeDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyProgressionDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Progression.DestinyProgressionLevelRequirementDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyProgressionLevelRequirementDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionMappingDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyProgressionMappingDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyRaceDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyRaceDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyRecordDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Reporting.DestinyReportReasonCategoryDefinition
 #[derive(Debug, Deserialize)]
 struct DestinyReportReasonCategoryDefinition {}
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyRewardSourceDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyArtifactDefinition {}
+struct DestinyRewardSourceDefinition {}
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinySandboxPatternDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyBreakerTypeDefinition {}
+struct DestinySandboxPatternDefinition {}
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinySandboxPerkDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyChecklistDefinition {}
+struct DestinySandboxPerkDefinition {}
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Seasons.DestinySeasonDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyEnergyTypeDefinition {}
+struct DestinySeasonDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Seasons.DestinySeasonPassDefinition
+#[derive(Debug, Deserialize)]
+struct DestinySeasonPassDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinySocketCategoryDefinition
+#[derive(Debug, Deserialize)]
+struct DestinySocketCategoryDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinySocketTypeDefinition
+#[derive(Debug, Deserialize)]
+struct DestinySocketTypeDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyStatDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatGroupDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyStatGroupDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentGridDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyTalentGridDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Traits.DestinyTraitDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyTraitDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Traits.DestinyTraitCategoryDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyTraitCategoryDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyUnlockDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyUnlockDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyUnlockValueDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyUnlockValueDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyVendorDefinition {}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorGroupDefinition
+#[derive(Debug, Deserialize)]
+struct DestinyVendorGroupDefinition {}
