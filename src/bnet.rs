@@ -249,7 +249,7 @@ pub struct DestinyCollectibleDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDamageTypeDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyDamageTypeDefinition {
+pub struct DestinyDamageTypeDefinition {
     #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     #[serde(rename = "transparentIconPath")]
@@ -265,7 +265,22 @@ struct DestinyDamageTypeDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDestinationDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyDestinationDefinition {}
+pub struct DestinyDestinationDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "placeHash")]
+    place_hash: u32,
+    #[serde(rename = "defaultFreeroamActivityHash")]
+    default_freeroam_activity_hash: u32,
+    #[serde(rename = "activityGraphEntries")]
+    activity_graph_entries: Vec<DestinyActivityGraphListEntryDefinition>,
+    #[serde(rename = "bubbleSettings")]
+    bubble_settings: Vec<DestinyDestinationBubbleSettingsDefinition>,
+    bubbles: Vec<DestinyBubbleDefinition>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Common.DestinyDisplayPropertiesDefinition
 #[derive(Debug, Deserialize)]
