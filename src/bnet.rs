@@ -218,7 +218,34 @@ pub struct DestinyClassDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Collectibles.DestinyCollectibleDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyCollectibleDefinition {}
+pub struct DestinyCollectibleDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    scope: i32,
+    #[serde(rename = "sourceString")]
+    source_string: String,
+    #[serde(rename = "sourceHash")]
+    source_hash: u32,
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+    #[serde(rename = "acquisitionInfo")]
+    acquisition_info: DestinyCollectibleAcquisitionBlock,
+    #[serde(rename = "stateInfo")]
+    state_info: DestinyCollectibleStateBlock,
+    #[serde(rename = "presentationInfo")]
+    presentation_info: DestinyPresentationChildBlock,
+    #[serde(rename = "presentationNodeType")]
+    presentation_node_type: i32,
+    #[serde(rename = "traitIds")]
+    trait_ids: Vec<String>,
+    #[serde(rename = "traitHashes")]
+    trait_hashes: Vec<u32>,
+    #[serde(rename = "parentNodeHashes")]
+    parent_node_hashes: Vec<u32>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDamageTypeDefinition
 #[derive(Debug, Deserialize)]
