@@ -186,7 +186,17 @@ pub struct DestinyBreakerTypeDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Checklists.DestinyChecklistDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyChecklistDefinition {}
+pub struct DestinyChecklistDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "viewActionString")]
+    view_action_string: String,
+    scope: i32,
+    entries: Vec<DestinyChecklistEntryDefinition>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyClassDefinition
 #[derive(Debug, Deserialize)]
