@@ -423,7 +423,24 @@ pub struct DestinyItemTierTypeDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryBucketDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyInventoryBucketDefinition {}
+pub struct DestinyInventoryBucketDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    scope: i32,
+    category: i32,
+    #[serde(rename = "bucketOrder")]
+    bucket_order: i32,
+    #[serde(rename = "itemCount")]
+    item_count: i32,
+    location: i32,
+    #[serde(rename = "hasTransferDestination")]
+    has_transfer_destination: bool,
+    enabled: bool,
+    fifo: bool,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryItemDefinition
 #[derive(Debug, Deserialize)]
