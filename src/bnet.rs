@@ -154,7 +154,7 @@ pub struct DestinyActivityTypeDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyArtDyeReference
 #[derive(Debug, Deserialize)]
-pub struct DestinyArtDyeReferenceDefinition {
+pub struct DestinyArtDyeReference {
     #[serde(rename = "artDyeChannelHash")]
     art_dye_channel_hash: u32,
 }
@@ -318,7 +318,21 @@ pub struct DestinyEnergyTypeDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyEquipmentSlotDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyEquipmentSlotDefinition {}
+struct DestinyEquipmentSlotDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "equipmentCategoryHash")]
+    equipment_category_hash: u32,
+    #[serde(rename = "bucketTypeHash")]
+    bucket_type_hash: u32,
+    #[serde(rename = "applyCustomArtDyes")]
+    apply_custom_art_dyes: bool,
+    #[serde(rename = "artDyeChannels")]
+    art_dye_channels: Vec<DestinyArtDyeReference>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyFactionDefinition
 #[derive(Debug, Deserialize)]
