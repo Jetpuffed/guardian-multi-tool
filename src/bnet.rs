@@ -373,7 +373,41 @@ pub struct DestinyIconSequenceDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemCategoryDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyItemCategoryDefinition {}
+struct DestinyItemCategoryDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    visible: bool,
+    deprecated: bool,
+    #[serde(rename = "shortTitle")]
+    short_title: String,
+    #[serde(rename = "itemTypeRegex")]
+    item_type_regex: String,
+    #[serde(rename = "grantDestinyBreakerType")]
+    grant_destiny_breaker_type: i32,
+    #[serde(rename = "plugCategoryIdentifier")]
+    plug_category_identifier: String,
+    #[serde(rename = "itemTypeRegexNot")]
+    item_type_regex_not: String,
+    #[serde(rename = "originBucketIdentifier")]
+    origin_bucket_identifier: String,
+    #[serde(rename = "grantDestinyItemType")]
+    grant_destiny_item_type: i32,
+    #[serde(rename = "grantDestinySubType")]
+    grant_destiny_sub_type: i32,
+    #[serde(rename = "grantDestinyClass")]
+    grant_destiny_class: i32,
+    #[serde(rename = "traitId")]
+    trait_id: String,
+    #[serde(rename = "groupedCategoryHashes")]
+    grouped_category_hashes: Vec<u32>,
+    #[serde(rename = "parentCategoryHashes")]
+    parent_category_hashes: Vec<u32>,
+    #[serde(rename = "groupCategoryOnly")]
+    group_category_only: bool,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemTierTypeDefinition
 #[derive(Debug, Deserialize)]
