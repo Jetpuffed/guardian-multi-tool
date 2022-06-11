@@ -298,7 +298,23 @@ pub struct DestinyDisplayPropertiesDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.EnergyTypes.DestinyEnergyTypeDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyEnergyTypeDefinition {}
+pub struct DestinyEnergyTypeDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "transparentIconPath")]
+    transparent_icon_path: String,
+    #[serde(rename = "showIcon")]
+    show_icon: bool,
+    #[serde(rename = "enumValue")]
+    enum_value: i32,
+    #[serde(rename = "capacityStatHash")]
+    capacity_stat_hash: u32,
+    #[serde(rename = "costStatHash")]
+    cost_stat_hash: u32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyEquipmentSlotDefinition
 #[derive(Debug, Deserialize)]
