@@ -336,7 +336,22 @@ pub struct DestinyEquipmentSlotDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyFactionDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyFactionDefinition {}
+pub struct DestinyFactionDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "progressionHash")]
+    progression_hash: u32,
+    #[serde(rename = "tokenValues")]
+    token_values: HashMap<u32, u32>,
+    #[serde(rename = "rewardItemHash")]
+    reward_item_hash: u32,
+    #[serde(rename = "rewardVendorHash")]
+    reward_vendor_hash: u32,
+    vendors: Vec<DestinyFactionVendorDefinition>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyGenderDefinition
 #[derive(Debug, Deserialize)]
