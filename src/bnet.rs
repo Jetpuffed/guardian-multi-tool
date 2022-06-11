@@ -318,7 +318,7 @@ pub struct DestinyEnergyTypeDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyEquipmentSlotDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyEquipmentSlotDefinition {
+pub struct DestinyEquipmentSlotDefinition {
     #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     #[serde(rename = "equipmentCategoryHash")]
