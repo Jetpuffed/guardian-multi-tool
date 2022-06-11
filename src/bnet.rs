@@ -373,7 +373,7 @@ pub struct DestinyIconSequenceDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemCategoryDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyItemCategoryDefinition {
+pub struct DestinyItemCategoryDefinition {
     #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     visible: bool,
@@ -411,7 +411,15 @@ struct DestinyItemCategoryDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemTierTypeDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyItemTierTypeDefinition {}
+pub struct DestinyItemTierTypeDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "infusionProcess")]
+    infusion_process: DestinyItemTierTypeInfusionBlock,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryBucketDefinition
 #[derive(Debug, Deserialize)]
