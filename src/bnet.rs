@@ -708,7 +708,17 @@ pub struct DestinyPlaceDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinyPlugSetDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyPlugSetDefinition {}
+pub struct DestinyPlugSetDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "reusablePlugItems")]
+    reusable_plug_items: Vec<DestinyItemSocketEntryPlugItemRandomizedDefinition>,
+    #[serde(rename = "isFakePlugSet")]
+    is_fake_plug_set: bool,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.PowerCaps.DestinyPowerCapDefinition
 #[derive(Debug, Deserialize)]
