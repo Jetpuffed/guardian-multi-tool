@@ -444,7 +444,114 @@ pub struct DestinyInventoryBucketDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryItemDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyInventoryItemDefinition {}
+pub struct DestinyInventoryItemDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "tooltipNotifications")]
+    tooltip_notifications: Vec<DestinyItemTooltipNotification>,
+    #[serde(rename = "collectibleHash")]
+    collectible_hash: u32,
+    #[serde(rename = "iconWatermark")]
+    icon_watermark: String,
+    #[serde(rename = "iconWatermarkedShelved")]
+    icon_watermark_shelved: String,
+    #[serde(rename = "secondaryIcon")]
+    secondary_icon: String,
+    #[serde(rename = "secondaryOverlay")]
+    secondary_overlay: String,
+    #[serde(rename = "secondarySpecial")]
+    secondary_special: String,
+    #[serde(rename = "backgroundColor")]
+    background_color: DestinyColor,
+    screenshot: String,
+    #[serde(rename = "itemTypeDisplayName")]
+    item_type_display_name: String,
+    #[serde(rename = "flavorText")]
+    flavor_text: String,
+    #[serde(rename = "uiItemDisplayStyle")]
+    ui_item_display_style: String,
+    #[serde(rename = "itemTypeAndTierDisplayName")]
+    item_type_and_tier_display_name: String,
+    #[serde(rename = "displaySource")]
+    display_source: String,
+    #[serde(rename = "tooltipStyle")]
+    tooltip_style: String,
+    action: DestinyItemActionBlockDefinition,
+    crafting: DestinyItemCraftingBlockDefinition,
+    inventory: DestinyItemInventoryBlockDefinition,
+    #[serde(rename = "setData")]
+    set_data: DestinyItemSetBlockDefinition,
+    stats: DestinyItemStatBlockDefinition,
+    #[serde(rename = "emblemObjectiveHash")]
+    emblem_objective_hash: u32,
+    #[serde(rename = "equippingBlock")]
+    equipping_block: DestinyEquippingBlockDefinition,
+    #[serde(rename = "translationBlock")]
+    translation_block: DestinyItemTranslationBlockDefinition,
+    preview: DestinyItemPreviewBlockDefinition,
+    quality: DestinyItemQualityBlockDefinition,
+    value: DestinyItemValueBlockDefinition,
+    #[serde(rename = "sourceData")]
+    source_data: DestinyItemSourceBlockDefinition,
+    objectives: DestinyItemObjectiveBlockDefinition,
+    metrics: DestinyItemMetricBlockDefinition,
+    plug: DestinyItemPlugDefinition,
+    gearset: DestinyItemGearsetBlockDefinition,
+    sack: DestinyItemSackBlockDefinition,
+    sockets: DestinyItemSocketBlockDefinition,
+    summary: DestinyItemSummaryBlockDefinition,
+    #[serde(rename = "talentGrid")]
+    talent_grid: DestinyItemTalentGridBlockDefinition,
+    #[serde(rename = "investmentStats")]
+    investment_stats: Vec<DestinyItemInvestmentStatDefinition>,
+    perks: Vec<DestinyItemPerkEntryDefinition>,
+    #[serde(rename = "loreHash")]
+    lore_hash: u32,
+    #[serde(rename = "summaryItemHash")]
+    summary_item_hash: u32,
+    animations: Vec<DestinyAnimationReference>,
+    #[serde(rename = "allowActions")]
+    allow_actions: bool,
+    links: Vec<HyperlinkReference>,
+    #[serde(rename = "doesPostmasterPullHaveSideEffects")]
+    does_postmaster_pull_have_side_effects: bool,
+    #[serde(rename = "nonTransferrable")]
+    non_transferrable: bool,
+    #[serde(rename = "itemCategoryHashes")]
+    item_category_hashes: Vec<u32>,
+    #[serde(rename = "specialItemType")]
+    special_item_type: i32,
+    #[serde(rename = "itemType")]
+    item_type: i32,
+    #[serde(rename = "itemSubType")]
+    item_sub_type: i32,
+    #[serde(rename = "classType")]
+    class_type: i32,
+    #[serde(rename = "breakerType")]
+    breaker_type: i32,
+    #[serde(rename = "breakerTypeHash")]
+    breaker_type_hash: u32,
+    equippable: bool,
+    #[serde(rename = "damageTypeHashes")]
+    damage_type_hashes: Vec<u32>,
+    #[serde(rename = "damageTypes")]
+    damage_types: Vec<i32>,
+    #[serde(rename = "defaultDamageType")]
+    default_damage_type: i32,
+    #[serde(rename = "defaultDamageTypeHash")]
+    default_damage_type_hash: u32,
+    #[serde(rename = "seasonHash")]
+    season_hash: u32,
+    #[serde(rename = "isWrapper")]
+    is_wrapper: bool,
+    #[serde(rename = "traitIds")]
+    traid_ids: Vec<String>,
+    #[serde(rename = "traitHashes")]
+    trait_hashes: Vec<u32>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyLocationDefinition
 #[derive(Debug, Deserialize)]
