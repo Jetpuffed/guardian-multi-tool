@@ -657,7 +657,44 @@ pub struct DestinyMilestoneDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyObjectiveDefinition {}
+pub struct DestinyObjectiveDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "completionValue")]
+    completion_value: i32,
+    scope: i32,
+    #[serde(rename = "locationHash")]
+    location_hash: u32,
+    #[serde(rename = "allowNegativeValue")]
+    allow_negative_value: bool,
+    #[serde(rename = "allowValueChangeWhenCompleted")]
+    allow_value_change_when_completed: bool,
+    #[serde(rename = "isCountingDownward")]
+    is_counting_downward: bool,
+    #[serde(rename = "valueStyle")]
+    value_style: i32,
+    #[serde(rename = "progressDescription")]
+    progress_description: String,
+    perks: DestinyObjectivePerkEntryDefinition,
+    stats: DestinyObjectiveStatEntryDefinition,
+    #[serde(rename = "minimumVisibilityThreshold")]
+    minimum_visibility_threshold: i32,
+    #[serde(rename = "allowOvercompletion")]
+    allow_overcompletion: bool,
+    #[serde(rename = "showValueOnComplete")]
+    show_value_on_complete: bool,
+    #[serde(rename = "completedValueStyle")]
+    completed_value_style: i32,
+    #[serde(rename = "inProgressValueStyle")]
+    in_progress_value_style: i32,
+    #[serde(rename = "uiLabel")]
+    ui_label: String,
+    #[serde(rename = "uiStyle")]
+    ui_style: i32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyPlaceDefinition
 #[derive(Debug, Deserialize)]
