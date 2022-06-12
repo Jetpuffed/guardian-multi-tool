@@ -578,7 +578,12 @@ pub struct DestinyLoreDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyMaterialRequirementSetDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyMaterialRequirementSetDefinition {}
+pub struct DestinyMaterialRequirementSetDefinition {
+    materials: Vec<DestinyMaterialRequirement>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyMedalTierDefinition
 #[derive(Debug, Deserialize)]
