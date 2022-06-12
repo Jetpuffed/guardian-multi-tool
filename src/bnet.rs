@@ -567,7 +567,14 @@ pub struct DestinyLocationDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Lore.DestinyLoreDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyLoreDefinition {}
+pub struct DestinyLoreDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    subtitle: String,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyMaterialRequirementSetDefinition
 #[derive(Debug, Deserialize)]
