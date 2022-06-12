@@ -587,7 +587,14 @@ pub struct DestinyMaterialRequirementSetDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyMedalTierDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyMedalTierDefinition {}
+pub struct DestinyMedalTierDefinition {
+    #[serde(rename = "tierName")]
+    tier_name: String,
+    order: i32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Metrics.DestinyMetricDefinition
 #[derive(Debug, Deserialize)]
