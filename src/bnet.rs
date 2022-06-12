@@ -598,7 +598,25 @@ pub struct DestinyMedalTierDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Metrics.DestinyMetricDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyMetricDefinition {}
+pub struct DestinyMetricDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "trackingObjectiveHash")]
+    tracking_objective_hash: u32,
+    #[serde(rename = "lowerValueIsBetter")]
+    lower_value_is_better: bool,
+    #[serde(rename = "presentationNodeType")]
+    presentation_node_type: i32,
+    #[serde(rename = "traitIds")]
+    trait_ids: Vec<String>,
+    #[serde(rename = "traitHashes")]
+    trait_hashes: Vec<u32>,
+    #[serde(rename = "parentNodeHashes")]
+    parent_node_hashes: Vec<u32>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneDefinition
 #[derive(Debug, Deserialize)]
