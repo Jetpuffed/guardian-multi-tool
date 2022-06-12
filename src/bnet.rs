@@ -555,7 +555,15 @@ pub struct DestinyInventoryItemDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyLocationDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyLocationDefinition {}
+pub struct DestinyLocationDefinition {
+    #[serde(rename = "vendorHash")]
+    vendor_hash: u32,
+    #[serde(rename = "locationReleases")]
+    location_releases: Vec<DestinyLocationReleaseDefinition>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Lore.DestinyLoreDefinition
 #[derive(Debug, Deserialize)]
