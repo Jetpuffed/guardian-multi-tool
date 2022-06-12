@@ -620,7 +620,40 @@ pub struct DestinyMetricDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyMilestoneDefinition {}
+pub struct DestinyMilestoneDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "displayPreference")]
+    display_preference: i32,
+    image: String,
+    #[serde(rename = "milestoneType")]
+    milestone_type: i32,
+    recruitable: bool,
+    #[serde(rename = "friendlyName")]
+    friendly_name: String,
+    #[serde(rename = "showInExplorer")]
+    show_in_explorer: bool,
+    #[serde(rename = "showInMilestones")]
+    show_in_milestones: bool,
+    #[serde(rename = "explorePrioritizesActivityImage")]
+    explore_prioritizes_activity_image: bool,
+    #[serde(rename = "hasPredictableDates")]
+    has_predictable_dates: bool,
+    quests: HashMap<u32, DestinyMilestoneQuestDefinition>,
+    rewards: HashMap<u32, DestinyMilestoneRewardCategoryDefinition>,
+    #[serde(rename = "vendorsDisplayTitle")]
+    vendors_display_title: String,
+    vendors: Vec<DestinyMilestoneVendorDefinition>,
+    values: HashMap<String, DestinyMilestoneValueDefinition>,
+    #[serde(rename = "isInGameMilestone")]
+    is_in_game_milestone: bool,
+    activities: Vec<DestinyMilestoneChallengeActivityDefinition>,
+    #[serde(rename = "defaultOrder")]
+    default_order: i32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDefinition
 #[derive(Debug, Deserialize)]
