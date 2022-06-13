@@ -1081,7 +1081,19 @@ pub struct DestinyTalentGridDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Traits.DestinyTraitDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyTraitDefinition {}
+pub struct DestinyTraitDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "traitCategoryId")]
+    trait_category_id: String,
+    #[serde(rename = "traitCategoryHash")]
+    trait_category_hash: u32,
+    #[serde(rename = "displayHint")]
+    display_hint: String,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Traits.DestinyTraitCategoryDefinition
 #[derive(Debug, Deserialize)]
