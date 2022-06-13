@@ -143,6 +143,13 @@ pub struct DestinyActivityModifierDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityModifierReferenceDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityModifierReferenceDefinition {
+    #[serde(rename = "activityModifierHash")]
+    activity_modifier_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityRewardDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityRewardDefinition {
