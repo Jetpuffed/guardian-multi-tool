@@ -722,7 +722,13 @@ pub struct DestinyPlugSetDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.PowerCaps.DestinyPowerCapDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyPowerCapDefinition {}
+pub struct DestinyPowerCapDefinition {
+    #[serde(rename = "powerCap")]
+    power_cap: i32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeDefinition
 #[derive(Debug, Deserialize)]
