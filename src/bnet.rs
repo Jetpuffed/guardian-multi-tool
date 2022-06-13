@@ -178,6 +178,13 @@ pub struct DestinyActivityTypeDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityUnlockStringDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityUnlockStringDefinition {
+    #[serde(rename = "displayString")]
+    display_string: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyArtDyeReference
 #[derive(Debug, Deserialize)]
 pub struct DestinyArtDyeReference {
