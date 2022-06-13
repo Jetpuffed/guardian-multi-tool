@@ -421,6 +421,21 @@ pub struct DestinyEnergyTypeDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Constants.DestinyEnvironmentLocationMapping
+#[derive(Debug, Deserialize)]
+pub struct DestinyEnvironmentLocationMapping {
+    #[serde(rename = "locationHash")]
+    location_hash: u32,
+    #[serde(rename = "activationSource")]
+    activation_source: String,
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+    #[serde(rename = "objectiveHash")]
+    objective_hash: u32,
+    #[serde(rename = "activityHash")]
+    activity_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyEquipmentSlotDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyEquipmentSlotDefinition {
