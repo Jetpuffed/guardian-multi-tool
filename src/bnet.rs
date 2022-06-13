@@ -117,6 +117,17 @@ pub struct DestinyActivityGraphListEntryDefinition {
     activity_graph_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityGuidedBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityGuidedBlockDefinition {
+    #[serde(rename = "guidedMaxLobbySize")]
+    guided_max_lobby_size: i32,
+    #[serde(rename = "guidedMinLobbySize")]
+    guided_min_lobby_size: i32,
+    #[serde(rename = "guidedDisbandCount")]
+    guided_disband_count: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityMatchmakingBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityMatchmakingBlockDefinition {
