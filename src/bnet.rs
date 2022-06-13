@@ -834,7 +834,47 @@ pub struct DestinyRaceDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyRecordDefinition {}
+pub struct DestinyRecordDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    scope: i32,
+    #[serde(rename = "presentationInfo")]
+    presentation_info: DestinyPresentationChildBlock,
+    #[serde(rename = "loreHash")]
+    lore_hash: u32,
+    #[serde(rename = "objectiveHashes")]
+    objective_hashes: Vec<u32>,
+    #[serde(rename = "recordValueStyle")]
+    record_value_style: i32,
+    #[serde(rename = "forTitleGilding")]
+    for_title_gilding: bool,
+    #[serde(rename = "shouldShowLargeIcons")]
+    should_show_large_icons: bool,
+    #[serde(rename = "titleInfo")]
+    title_info: DestinyRecordTitleBlock,
+    #[serde(rename = "completionInfo")]
+    completion_info: DestinyRecordCompletionBlock,
+    #[serde(rename = "stateInfo")]
+    state_info: SchemaRecordStateBlock,
+    requirements: DestinyPresentationNodeRequirementsBlock,
+    #[serde(rename = "expirationInfo")]
+    expiration_info: DestinyRecordExpirationBlock,
+    #[serde(rename = "intervalInfo")]
+    interval_info: DestinyRecordIntervalBlock,
+    #[serde(rename = "rewardItems")]
+    reward_items: Vec<DestinyItemQuantity>,
+    #[serde(rename = "presentationNodeType")]
+    presentation_node_type: i32,
+    #[serde(rename = "traitIds")]
+    trait_ids: Vec<String>,
+    #[serde(rename = "traitHashes")]
+    trait_hashes: Vec<u32>,
+    #[serde(rename = "parentNodeHashes")]
+    parent_node_hashes: Vec<u32>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Reporting.DestinyReportReasonCategoryDefinition
 #[derive(Debug, Deserialize)]
