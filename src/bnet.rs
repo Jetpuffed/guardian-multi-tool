@@ -228,6 +228,12 @@ pub struct DestinyActivityGraphNodeFeaturingStateDefinition {
     highlight_type: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphNodeStateEntry
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityGraphNodeStateEntry {
+    state: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityGuidedBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityGuidedBlockDefinition {
