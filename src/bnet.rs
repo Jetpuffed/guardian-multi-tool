@@ -818,7 +818,19 @@ pub struct DestinyProgressionMappingDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyRaceDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyRaceDefinition {}
+pub struct DestinyRaceDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "raceType")]
+    race_type: i32,
+    #[serde(rename = "genderedRaceNames")]
+    gendered_race_names: HashMap<i32, String>,
+    #[serde(rename = "genderedRaceNamesByGenderHash")]
+    gendered_race_names_by_gender_hash: HashMap<u32, String>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordDefinition
 #[derive(Debug, Deserialize)]
