@@ -214,6 +214,14 @@ pub struct DestinyActivityGraphDisplayObjectiveDefinition {
     objective_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphDisplayProgressionDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityGraphDisplayProgressionDefinition {
+    id: u32,
+    #[serde(rename = "progressionHash")]
+    progression_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityGraphListEntryDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityGraphListEntryDefinition {
