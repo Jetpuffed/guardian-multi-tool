@@ -1028,7 +1028,19 @@ pub struct DestinySocketTypeDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyStatDefinition {}
+pub struct DestinyStatDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "aggregationType")]
+    aggregation_type: i32,
+    #[serde(rename = "hasComputedBlock")]
+    has_computed_block: bool,
+    #[serde(rename = "statCategory")]
+    stat_category: i32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatGroupDefinition
 #[derive(Debug, Deserialize)]
