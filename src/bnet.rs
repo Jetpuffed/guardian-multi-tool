@@ -833,6 +833,20 @@ pub struct DestinyInventoryItemDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyLinkedGraphDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyLinkedGraphDefinition {
+    description: String,
+    name: String,
+    #[serde(rename = "unlockExpression")]
+    unlock_expression: DestinyUnlockExpressionDefinition,
+    #[serde(rename = "linkedGraphId")]
+    linked_graph_id: u32,
+    #[serde(rename = "linkedGraphs")]
+    linked_graphs: Vec<DestinyLinkedGraphEntryDefinition>,
+    overview: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyLocationDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyLocationDefinition {
