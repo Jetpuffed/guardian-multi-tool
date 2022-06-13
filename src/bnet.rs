@@ -878,7 +878,14 @@ pub struct DestinyRecordDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Reporting.DestinyReportReasonCategoryDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyReportReasonCategoryDefinition {}
+pub struct DestinyReportReasonCategoryDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    reasons: HashMap<u32, DestinyReportReasonDefinition>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyRewardSourceDefinition
 #[derive(Debug, Deserialize)]
