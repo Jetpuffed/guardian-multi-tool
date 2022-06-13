@@ -1044,7 +1044,18 @@ pub struct DestinyStatDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatGroupDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyStatGroupDefinition {}
+pub struct DestinyStatGroupDefinition {
+    #[serde(rename = "maximumValue")]
+    maximum_value: i32,
+    #[serde(rename = "uiPosition")]
+    ui_position: i32,
+    #[serde(rename = "scaledStats")]
+    scaled_stats: Vec<DestinyStatDisplayDefinition>,
+    overrides: HashMap<u32, DestinyStatOverrideDefinition>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentGridDefinition
 #[derive(Debug, Deserialize)]
