@@ -1111,7 +1111,13 @@ pub struct DestinyTraitCategoryDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyUnlockDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyUnlockDefinition {}
+pub struct DestinyUnlockDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyUnlockValueDefinition
 #[derive(Debug, Deserialize)]
