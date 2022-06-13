@@ -117,6 +117,21 @@ pub struct DestinyActivityGraphListEntryDefinition {
     activity_graph_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityMatchmakingBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityMatchmakingBlockDefinition {
+    #[serde(rename = "isMatchmade")]
+    is_matchmade: bool,
+    #[serde(rename = "minParty")]
+    min_party: i32,
+    #[serde(rename = "maxParty")]
+    max_party: i32,
+    #[serde(rename = "maxPlayers")]
+    max_players: i32,
+    #[serde(rename = "requiresGuardianOath")]
+    requires_guardian_oath: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityModeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityModeDefinition {
