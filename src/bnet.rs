@@ -985,7 +985,17 @@ pub struct DestinySeasonPassDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinySocketCategoryDefinition
 #[derive(Debug, Deserialize)]
-struct DestinySocketCategoryDefinition {}
+pub struct DestinySocketCategoryDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "uiCategoryStyle")]
+    ui_category_style: u32,
+    #[serde(rename = "categoryStyle")]
+    category_style: i32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinySocketTypeDefinition
 #[derive(Debug, Deserialize)]
