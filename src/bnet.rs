@@ -921,7 +921,23 @@ pub struct DestinySandboxPatternDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinySandboxPerkDefinition
 #[derive(Debug, Deserialize)]
-struct DestinySandboxPerkDefinition {}
+pub struct DestinySandboxPerkDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "perkIdentifier")]
+    perk_identifier: String,
+    #[serde(rename = "isDisplayable")]
+    is_displayable: bool,
+    #[serde(rename = "damageType")]
+    damage_type: i32,
+    #[serde(rename = "damageTypeHash")]
+    damage_type_hash: u32,
+    #[serde(rename = "perkGroups")]
+    perk_groups: DestinyTalentNodeStepGroups,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Seasons.DestinySeasonDefinition
 #[derive(Debug, Deserialize)]
