@@ -198,6 +198,20 @@ pub struct DestinyActivityGraphListEntryDefinition {
     activity_graph_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphNodeDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityGraphNodeDefinition {
+    #[serde(rename = "nodeId")]
+    node_id: u32,
+    #[serde(rename = "overrideDisplay")]
+    override_display: DestinyDisplayPropertiesDefinition,
+    position: DestinyPositionDefinition,
+    #[serde(rename = "featuringStates")]
+    featuring_states: Vec<DestinyActivityGraphNodeFeaturingStateDefinition>,
+    activities: Vec<DestinyActivityGraphNodeActivityDefinition>,
+    states: Vec<DestinyActivityGraphNodeStateEntry>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityGuidedBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityGuidedBlockDefinition {
