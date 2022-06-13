@@ -143,6 +143,15 @@ pub struct DestinyActivityModifierDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityRewardDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityRewardDefinition {
+    #[serde(rename = "rewardText")]
+    reward_text: String,
+    #[serde(rename = "rewardItems")]
+    reward_items: Vec<DestinyItemQuantity>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityTypeDefinition {
