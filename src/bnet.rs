@@ -1193,4 +1193,11 @@ pub struct DestinyVendorDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorGroupDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyVendorGroupDefinition {}
+pub struct DestinyVendorGroupDefinition {
+    order: i32,
+    #[serde(rename = "categoryName")]
+    category_name: String,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
