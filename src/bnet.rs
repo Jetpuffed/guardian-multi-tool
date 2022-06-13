@@ -1121,7 +1121,11 @@ pub struct DestinyUnlockDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyUnlockValueDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyUnlockValueDefinition {}
+pub struct DestinyUnlockValueDefinition {
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorDefinition
 #[derive(Debug, Deserialize)]
