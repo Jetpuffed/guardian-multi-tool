@@ -1420,6 +1420,12 @@ pub struct DestinyUnlockDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyUnlockExpressionDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyUnlockExpressionDefinition {
+    scope: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyUnlockValueDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyUnlockValueDefinition {
