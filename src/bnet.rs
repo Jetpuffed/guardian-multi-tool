@@ -83,6 +83,15 @@ pub struct DestinyActivityDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityChallengeDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityChallengeDefinition {
+    #[serde(rename = "objectiveHash")]
+    objective_hash: u32,
+    #[serde(rename = "dummyRewards")]
+    dummy_rewards: Vec<DestinyItemQuantity>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityGraphDefinition {
