@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use chrono::prelude::*;
 use serde::Deserialize;
 
 /* Definitions with no known documentation:
@@ -941,7 +942,32 @@ pub struct DestinySandboxPerkDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Seasons.DestinySeasonDefinition
 #[derive(Debug, Deserialize)]
-struct DestinySeasonDefinition {}
+pub struct DestinySeasonDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "backgroundImagePath")]
+    background_image_path: String,
+    #[serde(rename = "seasonNumber")]
+    season_number: i32,
+    #[serde(rename = "startDate")]
+    start_date: DateTime<Utc>,
+    #[serde(rename = "endDate")]
+    end_date: DateTime<Utc>,
+    #[serde(rename = "seasonPassHash")]
+    season_pass_hash: u32,
+    #[serde(rename = "seasonPassProgressionHash")]
+    season_pass_progression_hash: u32,
+    #[serde(rename = "artifactItemHash")]
+    artifact_item_hash: u32,
+    #[serde(rename = "sealPresentationNodeHash")]
+    seal_presentation_node_hash: u32,
+    #[serde(rename = "seasonalChallengesPresentationNodeHash")]
+    seasonal_challenges_presentation_node_hash: u32,
+    preview: DestinySeasonPreviewDefinition,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Seasons.DestinySeasonPassDefinition
 #[derive(Debug, Deserialize)]
