@@ -1129,7 +1129,67 @@ pub struct DestinyUnlockValueDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyVendorDefinition {}
+pub struct DestinyVendorDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "vendorProgressionType")]
+    vendor_progression_type: i32,
+    #[serde(rename = "buyString")]
+    buy_string: String,
+    #[serde(rename = "sellString")]
+    sell_string: String,
+    #[serde(rename = "displayItemHash")]
+    display_item_hash: u32,
+    #[serde(rename = "inhibitBuying")]
+    inhibit_buying: bool,
+    #[serde(rename = "inhibitSelling")]
+    inhibit_selling: bool,
+    #[serde(rename = "factionHash")]
+    faction_hash: u32,
+    #[serde(rename = "resetIntervalMinutes")]
+    reset_interval_minutes: i32,
+    #[serde(rename = "resetOffsetMinutes")]
+    reset_offset_minutes: i32,
+    #[serde(rename = "failureStrings")]
+    failure_strings: Vec<String>,
+    #[serde(rename = "unlockRanges")]
+    unlock_ranges: Vec<DateRange>,
+    #[serde(rename = "vendorIdentifier")]
+    vendor_identifier: String,
+    #[serde(rename = "vendorPortrait")]
+    vendor_portrait: String,
+    #[serde(rename = "vendorBanner")]
+    vendor_banner: String,
+    enabled: bool,
+    visible: bool,
+    #[serde(rename = "vendorSubcategoryIdentifier")]
+    vendor_subcategory_identifier: String,
+    #[serde(rename = "consolidateCategories")]
+    consolidate_categories: bool,
+    actions: Vec<DestinyVendorActionDefinition>,
+    categories: Vec<DestinyVendorCategoryEntryDefinition>,
+    #[serde(rename = "originalCategories")]
+    original_categories: Vec<DestinyVendorCategoryEntryDefinition>,
+    #[serde(rename = "displayCategories")]
+    display_categories: Vec<DestinyDisplayCategoryDefinition>,
+    interactions: Vec<DestinyVendorInteractionDefinition>,
+    #[serde(rename = "inventoryFlyouts")]
+    inventory_flyouts: Vec<DestinyVendorInventoryFlyoutDefinition>,
+    #[serde(rename = "itemList")]
+    item_list: Vec<DestinyVendorItemDefinition>,
+    services: Vec<DestinyVendorServiceDefinition>,
+    #[serde(rename = "acceptedItems")]
+    accepted_items: Vec<DestinyVendorAcceptedItemDefinition>,
+    #[serde(rename = "returnWithVendorRequest")]
+    return_with_vendor_request: bool,
+    locations: Vec<DestinyVendorLocationDefinition>,
+    groups: Vec<DestinyVendorGroupReference>,
+    #[serde(rename = "ignoreSaleItemHashes")]
+    ignore_sale_item_hashes: Vec<u32>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorGroupDefinition
 #[derive(Debug, Deserialize)]
