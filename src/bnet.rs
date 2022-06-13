@@ -159,6 +159,21 @@ pub struct DestinyActivityModifierReferenceDefinition {
     activity_modifier_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityPlaylistItemDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityPlaylistItemDefinition {
+    #[serde(rename = "activityHash")]
+    activity_hash: u32,
+    #[serde(rename = "directActivityModeHash")]
+    direct_activity_mode_hash: u32,
+    #[serde(rename = "directActivityModeType")]
+    direct_activity_mode_type: i32,
+    #[serde(rename = "activityModeHashes")]
+    activity_mode_hashes: Vec<u32>,
+    #[serde(rename = "activityModeTypes")]
+    activity_mode_types: Vec<i32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityRewardDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityRewardDefinition {
