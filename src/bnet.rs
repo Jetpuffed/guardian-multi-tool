@@ -794,7 +794,15 @@ pub struct DestinyProgressionDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Progression.DestinyProgressionLevelRequirementDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyProgressionLevelRequirementDefinition {}
+pub struct DestinyProgressionLevelRequirementDefinition {
+    #[serde(rename = "requirementCurve")]
+    requirement_curve: Vec<InterpolationPointFloat>,
+    #[serde(rename = "progressionHash")]
+    progression_hash: u32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionMappingDefinition
 #[derive(Debug, Deserialize)]
