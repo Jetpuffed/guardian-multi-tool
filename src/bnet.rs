@@ -128,6 +128,13 @@ pub struct DestinyActivityGuidedBlockDefinition {
     guided_disband_count: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityInsertionPointDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityInsertionPointDefinition {
+    #[serde(rename = "phaseHash")]
+    phase_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityLoadoutRequirement
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityLoadoutRequirement {
