@@ -110,6 +110,13 @@ pub struct DestinyActivityGraphDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityGraphListEntryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityGraphListEntryDefinition {
+    #[serde(rename = "activityGraphHash")]
+    activity_graph_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityModeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityModeDefinition {
