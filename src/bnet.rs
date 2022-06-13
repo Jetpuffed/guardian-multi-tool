@@ -212,6 +212,13 @@ pub struct DestinyActivityGraphNodeDefinition {
     states: Vec<DestinyActivityGraphNodeStateEntry>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphNodeFeaturingStateDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityGraphNodeFeaturingStateDefinition {
+    #[serde(rename = "highlightType")]
+    highlight_type: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityGuidedBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityGuidedBlockDefinition {
