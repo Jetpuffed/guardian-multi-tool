@@ -771,7 +771,26 @@ pub struct DestinyPresentationNodeDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyProgressionDefinition {}
+pub struct DestinyProgressionDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    scope: i32,
+    #[serde(rename = "repeatLastStep")]
+    repeat_last_step: bool,
+    source: String,
+    steps: Vec<DestinyProgressionStepDefinition>,
+    visible: bool,
+    #[serde(rename = "factionHash")]
+    faction_hash: u32,
+    color: DestinyColor,
+    #[serde(rename = "rankIcon")]
+    rank_icon: String,
+    #[serde(rename = "rewardItems")]
+    reward_items: Vec<DestinyProgressionRewardItemQuantity>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Progression.DestinyProgressionLevelRequirementDefinition
 #[derive(Debug, Deserialize)]
