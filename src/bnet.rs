@@ -179,6 +179,15 @@ pub struct DestinyActivityGraphArtElementDefinition {
     position: DestinyPositionDefinition,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphConnectionDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityGraphConnectionDefinition {
+    #[serde(rename = "sourceNodeHash")]
+    source_node_hash: u32,
+    #[serde(rename = "destNodeHash")]
+    dest_node_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityGraphDefinition {
