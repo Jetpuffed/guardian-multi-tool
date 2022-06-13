@@ -1097,7 +1097,17 @@ pub struct DestinyTraitDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Traits.DestinyTraitCategoryDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyTraitCategoryDefinition {}
+pub struct DestinyTraitCategoryDefinition {
+    #[serde(rename = "traitCategoryId")]
+    trait_category_id: String,
+    #[serde(rename = "traitHashes")]
+    trait_hashes: Vec<u32>,
+    #[serde(rename = "traitIds")]
+    trait_ids: Vec<String>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyUnlockDefinition
 #[derive(Debug, Deserialize)]
