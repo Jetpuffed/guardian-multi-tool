@@ -889,7 +889,14 @@ pub struct DestinyReportReasonCategoryDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyRewardSourceDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyRewardSourceDefinition {}
+pub struct DestinyRewardSourceDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    category: i32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinySandboxPatternDefinition
 #[derive(Debug, Deserialize)]
