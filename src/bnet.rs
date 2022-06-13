@@ -900,7 +900,24 @@ pub struct DestinyRewardSourceDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinySandboxPatternDefinition
 #[derive(Debug, Deserialize)]
-struct DestinySandboxPatternDefinition {}
+pub struct DestinySandboxPatternDefinition {
+    #[serde(rename = "patternHash")]
+    pattern_hash: u32,
+    #[serde(rename = "patternGlobalTagIdHash")]
+    pattern_global_tag_id_hash: u32,
+    #[serde(rename = "weaponContentGroupHash")]
+    weapon_content_group_hash: u32,
+    #[serde(rename = "weaponTranslationGroupHash")]
+    weapon_translation_group_hash: u32,
+    #[serde(rename = "weaponTypeHash")]
+    weapon_type_hash: u32,
+    #[serde(rename = "weaponType")]
+    weapon_type: i32,
+    filters: Vec<DestinyArrangementRegionFilterDefinition>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinySandboxPerkDefinition
 #[derive(Debug, Deserialize)]
