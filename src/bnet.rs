@@ -198,6 +198,14 @@ pub struct DestinyActivityGraphListEntryDefinition {
     activity_graph_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphNodeActivityDefinition
+pub struct DestinyActivityGraphNodeActivityDefinition {
+    #[serde(rename = "nodeActivityId")]
+    node_activity_id: u32,
+    #[serde(rename = "activityHash")]
+    activity_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphNodeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityGraphNodeDefinition {
