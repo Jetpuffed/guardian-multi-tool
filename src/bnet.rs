@@ -128,6 +128,23 @@ pub struct DestinyActivityGuidedBlockDefinition {
     guided_disband_count: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityLoadoutRequirement
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityLoadoutRequirement {
+    #[serde(rename = "equipmentSlotHash")]
+    equipment_slot_hash: u32,
+    #[serde(rename = "allowedEquippedItemHashes")]
+    allowed_equipped_item_hashes: Vec<u32>,
+    #[serde(rename = "allowedWeaponSubTypes")]
+    allowed_weapon_sub_types: Vec<i32>,
+}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityLoadoutRequirementSet
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityLoadoutRequirementSet {
+    requirements: Vec<DestinyActivityLoadoutRequirement>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityMatchmakingBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityMatchmakingBlockDefinition {
