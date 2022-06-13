@@ -206,6 +206,14 @@ pub struct DestinyActivityGraphDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphDisplayObjectiveDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityGraphDisplayObjectiveDefinition {
+    id: u32,
+    #[serde(rename = "objectiveHash")]
+    objective_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityGraphListEntryDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityGraphListEntryDefinition {
