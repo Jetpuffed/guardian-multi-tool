@@ -947,6 +947,14 @@ pub struct DestinyPlugSetDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Common.DestinyPositionDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyPositionDefinition {
+    x: i32,
+    y: i32,
+    z: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.PowerCaps.DestinyPowerCapDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyPowerCapDefinition {
