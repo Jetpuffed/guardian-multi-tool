@@ -999,7 +999,32 @@ pub struct DestinySocketCategoryDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinySocketTypeDefinition
 #[derive(Debug, Deserialize)]
-struct DestinySocketTypeDefinition {}
+pub struct DestinySocketTypeDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "insertAction")]
+    insert_action: DestinyInsertPlugActionDefinition,
+    #[serde(rename = "plugWhitelist")]
+    plug_whitelist: Vec<DestinyPlugWhitelistEntryDefinition>,
+    #[serde(rename = "socketCategoryHash")]
+    socket_category_hash: u32,
+    visibility: i32,
+    #[serde(rename = "alwaysRandomizeSockets")]
+    always_randomize_sockets: bool,
+    #[serde(rename = "isPreviewEnabled")]
+    is_preview_enabled: bool,
+    #[serde(rename = "hideDuplicateReusablePlugs")]
+    hide_duplicate_reusable_plugs: bool,
+    #[serde(rename = "overridesUiAppearance")]
+    overrides_ui_appearance: bool,
+    #[serde(rename = "avoidDuplicatesOnInitialization")]
+    avoid_duplicates_on_initialization: bool,
+    #[serde(rename = "currencyScalars")]
+    currency_scalars: Vec<DestinySocketTypeScalarMaterialRequirementEntry>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatDefinition
 #[derive(Debug, Deserialize)]
