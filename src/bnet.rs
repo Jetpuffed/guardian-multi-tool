@@ -431,6 +431,18 @@ pub struct DestinyItemTierTypeDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.DestinyItemQuantity
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemQuantity {
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+    #[serde(rename = "itemInstanceId")]
+    item_instance_id: i64,
+    quantity: i32,
+    #[serde(rename = "hasConditionalVisibility")]
+    has_conditional_visibility: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryBucketDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyInventoryBucketDefinition {
