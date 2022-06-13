@@ -971,7 +971,17 @@ pub struct DestinySeasonDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Seasons.DestinySeasonPassDefinition
 #[derive(Debug, Deserialize)]
-struct DestinySeasonPassDefinition {}
+pub struct DestinySeasonPassDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "rewardProgressionHash")]
+    reward_progression_hash: u32,
+    #[serde(rename = "prestigeProgressionHash")]
+    prestige_progression_hash: u32,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinySocketCategoryDefinition
 #[derive(Debug, Deserialize)]
