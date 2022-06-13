@@ -1059,7 +1059,25 @@ pub struct DestinyStatGroupDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentGridDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyTalentGridDefinition {}
+pub struct DestinyTalentGridDefinition {
+    #[serde(rename = "maxGridLevel")]
+    max_grid_level: i32,
+    #[serde(rename = "gridLevelPerColumn")]
+    grid_level_per_column: i32,
+    #[serde(rename = "progressionHash")]
+    progression_hash: u32,
+    nodes: Vec<DestinyTalentNodeDefinition>,
+    #[serde(rename = "exclusiveSets")]
+    exclusive_sets: Vec<DestinyTalentNodeExclusiveSetDefinition>,
+    #[serde(rename = "independentNodeIndexes")]
+    independent_node_indexes: Vec<i32>,
+    groups: HashMap<u32, DestinyTalentExclusiveGroup>,
+    #[serde(rename = "nodeCategories")]
+    node_categories: Vec<DestinyTalentNodeCategory>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Traits.DestinyTraitDefinition
 #[derive(Debug, Deserialize)]
