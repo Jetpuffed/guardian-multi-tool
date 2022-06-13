@@ -806,7 +806,15 @@ pub struct DestinyProgressionLevelRequirementDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionMappingDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyProgressionMappingDefinition {}
+pub struct DestinyProgressionMappingDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "displayUnits")]
+    display_units: String,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyRaceDefinition
 #[derive(Debug, Deserialize)]
