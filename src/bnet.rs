@@ -199,6 +199,7 @@ pub struct DestinyActivityGraphListEntryDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphNodeActivityDefinition
+#[derive(Debug, Deserialize)]
 pub struct DestinyActivityGraphNodeActivityDefinition {
     #[serde(rename = "nodeActivityId")]
     node_activity_id: u32,
