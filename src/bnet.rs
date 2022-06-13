@@ -732,7 +732,42 @@ pub struct DestinyPowerCapDefinition {
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeDefinition
 #[derive(Debug, Deserialize)]
-struct DestinyPresentationNodeDefinition {}
+pub struct DestinyPresentationNodeDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "originalIcon")]
+    original_icon: String,
+    #[serde(rename = "rootViewIcon")]
+    root_view_icon: String,
+    #[serde(rename = "nodeType")]
+    node_type: i32,
+    scope: i32,
+    #[serde(rename = "objectiveHash")]
+    objective_hash: u32,
+    #[serde(rename = "completionRecordHash")]
+    completion_record_hash: u32,
+    children: DestinyPresentationNodeChildrenBlock,
+    #[serde(rename = "displayStyle")]
+    display_style: i32,
+    #[serde(rename = "screenStyle")]
+    screen_style: i32,
+    requirements: DestinyPresentationNodeRequirementsBlock,
+    #[serde(rename = "disableChildSubscreenNavigation")]
+    disable_child_subscreen_navigation: bool,
+    #[serde(rename = "maxCategoryRecordScore")]
+    max_category_record_score: i32,
+    #[serde(rename = "presentationNodeType")]
+    presentation_node_type: i32,
+    #[serde(rename = "traitIds")]
+    trait_ids: Vec<String>,
+    #[serde(rename = "traitHashes")]
+    trait_hashes: Vec<u32>,
+    #[serde(rename = "parentNodeHashes")]
+    parent_node_hashes: Vec<u32>,
+    hash: u32,
+    index: i32,
+    redacted: bool,
+}
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionDefinition
 #[derive(Debug, Deserialize)]
