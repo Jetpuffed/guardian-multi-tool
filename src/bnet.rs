@@ -847,6 +847,13 @@ pub struct DestinyLinkedGraphDefinition {
     overview: String,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyLinkedGraphDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyLinkedGraphEntryDefinition {
+    #[serde(rename = "activityGraphHash")]
+    activity_graph_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyLocationDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyLocationDefinition {
