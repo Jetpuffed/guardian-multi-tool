@@ -173,6 +173,12 @@ pub struct DestinyActivityChallengeDefinition {
     dummy_rewards: Vec<DestinyItemQuantity>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphArtElementDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyActivityGraphArtElementDefinition {
+    position: DestinyPositionDefinition,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityGraphDefinition {
