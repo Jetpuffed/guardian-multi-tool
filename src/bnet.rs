@@ -2628,3 +2628,10 @@ pub struct HyperlinkReference {
     title: String,
     url: String,
 }
+
+/// https://bungie-net.github.io/#/components/schemas/Interpolation.InterpolationPointFloat
+#[derive(Debug, Deserialize)]
+pub struct InterpolationPointFloat {
+    value: f32,
+    weight: f32,
+}
