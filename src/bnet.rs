@@ -3151,6 +3151,15 @@ pub struct DestinyVendorItemQuantity {
     has_conditional_visibility: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorSaleItemActionBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorSaleItemActionBlockDefinition {
+    #[serde(rename = "executeSeconds")]
+    execute_seconds: f32,
+    #[serde(rename = "isPositive")]
+    is_positive: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.DyeReference
 #[derive(Debug, Deserialize)]
 pub struct DyeReference {
