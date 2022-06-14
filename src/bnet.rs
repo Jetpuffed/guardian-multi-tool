@@ -2188,6 +2188,20 @@ pub struct DestinyProgressionRewardDefinition {
     apply_throttles: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionStepDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyProgressionStepDefinition {
+    #[serde(rename = "stepName")]
+    step_name: String,
+    #[serde(rename = "displayEffectType")]
+    display_effect_type: i32,
+    #[serde(rename = "progressTotal")]
+    progress_total: i32,
+    #[serde(rename = "rewardItems")]
+    reward_items: Vec<DestinyItemQuantity>,
+    icon: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyRaceDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyRaceDefinition {
