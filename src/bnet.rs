@@ -635,7 +635,7 @@ pub struct DestinyArrangementRegionFilterDefinition {
 #[derive(Debug, Deserialize)]
 pub struct DestinyArtDyeReference {
     #[serde(rename = "artDyeChannelHash")]
-    art_dye_channel_hash: u32,
+    art_dye_channel_hash: Option<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Artifacts.DestinyArtifactDefinition
