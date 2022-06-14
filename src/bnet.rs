@@ -898,6 +898,15 @@ pub struct DestinyItemCategoryDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemCraftingBlockBonusPlugDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemCraftingBlockBonusPlugDefinition {
+    #[serde(rename = "socketTypeHash")]
+    socket_type_hash: u32,
+    #[serde(rename = "plugItemHash")]
+    plug_item_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemCraftingBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemCraftingBlockDefinition {
