@@ -732,6 +732,17 @@ pub struct DestinyDisplayPropertiesDefinition {
     has_icon: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyEnergyCapacityEntry
+#[derive(Debug, Deserialize)]
+pub struct DestinyEnergyCapacityEntry {
+    #[serde(rename = "capacityValue")]
+    capacity_value: i32,
+    #[serde(rename = "energyTypeHash")]
+    energy_type_hash: u32,
+    #[serde(rename = "energyType")]
+    energy_type: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.EnergyTypes.DestinyEnergyTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyEnergyTypeDefinition {
