@@ -2049,6 +2049,15 @@ pub struct DestinyPresentationNodeChildEntry {
     node_display_priority: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeCollectibleChildEntry
+#[derive(Debug, Deserialize)]
+pub struct DestinyPresentationNodeCollectibleChildEntry {
+    #[serde(rename = "collectibleHash")]
+    collectible_hash: u32,
+    #[serde(rename = "nodeDisplayPriority")]
+    node_display_priority: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyPresentationNodeDefinition {
