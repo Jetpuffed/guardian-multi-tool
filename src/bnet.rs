@@ -996,6 +996,30 @@ pub struct DestinyItemInventoryBlockDefinition {
     recipe_item_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemObjectiveBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemObjectiveBlockDefinition {
+    #[serde(rename = "objectiveHashes")]
+    objective_hashes: Vec<u32>,
+    #[serde(rename = "displayActivityHashes")]
+    display_activity_hashes: Vec<u32>,
+    #[serde(rename = "requireFullObjectiveCompletion")]
+    require_full_objective_completion: bool,
+    #[serde(rename = "questlineItemHash")]
+    questline_item_hash: u32,
+    narrative: String,
+    #[serde(rename = "objectiveVerbName")]
+    objective_verb_name: String,
+    #[serde(rename = "questTypeIdentifier")]
+    quest_type_identifier: String,
+    #[serde(rename = "questTypeHash")]
+    quest_type_hash: u32,
+    #[serde(rename = "perObjectiveDisplayProperties")]
+    per_objective_display_properties: Vec<DestinyObjectiveDisplayProperties>,
+    #[serde(rename = "displayAsStatTracker")]
+    display_as_stat_tracker: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemPreviewBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemPreviewBlockDefinition {
