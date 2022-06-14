@@ -1011,6 +1011,28 @@ pub struct DestinyItemPreviewBlockDefinition {
     derived_item_categories: Vec<DestinyDerivedItemCategoryDefinition>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemQualityBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemQualityBlockDefinition {
+    #[serde(rename = "itemLevels")]
+    item_levels: Vec<i32>,
+    #[serde(rename = "qualityLevel")]
+    quality_level: i32,
+    #[serde(rename = "infusionCategoryName")]
+    infusion_category_name: String,
+    #[serde(rename = "infusionCategoryHash")]
+    infusion_category_hash: u32,
+    #[serde(rename = "infusionCategoryHashes")]
+    infusion_category_hashes: Vec<u32>,
+    #[serde(rename = "progressionLevelRequirementHash")]
+    progression_level_requirement: u32,
+    #[serde(rename = "currentVersion")]
+    current_version: u32,
+    versions: Vec<DestinyItemVersionDefinition>,
+    #[serde(rename = "displayVersionWatermarkIcons")]
+    display_version_watermark_icons: Vec<String>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.DestinyItemQuantity
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemQuantity {
