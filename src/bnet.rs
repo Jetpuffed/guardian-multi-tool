@@ -1817,6 +1817,14 @@ pub struct DestinyMilestoneRewardEntryDefinition {
     order: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneValueDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyMilestoneValueDefinition {
+    key: String,
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneVendorDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyMilestoneVendorDefinition {
