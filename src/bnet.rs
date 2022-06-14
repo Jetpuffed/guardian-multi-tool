@@ -2308,3 +2308,10 @@ pub struct DyeReference {
     #[serde(rename = "dyeHash")]
     dye_hash: u32,
 }
+
+/// https://bungie-net.github.io/#/components/schemas/Links.HyperlinkReference
+#[derive(Debug, Deserialize)]
+pub struct HyperlinkReference {
+    title: String,
+    url: String,
+}
