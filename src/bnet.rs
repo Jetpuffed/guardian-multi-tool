@@ -996,6 +996,13 @@ pub struct DestinyItemInventoryBlockDefinition {
     recipe_item_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemMetricBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemMetricBlockDefinition {
+    #[serde(rename = "availableMetricCategoryNodeHashes")]
+    available_metric_category_node_hashes: Vec<u32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemObjectiveBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemObjectiveBlockDefinition {
