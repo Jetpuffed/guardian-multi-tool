@@ -1576,6 +1576,15 @@ pub struct DestinyObjectiveDisplayProperties {
     display_on_item_preview_screen: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyParentItemOverride
+#[derive(Debug, Deserialize)]
+pub struct DestinyParentItemOverride {
+    #[serde(rename = "additionalEquipRequirementsDisplayStrings")]
+    additional_equip_requirements_display_strings: Vec<String>,
+    #[serde(rename = "pipIcon")]
+    pip_icon: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyPlaceDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyPlaceDefinition {
