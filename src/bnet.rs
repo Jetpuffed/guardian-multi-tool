@@ -867,6 +867,15 @@ pub struct DestinyItemTierTypeInfusionBlock {
     minimum_quality_increment: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemTooltipNotification
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemTooltipNotification {
+    #[serde(rename = "displayString")]
+    display_string: String,
+    #[serde(rename = "displayStyle")]
+    display_style: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemTranslationBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemTranslationBlockDefinition {
