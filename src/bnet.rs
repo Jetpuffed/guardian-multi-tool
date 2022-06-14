@@ -1146,6 +1146,21 @@ pub struct DestinyItemQuantity {
     has_conditional_visibility: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSackBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemSackBlockDefinition {
+    #[serde(rename = "detailAction")]
+    detail_action: String,
+    #[serde(rename = "openAction")]
+    open_action: String,
+    #[serde(rename = "selectItemCount")]
+    select_item_count: i32,
+    #[serde(rename = "vendorSackType")]
+    vendor_sack_type: String,
+    #[serde(rename = "openOnAcquire")]
+    open_on_acquire: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSetBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemSetBlockDefinition {
