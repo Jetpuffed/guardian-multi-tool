@@ -498,6 +498,20 @@ pub struct DestinyArtifactDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Artifacts.DestinyArtifactTierDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyArtifactTierDefinition {
+    #[serde(rename = "tierHash")]
+    tier_hash: u32,
+    #[serde(rename = "displayTitle")]
+    display_title: String,
+    #[serde(rename = "progressRequirementMessage")]
+    progress_requirement_message: String,
+    items: Vec<DestinyArtifactTierItemDefinition>,
+    #[serde(rename = "minimumUnlockPointsUsedRequirement")]
+    minimum_unlock_points_used_requirement: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.BreakerTypes.DestinyBreakerTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyBreakerTypeDefinition {
