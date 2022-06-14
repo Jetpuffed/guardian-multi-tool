@@ -2304,6 +2304,17 @@ pub struct DestinyRecordExpirationBlock {
     icon: String,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordIntervalBlock
+#[derive(Debug, Deserialize)]
+pub struct DestinyRecordIntervalBlock {
+    #[serde(rename = "intervalObjectives")]
+    interval_objectives: Vec<DestinyRecordIntervalObjective>,
+    #[serde(rename = "intervalRewards")]
+    interval_rewards: Vec<DestinyRecordIntervalRewards>,
+    #[serde(rename = "originalObjectiveArrayInsertionIndex")]
+    original_objective_array_insertion_index: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordTitleBlock
 #[derive(Debug, Deserialize)]
 pub struct DestinyRecordTitleBlock {
