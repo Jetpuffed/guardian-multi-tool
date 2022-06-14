@@ -488,6 +488,19 @@ pub struct DestinyAnimationReference {
     path: String,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyArrangementRegionFilterDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyArrangementRegionFilterDefinition {
+    #[serde(rename = "artArrangementRegionHash")]
+    art_arrangement_region_hash: u32,
+    #[serde(rename = "artArrangementRegionIndex")]
+    art_arrangement_region_index: i32,
+    #[serde(rename = "statHash")]
+    stat_hash: u32,
+    #[serde(rename = "arrangementIndexByStatValue")]
+    arrangement_index_by_stat_value: HashMap<i32, i32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyArtDyeReference
 #[derive(Debug, Deserialize)]
 pub struct DestinyArtDyeReference {
