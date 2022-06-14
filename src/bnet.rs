@@ -1802,6 +1802,21 @@ pub struct DestinyMilestoneRewardCategoryDefinition {
     order: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneRewardEntryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyMilestoneRewardEntryDefinition {
+    #[serde(rename = "rewardEntryHash")]
+    reward_entry_hash: u32,
+    #[serde(rename = "rewardEntryIdentifier")]
+    reward_entry_identifier: String,
+    items: Vec<DestinyItemQuantity>,
+    #[serde(rename = "vendorHash")]
+    vendor_hash: u32,
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    order: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyObjectiveDefinition {
