@@ -626,6 +626,14 @@ pub struct DestinyCollectibleDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Collectibles.DestinyCollectibleStateBlock
+#[derive(Debug, Deserialize)]
+pub struct DestinyCollectibleStateBlock {
+    #[serde(rename = "obscuredOverrideItemHash")]
+    obscured_override_item_hash: u32,
+    requirements: DestinyPresentationNodeRequirementsBlock,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDamageTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyDamageTypeDefinition {
