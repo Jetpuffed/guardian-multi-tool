@@ -760,6 +760,24 @@ pub struct DestinyEquipmentSlotDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyEquippingBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyEquippingBlockDefinition {
+    #[serde(rename = "gearsetItemHash")]
+    gearset_item_hash: u32,
+    #[serde(rename = "uniqueLabel")]
+    unique_label: String,
+    #[serde(rename = "uniqueLabelHash")]
+    unique_label_hash: u32,
+    #[serde(rename = "equipmentSlotTypeHash")]
+    equipment_slot_type_hash: u32,
+    attributes: i32,
+    #[serde(rename = "ammoType")]
+    ammo_type: i32,
+    #[serde(rename = "displayStrings")]
+    display_strings: Vec<String>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyFactionDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyFactionDefinition {
