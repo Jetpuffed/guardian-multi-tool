@@ -762,6 +762,24 @@ pub struct DestinyItemTierTypeDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemTranslationBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemTranslationBlockDefinition {
+    #[serde(rename = "weaponPatternIdentifier")]
+    weapon_pattern_identifier: String,
+    #[serde(rename = "weaponPatternHash")]
+    weapon_pattern_hash: u32,
+    #[serde(rename = "defaultDyes")]
+    default_dyes: Vec<DyeReference>,
+    #[serde(rename = "lockedDyes")]
+    locked_dyes: Vec<DyeReference>,
+    #[serde(rename = "customDyes")]
+    custom_dyes: Vec<DyeReference>,
+    arrangements: Vec<DestinyGearArtArrangementReference>,
+    #[serde(rename = "hasGeometry")]
+    has_geometry: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.DestinyItemQuantity
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemQuantity {
