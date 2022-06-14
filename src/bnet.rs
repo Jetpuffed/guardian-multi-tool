@@ -58,6 +58,28 @@ pub struct GetDestinyManifestResponse {
     detailed_error_trace: String,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Config.DestinyManifest
+#[derive(Debug, Deserialize)]
+pub struct DestinyManifest {
+    version: String,
+    #[serde(rename = "mobileAssetContentPath")]
+    mobile_asset_content_path: String,
+    #[serde(rename = "mobileGearAssetDataBases")]
+    mobile_gear_asset_data_bases: Vec<GearAssetDataBaseDefinition>,
+    #[serde(rename = "mobileWorldContentPaths")]
+    mobile_world_content_paths: HashMap<String, String>,
+    #[serde(rename = "jsonWorldContentPaths")]
+    json_world_content_paths: HashMap<String, String>,
+    #[serde(rename = "jsonWorldComponentContentPaths")]
+    json_world_component_content_paths: HashMap<String, HashMap<String, String>>,
+    #[serde(rename = "mobileClanBannerDatabasePath")]
+    mobile_clan_banner_database_path: String,
+    #[serde(rename = "mobileGearCDN")]
+    mobile_gear_cdn: HashMap<String, String>,
+    #[serde(rename = "iconImagePyramidInfo")]
+    icon_image_pyramid_info: Vec<ImagePyramidEntry>,
+}
+
 /// Where all the deserialized game content lives.
 /// 
 /// Returned by any function that deserializes the world content paths obtained
