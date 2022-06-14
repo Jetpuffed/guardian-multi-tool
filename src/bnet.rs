@@ -478,6 +478,16 @@ pub struct DestinyActivityUnlockStringDefinition {
     display_string: String,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Animations.DestinyAnimationReference
+#[derive(Debug, Deserialize)]
+pub struct DestinyAnimationReference {
+    #[serde(rename = "animName")]
+    anim_name: String,
+    #[serde(rename = "animIdentifier")]
+    anim_identifier: String,
+    path: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyArtDyeReference
 #[derive(Debug, Deserialize)]
 pub struct DestinyArtDyeReference {
