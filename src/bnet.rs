@@ -971,6 +971,21 @@ pub struct DestinyItemInventoryBlockDefinition {
     recipe_item_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemPreviewBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemPreviewBlockDefinition {
+    #[serde(rename = "screenStyle")]
+    screen_style: String,
+    #[serde(rename = "previewVendorHash")]
+    preview_vendor_hash: u32,
+    #[serde(rename = "artifactHash")]
+    artifact_hash: u32,
+    #[serde(rename = "previewActionString")]
+    preview_action_string: String,
+    #[serde(rename = "derivedItemCategories")]
+    derived_item_categories: Vec<DestinyDerivedItemCategoryDefinition>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.DestinyItemQuantity
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemQuantity {
