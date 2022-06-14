@@ -743,6 +743,17 @@ pub struct DestinyEnergyCapacityEntry {
     energy_type: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyEnergyCostEntry
+#[derive(Debug, Deserialize)]
+pub struct DestinyEnergyCostEntry {
+    #[serde(rename = "energyCost")]
+    energy_cost: i32,
+    #[serde(rename = "energyTypeHash")]
+    energy_type_hash: u32,
+    #[serde(rename = "energyType")]
+    energy_type: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.EnergyTypes.DestinyEnergyTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyEnergyTypeDefinition {
