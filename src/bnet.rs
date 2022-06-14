@@ -2282,6 +2282,19 @@ pub struct DestinyRecordDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordCompletionBlock
+#[derive(Debug, Deserialize)]
+pub struct DestinyRecordCompletionBlock {
+    #[serde(rename = "partialCompletionObjectiveCountThreshold")]
+    partial_completion_objective_count_threshold: i32,
+    #[serde(rename = "ScoreValue")]
+    score_value: i32,
+    #[serde(rename = "shouldFireToast")]
+    should_fire_toast: bool,
+    #[serde(rename = "toastStyle")]
+    toast_style: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordTitleBlock
 #[derive(Debug, Deserialize)]
 pub struct DestinyRecordTitleBlock {
