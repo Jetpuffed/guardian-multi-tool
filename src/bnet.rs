@@ -1908,6 +1908,15 @@ pub struct DestinyNodeActivationRequirement {
     material_requirement_hashes: Vec<u32>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyNodeSocketReplaceResponse
+#[derive(Debug, Deserialize)]
+pub struct DestinyNodeSocketReplaceResponse {
+    #[serde(rename = "socketTypeHash")]
+    socket_type_hash: u32,
+    #[serde(rename = "plugItemHash")]
+    plug_item_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyNodeStepDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyNodeStepDefinition {
