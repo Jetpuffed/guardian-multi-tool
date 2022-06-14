@@ -1916,6 +1916,14 @@ pub struct DestinyObjectiveDisplayProperties {
     display_on_item_preview_screen: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectivePerkEntryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyObjectivePerkEntryDefinition {
+    #[serde(rename = "perkHash")]
+    perk_hash: u32,
+    style: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyParentItemOverride
 #[derive(Debug, Deserialize)]
 pub struct DestinyParentItemOverride {
