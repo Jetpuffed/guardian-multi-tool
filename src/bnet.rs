@@ -1733,6 +1733,13 @@ pub struct DestinyMilestoneChallengeActivityGraphNodeEntry {
     activity_graph_node_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneChallengeActivityPhase
+#[derive(Debug, Deserialize)]
+pub struct DestinyMilestoneChallengeActivityPhase {
+    #[serde(rename = "phaseHash")]
+    phase_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneChallengeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyMilestoneChallengeDefinition {
