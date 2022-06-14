@@ -1697,6 +1697,14 @@ pub struct DestinyMetricDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneActivityDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyMilestoneActivityDefinition {
+    #[serde(rename = "conceptualActivityHash")]
+    conceptual_activity_hash: u32,
+    variants: HashMap<u32, DestinyMilestoneActivityVariantDefinition>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyMilestoneDefinition {
