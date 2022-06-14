@@ -1173,6 +1173,15 @@ pub struct DestinyItemValueBlockDefinition {
     value_description: String,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemVendorSourceReference
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemVendorSourceReference {
+    #[serde(rename = "vendorHash")]
+    vendor_hash: u32,
+    #[serde(rename = "vendorItemIndexes")]
+    vendor_item_indexes: Vec<i32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemVersionDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemVersionDefinition {
