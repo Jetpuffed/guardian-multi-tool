@@ -1191,6 +1191,12 @@ pub struct DestinyItemCraftingBlockDefinition {
     bonus_plugs: Vec<DestinyItemCraftingBlockBonusPlugDefinition>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemCreationEntryLevelDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemCreationEntryLevelDefinition {
+    level: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemGearsetBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemGearsetBlockDefinition {
