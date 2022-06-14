@@ -545,6 +545,29 @@ pub struct DestinyChecklistDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Checklists.DestinyChecklistEntryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyChecklistEntryDefinition {
+    hash: u32,
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "destinationHash")]
+    destination_hash: u32,
+    #[serde(rename = "locationHash")]
+    location_hash: u32,
+    #[serde(rename = "bubbleHash")]
+    bubble_hash: u32,
+    #[serde(rename = "activityHash")]
+    activity_hash: u32,
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+    #[serde(rename = "vendorHash")]
+    vendor_hash: u32,
+    #[serde(rename = "vendorInteractionIndex")]
+    vendor_interaction_index: i32,
+    scope: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyClassDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyClassDefinition {
