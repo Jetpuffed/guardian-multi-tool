@@ -3038,6 +3038,16 @@ pub struct DestinyVendorInteractionDefinition {
     instructions: String,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorInteractionReplyDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorInteractionReplyDefinition {
+    #[serde(rename = "itemRewardsSelection")]
+    item_rewards_selection: i32,
+    reply: String,
+    #[serde(rename = "replyType")]
+    reply_type: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.DyeReference
 #[derive(Debug, Deserialize)]
 pub struct DyeReference {
