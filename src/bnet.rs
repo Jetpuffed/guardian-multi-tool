@@ -2674,6 +2674,21 @@ pub struct DestinyStatOverrideDefinition {
     display_properties: DestinyDisplayPropertiesDefinition,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentExclusiveGroup
+#[derive(Debug, Deserialize)]
+pub struct DestinyTalentExclusiveGroup {
+    #[serde(rename = "groupHash")]
+    group_hash: u32,
+    #[serde(rename = "loreHash")]
+    lore_hash: u32,
+    #[serde(rename = "nodeHashes")]
+    node_hashes: Vec<u32>,
+    #[serde(rename = "opposingGroupHashes")]
+    opposing_group_hashes: Vec<u32>,
+    #[serde(rename = "opposingNodeHashes")]
+    opposing_node_hashes: Vec<u32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentGridDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyTalentGridDefinition {
