@@ -2029,6 +2029,17 @@ pub struct DestinyPresentationChildBlock {
     display_style: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeChildrenBlock
+#[derive(Debug, Deserialize)]
+pub struct DestinyPresentationNodeChildrenBlock {
+    #[serde(rename = "presentationNodes")]
+    presentation_nodes: Vec<DestinyPresentationNodeChildEntry>,
+    collectibles: Vec<DestinyPresentationNodeCollectibleChildEntry>,
+    records: Vec<DestinyPresentationNodeRecordChildEntry>,
+    metrics: Vec<DestinyPresentationNodeMetricChildEntry>,
+    craftables: Vec<DestinyPresentationNodeCraftableChildEntry>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyPresentationNodeDefinition {
