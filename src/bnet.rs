@@ -586,6 +586,15 @@ pub struct DestinyClassDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Collectibles.DestinyCollectibleAcquisitionBlock
+#[derive(Debug, Deserialize)]
+pub struct DestinyCollectibleAcquisitionBlock {
+    #[serde(rename = "acquireMaterialRequirementHash")]
+    acquire_material_requirement_hash: u32,
+    #[serde(rename = "acquireTimestampUnlockValueHash")]
+    acquire_timestamp_unlock_value_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Collectibles.DestinyCollectibleDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyCollectibleDefinition {
