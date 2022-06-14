@@ -817,6 +817,39 @@ pub struct DestinyIconSequenceDefinition {
     frames: Vec<String>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemActionBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemActionBlockDefinition {
+    #[serde(rename = "verbName")]
+    verb_name: String,
+    #[serde(rename = "verbDescription")]
+    verb_description: String,
+    #[serde(rename = "isPositive")]
+    is_positive: bool,
+    #[serde(rename = "overlayScreenName")]
+    overlay_screen_name: String,
+    #[serde(rename = "overlayIcon")]
+    overlay_icon: String,
+    #[serde(rename = "requiredCooldownSeconds")]
+    required_cooldown_seconds: i32,
+    #[serde(rename = "requiredItems")]
+    required_items: Vec<DestinyItemActionRequiredItemDefinition>,
+    #[serde(rename = "progressionRewards")]
+    progression_rewards: Vec<DestinyProgressionRewardDefinition>,
+    #[serde(rename = "actionTypeLabel")]
+    action_type_label: String,
+    #[serde(rename = "requiredLocation")]
+    required_location: String,
+    #[serde(rename = "requiredCooldownHash")]
+    required_cooldown_hash: u32,
+    #[serde(rename = "deleteOnAction")]
+    delete_on_action: bool,
+    #[serde(rename = "consumeEntireStack")]
+    consume_entire_stack: bool,
+    #[serde(rename = "useOnAcquire")]
+    use_on_acquire: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemCategoryDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemCategoryDefinition {
