@@ -642,6 +642,15 @@ pub struct DestinyCollectibleStateBlock {
     requirements: DestinyPresentationNodeRequirementsBlock,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Misc.DestinyColor
+#[derive(Debug, Deserialize)]
+pub struct DestinyColor {
+    red: u8,
+    green: u8,
+    blue: u8,
+    alpha: u8,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDamageTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyDamageTypeDefinition {
