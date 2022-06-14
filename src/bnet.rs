@@ -1724,6 +1724,15 @@ pub struct DestinyMilestoneChallengeActivityDefinition {
     phases: Vec<DestinyMilestoneChallengeActivityPhase>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneChallengeActivityGraphNodeEntry
+#[derive(Debug, Deserialize)]
+pub struct DestinyMilestoneChallengeActivityGraphNodeEntry {
+    #[serde(rename = "activityGraphHash")]
+    activity_graph_hash: u32,
+    #[serde(rename = "activityGraphNodeHash")]
+    activity_graph_node_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneChallengeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyMilestoneChallengeDefinition {
