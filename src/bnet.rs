@@ -1239,6 +1239,13 @@ pub struct DestinyPresentationNodeDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeRequirementsBlock
+#[derive(Debug, Deserialize)]
+pub struct DestinyPresentationNodeRequirementsBlock {
+    #[serde(rename = "entitlementUnavailableMessage")]
+    entitlement_unavailable_message: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyProgressionDefinition {
