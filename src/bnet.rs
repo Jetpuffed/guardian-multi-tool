@@ -2846,6 +2846,25 @@ pub struct DestinyUnlockValueDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorActionDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorActionDefinition {
+    description: String,
+    #[serde(rename = "executeSeconds")]
+    execute_seconds: i32,
+    icon: String,
+    name: String,
+    verb: String,
+    #[serde(rename = "isPositive")]
+    is_positive: bool,
+    #[serde(rename = "actionId")]
+    action_id: String,
+    #[serde(rename = "actionHash")]
+    action_hash: u32,
+    #[serde(rename = "autoPerformAction")]
+    auto_perform_action: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyVendorDefinition {
