@@ -1201,6 +1201,29 @@ pub struct DestinyItemSocketBlockDefinition {
     socket_categories: Vec<DestinyItemSocketCategoryDefinition>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSocketEntryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemSocketEntryDefinition {
+    #[serde(rename = "socketTypeHash")]
+    socket_type_hash: u32,
+    #[serde(rename = "singleInitialItemHash")]
+    single_initial_item_hash: u32,
+    #[serde(rename = "reusablePlugItems")]
+    reusable_plug_items: Vec<DestinyItemSocketEntryPlugItemDefinition>,
+    #[serde(rename = "preventInitializationOnVendorPurchase")]
+    prevent_initialization_on_vendor_purchase: bool,
+    #[serde(rename = "hidePerksInItemTooltip")]
+    hide_perks_in_item_tooltip: bool,
+    #[serde(rename = "plugSources")]
+    plug_sources: i32,
+    #[serde(rename = "reusablePlugSetHash")]
+    reusable_plug_set_hash: u32,
+    #[serde(rename = "randomizedPlugSetHash")]
+    randomized_plug_set_hash: u32,
+    #[serde(rename = "defaultVisible")]
+    default_visible: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSourceBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemSourceBlockDefinition {
