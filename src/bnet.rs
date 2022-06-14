@@ -1750,6 +1750,12 @@ pub struct DestinyMilestoneQuestDefinition {
     destination_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneQuestRewardsDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyMilestoneQuestRewardsDefinition {
+    items: Vec<DestinyMilestoneQuestRewardItem>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyObjectiveDefinition {
