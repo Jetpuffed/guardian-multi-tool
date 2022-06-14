@@ -1301,6 +1301,21 @@ pub struct DestinyItemSummaryBlockDefinition {
     sort_priority: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemTalentGridBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemTalentGridBlockDefinition {
+    #[serde(rename = "talentGridHash")]
+    talent_grid_hash: u32,
+    #[serde(rename = "itemDetailString")]
+    item_detail_string: String,
+    #[serde(rename = "buildName")]
+    build_name: String,
+    #[serde(rename = "hudDamageType")]
+    hud_damage_type: i32,
+    #[serde(rename = "hudIcon")]
+    hud_icon: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemTierTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemTierTypeDefinition {
