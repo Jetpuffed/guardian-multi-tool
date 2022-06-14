@@ -2472,6 +2472,17 @@ pub struct DestinySeasonPassDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Seasons.DestinySeasonPreviewDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinySeasonPreviewDefinition {
+    description: String,
+    #[serde(rename = "linkPath")]
+    link_path: String,
+    #[serde(rename = "videoLink")]
+    video_link: String,
+    images: Vec<DestinySeasonPreviewImageDefinition>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinySocketCategoryDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinySocketCategoryDefinition {
