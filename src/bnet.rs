@@ -1294,6 +1294,13 @@ pub struct DestinyItemStatBlockDefinition {
     primary_base_stat_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSummaryBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemSummaryBlockDefinition {
+    #[serde(rename = "sortPriority")]
+    sort_priority: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemTierTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemTierTypeDefinition {
