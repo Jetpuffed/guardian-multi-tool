@@ -110,6 +110,44 @@ pub struct DestinyManifest {
     icon_image_pyramid_info: Vec<ImagePyramidEntry>,
 }
 
+impl DestinyManifest {
+    pub fn version(&self) -> &str {
+        self.version.as_ref()
+    }
+
+    pub fn mobile_asset_content_path(&self) -> &str {
+        self.mobile_asset_content_path.as_ref()
+    }
+
+    pub fn mobile_gear_asset_data_bases(&self) -> &[GearAssetDataBaseDefinition] {
+        self.mobile_gear_asset_data_bases.as_ref()
+    }
+
+    pub fn mobile_world_content_paths(&self) -> &HashMap<String, String> {
+        &self.mobile_world_content_paths
+    }
+
+    pub fn json_world_content_paths(&self) -> &HashMap<String, String> {
+        &self.json_world_content_paths
+    }
+
+    pub fn json_world_component_content_paths(&self) -> &HashMap<String, HashMap<String, String>> {
+        &self.json_world_component_content_paths
+    }
+
+    pub fn mobile_clan_banner_database_path(&self) -> &str {
+        self.mobile_clan_banner_database_path.as_ref()
+    }
+
+    pub fn mobile_gear_cdn(&self) -> &HashMap<String, String> {
+        &self.mobile_gear_cdn
+    }
+
+    pub fn icon_image_pyramid_info(&self) -> &[ImagePyramidEntry] {
+        self.icon_image_pyramid_info.as_ref()
+    }
+}
+
 /// Where all the deserialized game content lives.
 /// 
 /// Returned by any function that deserializes the world content paths obtained
