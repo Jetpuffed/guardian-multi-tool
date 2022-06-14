@@ -58,6 +58,36 @@ pub struct GetDestinyManifestResponse {
     detailed_error_trace: String,
 }
 
+impl GetDestinyManifestResponse {
+    pub fn response(&self) -> &DestinyManifest {
+        &self.response
+    }
+
+    pub fn error_code(&self) -> i32 {
+        self.error_code
+    }
+
+    pub fn throttle_seconds(&self) -> i32 {
+        self.throttle_seconds
+    }
+
+    pub fn error_status(&self) -> &str {
+        self.error_status.as_ref()
+    }
+
+    pub fn message(&self) -> &str {
+        self.message.as_ref()
+    }
+
+    pub fn message_data(&self) -> &HashMap<String, String> {
+        &self.message_data
+    }
+
+    pub fn detailed_error_trace(&self) -> &str {
+        self.detailed_error_trace.as_ref()
+    }
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Config.DestinyManifest
 #[derive(Debug, Deserialize)]
 pub struct DestinyManifest {
