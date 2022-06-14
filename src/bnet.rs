@@ -1079,6 +1079,17 @@ pub struct DestinyItemObjectiveBlockDefinition {
     display_as_stat_tracker: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemPerkEntryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemPerkEntryDefinition {
+    #[serde(rename = "requirementDisplayString")]
+    requirement_display_string: String,
+    #[serde(rename = "perkHash")]
+    perk_hash: u32,
+    #[serde(rename = "perkVisibility")]
+    perk_visibility: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemPlugDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemPlugDefinition {
