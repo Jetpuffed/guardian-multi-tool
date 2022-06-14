@@ -2022,6 +2022,17 @@ pub struct DestinyPlugSetDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinyPlugWhitelistEntryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyPlugWhitelistEntryDefinition {
+    #[serde(rename = "categoryHash")]
+    category_hash: u32,
+    #[serde(rename = "categoryIdentifier")]
+    category_identifier: String,
+    #[serde(rename = "reinitializationPossiblePlugHashes")]
+    reinitialization_possible_plug_hashes: Vec<u32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Common.DestinyPositionDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyPositionDefinition {
