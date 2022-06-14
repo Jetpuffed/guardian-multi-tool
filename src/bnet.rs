@@ -3009,6 +3009,35 @@ pub struct DestinyVendorGroupDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorInteractionDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorInteractionDefinition {
+    #[serde(rename = "interactionIndex")]
+    interaction_index: i32,
+    replies: Vec<DestinyVendorInteractionReplyDefinition>,
+    #[serde(rename = "vendorCategoryIndex")]
+    vendor_category_index: i32,
+    #[serde(rename = "questlineItemHash")]
+    questline_item_hash: u32,
+    #[serde(rename = "sackInteractionList")]
+    sack_interaction_list: Vec<DestinyVendorInteractionSackEntryDefinition>,
+    #[serde(rename = "uiInteractionType")]
+    ui_interaction_type: u32,
+    #[serde(rename = "interactionType")]
+    interaction_type: i32,
+    #[serde(rename = "rewardBlockLabel")]
+    reward_block_label: String,
+    #[serde(rename = "rewardVendorCategoryIndex")]
+    reward_vendor_category_index: i32,
+    #[serde(rename = "flavorLineOne")]
+    flavor_line_one: String,
+    #[serde(rename = "flavorLineTwo")]
+    flavor_line_two: String,
+    #[serde(rename = "headerDisplayProperties")]
+    header_display_properties: DestinyDisplayPropertiesDefinition,
+    instructions: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.DyeReference
 #[derive(Debug, Deserialize)]
 pub struct DyeReference {
