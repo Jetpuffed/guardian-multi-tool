@@ -3151,6 +3151,17 @@ pub struct DestinyVendorItemQuantity {
     has_conditional_visibility: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorItemSocketOverride
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorItemSocketOverride {
+    #[serde(rename = "singleItemHash")]
+    single_item_hash: u32,
+    #[serde(rename = "randomizedOptionsCount")]
+    randomized_options_count: i32,
+    #[serde(rename = "socketTypeHash")]
+    socket_type_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorSaleItemActionBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyVendorSaleItemActionBlockDefinition {
