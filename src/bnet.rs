@@ -1908,6 +1908,45 @@ pub struct DestinyNodeActivationRequirement {
     material_requirement_hashes: Vec<u32>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyNodeStepDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyNodeStepDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "stepIndex")]
+    step_index: i32,
+    #[serde(rename = "nodeStepHash")]
+    node_step_hash: u32,
+    #[serde(rename = "interactionDescription")]
+    interaction_description: String,
+    #[serde(rename = "damageType")]
+    damage_type: i32,
+    #[serde(rename = "damageTypeHash")]
+    damage_type_hash: u32,
+    #[serde(rename = "activationRequirement")]
+    activation_requirement: DestinyNodeActivationRequirement,
+    #[serde(rename = "canActivateNextStep")]
+    can_activate_next_step: bool,
+    #[serde(rename = "nextStepIndex")]
+    next_step_index: i32,
+    #[serde(rename = "isNextStepRandom")]
+    is_next_step_random: bool,
+    #[serde(rename = "perkHashes")]
+    perk_hashes: Vec<u32>,
+    #[serde(rename = "startProgressionBarAtProgress")]
+    start_progression_bar_at_progress: i32,
+    #[serde(rename = "statHashes")]
+    stat_hashes: Vec<u32>,
+    #[serde(rename = "affectsQuality")]
+    affects_quality: bool,
+    #[serde(rename = "stepGroups")]
+    step_groups: DestinyTalentNodeStepGroups,
+    #[serde(rename = "affectsLevel")]
+    affects_level: bool,
+    #[serde(rename = "socketReplacements")]
+    socket_replacements: Vec<DestinyNodeSocketReplaceResponse>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyObjectiveDefinition {
