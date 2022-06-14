@@ -1597,6 +1597,39 @@ pub struct DestinyLocationDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyLocationReleaseDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyLocationReleaseDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "smallTransparentIcon")]
+    small_transparent_icon: String,
+    #[serde(rename = "mapIcon")]
+    map_icon: String,
+    #[serde(rename = "largeTransparentIcon")]
+    large_transparent_icon: String,
+    #[serde(rename = "spawnPoint")]
+    spawn_point: u32,
+    #[serde(rename = "destinationHash")]
+    destination_hash: u32,
+    #[serde(rename = "activityHash")]
+    activity_hash: u32,
+    #[serde(rename = "activityGraphHash")]
+    activity_graph_hash: u32,
+    #[serde(rename = "activityGraphNodeHash")]
+    activity_graph_node_hash: u32,
+    #[serde(rename = "activityBubbleName")]
+    activity_bubble_name: u32,
+    #[serde(rename = "activityPathBundle")]
+    activity_path_bundle: u32,
+    #[serde(rename = "activityPathDestination")]
+    activity_path_destination: u32,
+    #[serde(rename = "navPointType")]
+    nav_point_type: i32,
+    #[serde(rename = "worldPosition")]
+    world_position: Vec<i32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Lore.DestinyLoreDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyLoreDefinition {
