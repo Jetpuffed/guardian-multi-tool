@@ -1521,6 +1521,15 @@ pub struct DestinyObjectiveDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDisplayProperties
+#[derive(Debug, Deserialize)]
+pub struct DestinyObjectiveDisplayProperties {
+    #[serde(rename = "activityHash")]
+    activity_hash: u32,
+    #[serde(rename = "displayOnItemPreviewScreen")]
+    display_on_item_preview_screen: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyPlaceDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyPlaceDefinition {
