@@ -1899,6 +1899,15 @@ pub struct DestinyMilestoneVendorDefinition {
     vendor_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyNodeActivationRequirement
+#[derive(Debug, Deserialize)]
+pub struct DestinyNodeActivationRequirement {
+    #[serde(rename = "gridLevel")]
+    grid_level: i32,
+    #[serde(rename = "materialRequirementHashes")]
+    material_requirement_hashes: Vec<u32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyObjectiveDefinition {
