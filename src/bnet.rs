@@ -31,79 +31,152 @@ use serde::Deserialize;
 /// from the manifest in Bungie's API.
 #[derive(Debug, Deserialize)]
 pub struct DestinyWorldContent {
-    #[serde(rename = "DestinyAchievementDefinition")]
+    // #[serde(rename = "DestinyAchievementDefinition")]
+    // achievement_definition: HashMap<String, DestinyAchievementDefinition>,
     #[serde(rename = "DestinyActivityDefinition")]
+    activity_definition: HashMap<String, DestinyActivityDefinition>,
     #[serde(rename = "DestinyActivityGraphDefinition")]
-    #[serde(rename = "DestinyActivityInteractableDefinition")]
+    activity_graph_definition: HashMap<String, DestinyActivityGraphDefinition>,
+    // #[serde(rename = "DestinyActivityInteractableDefinition")]
+    // activity_interactable_definition: HashMap<String, DestinyActivityGraphDefinition>,
     #[serde(rename = "DestinyActivityModeDefinition")]
+    activity_mode_definition: HashMap<String, DestinyActivityModeDefinition>,
     #[serde(rename = "DestinyActivityModifierDefinition")]
+    activity_modifier_definition: HashMap<String, DestinyActivityModifierDefinition>,
     #[serde(rename = "DestinyActivityTypeDefinition")]
-    #[serde(rename = "DestinyArtDyeChannelDefinition")]
+    activity_type_definition: HashMap<String, DestinyActivityTypeDefinition>,
+    // #[serde(rename = "DestinyArtDyeChannelDefinition")]
+    // art_dye_channel_definition: HashMap<String, DestinyArtDyeChannelDefinition>,
     #[serde(rename = "DestinyArtDyeReferenceDefinition")]
+    art_dye_reference_definition: HashMap<String, DestinyArtDyeReference>,
     #[serde(rename = "DestinyArtifactDefinition")]
-    #[serde(rename = "DestinyBondDefinition")]
+    artifact_definition: HashMap<String, DestinyArtifactDefinition>,
+    // #[serde(rename = "DestinyBondDefinition")]
+    // bond_definition: HashMap<String, DestinyBondDefinition>,
     #[serde(rename = "DestinyBreakerTypeDefinition")]
-    #[serde(rename = "DestinyCharacterCustomizationCategoryDefinition")]
-    #[serde(rename = "DestinyCharacterCustomizationOptionDefinition")]
+    breaker_type_definition: HashMap<String, DestinyBreakerTypeDefinition>,
+    // #[serde(rename = "DestinyCharacterCustomizationCategoryDefinition")]
+    // character_customization_category_definition: HashMap<String, DestinyCharacterCustomizationCategoryDefinition>,
+    // #[serde(rename = "DestinyCharacterCustomizationOptionDefinition")]
+    // character_customization_option_definition: HashMap<String, DestinyCharacterCustomizationOptionDefinition>,
     #[serde(rename = "DestinyChecklistDefinition")]
+    checklist_definition: HashMap<String, DestinyChecklistDefinition>,
     #[serde(rename = "DestinyClassDefinition")]
+    class_definition: HashMap<String, DestinyClassDefinition>,
     #[serde(rename = "DestinyCollectibleDefinition")]
+    collectible_definition: HashMap<String, DestinyCollectibleDefinition>,
     #[serde(rename = "DestinyDamageTypeDefinition")]
+    damage_type_definition: HashMap<String, DestinyDamageTypeDefinition>,
     #[serde(rename = "DestinyDestinationDefinition")]
+    destination_definition: HashMap<String, DestinyDestinationDefinition>,
     #[serde(rename = "DestinyEnergyTypeDefinition")]
-    #[serde(rename = "DestinyEntitlementOfferDefinition")]
+    energy_type_definition: HashMap<String, DestinyEnergyTypeDefinition>,
+    // #[serde(rename = "DestinyEntitlementOfferDefinition")]
+    // entitlement_offer_definition: HashMap<String, DestinyEntitlementOfferDefinition>,
     #[serde(rename = "DestinyEquipmentSlotDefinition")]
+    equipment_slot_definition: HashMap<String, DestinyEquipmentSlotDefinition>,
     #[serde(rename = "DestinyFactionDefinition")]
+    faction_definition: HashMap<String, DestinyFactionDefinition>,
     #[serde(rename = "DestinyGenderDefinition")]
+    gender_definition: HashMap<String, DestinyGenderDefinition>,
     #[serde(rename = "DestinyItemCategoryDefinition")]
+    item_category_definition: HashMap<String, DestinyItemCategoryDefinition>,
     #[serde(rename = "DestinyItemTierTypeDefinition")]
+    item_tier_type_definition: HashMap<String, DestinyItemTierTypeDefinition>,
     #[serde(rename = "DestinyInventoryBucketDefinition")]
+    inventory_bucket_definition: HashMap<String, DestinyInventoryBucketDefinition>,
     #[serde(rename = "DestinyInventoryItemDefinition")]
-    #[serde(rename = "DestinyInventoryItemLiteDefinition")]
+    inventory_item_definition: HashMap<String, DestinyInventoryItemDefinition>,
+    // #[serde(rename = "DestinyInventoryItemLiteDefinition")]
+    // inventory_item_lite_definition: HashMap<String, DestinyInventoryItemLiteDefinition>,
     #[serde(rename = "DestinyLocationDefinition")]
+    location_definition: HashMap<String, DestinyLocationDefinition>,
     #[serde(rename = "DestinyLoreDefinition")]
+    lore_definition: HashMap<String, DestinyLoreDefinition>,
     #[serde(rename = "DestinyMaterialRequirementSetDefinition")]
+    material_requirement_set_definition: HashMap<String, DestinyMaterialRequirementSetDefinition>,
     #[serde(rename = "DestinyMedalTierDefinition")]
+    medal_tier_definition: HashMap<String, DestinyMedalTierDefinition>,
     #[serde(rename = "DestinyMetricDefinition")]
+    metric_definition: HashMap<String, DestinyMetricDefinition>,
     #[serde(rename = "DestinyMilestoneDefinition")]
-    #[serde(rename = "DestinyNodeStepSummaryDefinition")]
+    milestone_definition: HashMap<String, DestinyMilestoneDefinition>,
+    // #[serde(rename = "DestinyNodeStepSummaryDefinition")]
+    // node_step_summary_definition: HashMap<String, DestinyNodeStepSummaryDefinition>,
     #[serde(rename = "DestinyObjectiveDefinition")]
+    objective_definition: HashMap<String, DestinyObjectiveDefinition>,
     #[serde(rename = "DestinyPlaceDefinition")]
-    #[serde(rename = "DestinyPlatformBucketMappingDefinition")]
+    place_definition: HashMap<String, DestinyPlaceDefinition>,
+    // #[serde(rename = "DestinyPlatformBucketMappingDefinition")]
+    // platform_bucket_mapping_definition: HashMap<String, DestinyPlatformBucketMappingDefinition>,
     #[serde(rename = "DestinyPlugSetDefinition")]
+    plug_set_definition: HashMap<String, DestinyPlugSetDefinition>,
     #[serde(rename = "DestinyPowerCapDefinition")]
+    power_cap_definition: HashMap<String, DestinyPowerCapDefinition>,
     #[serde(rename = "DestinyPresentationNodeDefinition")]
+    presentation_node_definition: HashMap<String, DestinyPresentationNodeDefinition>,
     #[serde(rename = "DestinyProgressionDefinition")]
+    progression_definition: HashMap<String, DestinyProgressionDefinition>,
     #[serde(rename = "DestinyProgressionLevelRequirementDefinition")]
+    progression_level_requirement_definition: HashMap<String, DestinyProgressionLevelRequirementDefinition>,
     #[serde(rename = "DestinyProgressionMappingDefinition")]
+    progression_mapping_definition: HashMap<String, DestinyProgressionMappingDefinition>,
     #[serde(rename = "DestinyRaceDefinition")]
+    race_definition: HashMap<String, DestinyRaceDefinition>,
     #[serde(rename = "DestinyRecordDefinition")]
+    record_definition: HashMap<String, DestinyRecordDefinition>,
     #[serde(rename = "DestinyReportReasonCategoryDefinition")]
-    #[serde(rename = "DestinyRewardAdjusterPointerDefinition")]
-    #[serde(rename = "DestinyRewardAdjusterProgressionMapDefinition")]
-    #[serde(rename = "DestinyRewardItemListDefinition")]
-    #[serde(rename = "DestinyRewardMappingDefinition")]
-    #[serde(rename = "DestinyRewardSheetDefinition")]
+    report_reason_category_definition: HashMap<String, DestinyReportReasonCategoryDefinition>,
+    // #[serde(rename = "DestinyRewardAdjusterPointerDefinition")]
+    // reward_adjuster_pointer_definition: HashMap<String, DestinyRewardAdjusterPointerDefinition>,
+    // #[serde(rename = "DestinyRewardAdjusterProgressionMapDefinition")]
+    // reward_adjuster_progression_map_definition: HashMap<String, DestinyRewardAdjusterProgressionMapDefinition>,
+    // #[serde(rename = "DestinyRewardItemListDefinition")]
+    // reward_item_list_definition: HashMap<String, DestinyRewardItemListDefinition>,
+    // #[serde(rename = "DestinyRewardMappingDefinition")]
+    // reward_mapping_definition: HashMap<String, DestinyRewardMappingDefinition>,
+    // #[serde(rename = "DestinyRewardSheetDefinition")]
+    // reward_sheet_definition: HashMap<String, DestinyRewardSheetDefinition>,
     #[serde(rename = "DestinyRewardSourceDefinition")]
-    #[serde(rename = "DestinySackRewardItemListDefinition")]
+    reward_source_definition: HashMap<String, DestinyRewardSourceDefinition>,
+    // #[serde(rename = "DestinySackRewardItemListDefinition")]
+    // sack_reward_item_list_definition: HashMap<String, DestinySackRewardItemListDefinition>,
     #[serde(rename = "DestinySandboxPatternDefinition")]
+    sandbox_pattern_definition: HashMap<String, DestinySandboxPatternDefinition>,
     #[serde(rename = "DestinySandboxPerkDefinition")]
+    sandbox_perk_definition: HashMap<String, DestinySandboxPerkDefinition>,
     #[serde(rename = "DestinySeasonDefinition")]
+    season_definition: HashMap<String, DestinySeasonDefinition>,
     #[serde(rename = "DestinySeasonPassDefinition")]
+    season_pass_definition: HashMap<String, DestinySeasonPassDefinition>,
     #[serde(rename = "DestinySocketCategoryDefinition")]
+    socket_category_definition: HashMap<String, DestinySocketCategoryDefinition>,
     #[serde(rename = "DestinySocketTypeDefinition")]
+    socket_type_definition: HashMap<String, DestinySocketTypeDefinition>,
     #[serde(rename = "DestinyStatDefinition")]
+    stat_definition: HashMap<String, DestinyStatDefinition>,
     #[serde(rename = "DestinyStatGroupDefinition")]
+    stat_group_definition: HashMap<String, DestinyStatGroupDefinition>,
     #[serde(rename = "DestinyTalentGridDefinition")]
+    talent_grid_definition: HashMap<String, DestinyTalentGridDefinition>,
     #[serde(rename = "DestinyTraitDefinition")]
+    trait_definition: HashMap<String, DestinyTraitDefinition>,
     #[serde(rename = "DestinyTraitCategoryDefinition")]
-    #[serde(rename = "DestinyUnlockCountMappingDefinition")]
+    trait_category_definition: HashMap<String, DestinyTraitCategoryDefinition>,
+    // #[serde(rename = "DestinyUnlockCountMappingDefinition")]
+    // unlock_count_mapping_definition: HashMap<String, DestinyUnlockCountMappingDefinition>,
     #[serde(rename = "DestinyUnlockDefinition")]
-    #[serde(rename = "DestinyUnlockEventDefinition")]
-    #[serde(rename = "DestinyUnlockExpressionMappingDefinition")]
+    unlock_definition: HashMap<String, DestinyUnlockDefinition>,
+    // #[serde(rename = "DestinyUnlockEventDefinition")]
+    // unlock_event_definition: HashMap<String, DestinyUnlockEventDefinition>,
+    // #[serde(rename = "DestinyUnlockExpressionMappingDefinition")]
+    // unlock_expression_mapping_definition: HashMap<String, DestinyUnlockExpressionMappingDefinition>,
     #[serde(rename = "DestinyUnlockValueDefinition")]
-    #[serde(rename = "DestinyVendorGroupDefinition")]
+    unlock_value_definition: HashMap<String, DestinyUnlockValueDefinition>,
     #[serde(rename = "DestinyVendorDefinition")]
+    vendor_definition: HashMap<String, DestinyVendorDefinition>,
+    #[serde(rename = "DestinyVendorGroupDefinition")]
+    vendor_group_definition: HashMap<String, DestinyVendorGroupDefinition>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityDefinition
