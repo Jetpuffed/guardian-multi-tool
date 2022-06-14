@@ -1200,6 +1200,17 @@ pub struct DestinyPowerCapDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationChildBlock
+#[derive(Debug, Deserialize)]
+pub struct DestinyPresentationChildBlock {
+    #[serde(rename = "presentationNodeType")]
+    presentation_node_type: i32,
+    #[serde(rename = "parentPresentationNodeHashes")]
+    parent_presentation_node_hashes: Vec<u32>,
+    #[serde(rename = "displayStyle")]
+    display_style: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyPresentationNodeDefinition {
