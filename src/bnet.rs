@@ -179,6 +179,13 @@ pub struct DestinyWorldContent {
     vendor_group_definition: HashMap<String, DestinyVendorGroupDefinition>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Dates.DateRange
+#[derive(Debug, Deserialize)]
+pub struct DateRange {
+    start: DateTime<Utc>,
+    end: DateTime<Utc>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyActivityDefinition {
