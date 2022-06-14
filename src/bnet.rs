@@ -1713,6 +1713,17 @@ pub struct DestinyMilestoneActivityVariantDefinition {
     order: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneChallengeActivityDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyMilestoneChallengeActivityDefinition {
+    #[serde(rename = "activityHash")]
+    activity_hash: u32,
+    challenges: Vec<DestinyMilestoneChallengeDefinition>,
+    #[serde(rename = "activityGraphNodes")]
+    activity_graph_nodes: Vec<DestinyMilestoneChallengeActivityGraphNodeEntry>,
+    phases: Vec<DestinyMilestoneChallengeActivityPhase>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyMilestoneDefinition {
