@@ -953,6 +953,37 @@ pub struct DestinyItemInventoryBlockDefinition {
     recipe_item_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.DestinyItemQuantity
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemQuantity {
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+    #[serde(rename = "itemInstanceId")]
+    item_instance_id: i64,
+    quantity: i32,
+    #[serde(rename = "hasConditionalVisibility")]
+    has_conditional_visibility: bool,
+}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSetBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemSetBlockDefinition {
+    #[serde(rename = "itemList")]
+    item_list: Vec<DestinyItemSetBlockEntryDefinition>,
+    #[serde(rename = "requireOrderedSetItemAdd")]
+    require_ordered_set_item_add: bool,
+    #[serde(rename = "setIsFeatured")]
+    set_is_featured: bool,
+    #[serde(rename = "setType")]
+    set_type: String,
+    #[serde(rename = "questLineName")]
+    quest_line_name: String,
+    #[serde(rename = "questLineDescription")]
+    quest_line_description: String,
+    #[serde(rename = "questStepSummary")]
+    quest_step_summary: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemTierTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemTierTypeDefinition {
@@ -999,18 +1030,6 @@ pub struct DestinyItemTranslationBlockDefinition {
     arrangements: Vec<DestinyGearArtArrangementReference>,
     #[serde(rename = "hasGeometry")]
     has_geometry: bool,
-}
-
-/// https://bungie-net.github.io/#/components/schemas/Destiny.DestinyItemQuantity
-#[derive(Debug, Deserialize)]
-pub struct DestinyItemQuantity {
-    #[serde(rename = "itemHash")]
-    item_hash: u32,
-    #[serde(rename = "itemInstanceId")]
-    item_instance_id: i64,
-    quantity: i32,
-    #[serde(rename = "hasConditionalVisibility")]
-    has_conditional_visibility: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryBucketDefinition
