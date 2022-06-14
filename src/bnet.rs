@@ -1724,6 +1724,13 @@ pub struct DestinyMilestoneChallengeActivityDefinition {
     phases: Vec<DestinyMilestoneChallengeActivityPhase>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneChallengeDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyMilestoneChallengeDefinition {
+    #[serde(rename = "challengeObjectiveHash")]
+    challenge_objective_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyMilestoneDefinition {
