@@ -2188,6 +2188,26 @@ pub struct DestinyProgressionRewardDefinition {
     apply_throttles: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionRewardItemQuantity
+#[derive(Debug, Deserialize)]
+pub struct DestinyProgressionRewardItemQuantity {
+    #[serde(rename = "rewardedAtProgressionLevel")]
+    rewarded_at_progression_level: i32,
+    #[serde(rename = "acquisitionBehavior")]
+    acquisition_behavior: i32,
+    #[serde(rename = "uiDisplayStyle")]
+    ui_display_style: String,
+    #[serde(rename = "claimUnlockDisplayStrings")]
+    claim_unlock_display_strings: Vec<String>,
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+    #[serde(rename = "itemInstanceId")]
+    item_instance_id: i64,
+    quantity: i32,
+    #[serde(rename = "hasConditionalVisibility")]
+    has_conditional_visibility: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionStepDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyProgressionStepDefinition {
