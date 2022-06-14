@@ -1972,6 +1972,13 @@ pub struct DestinyPlugItemCraftingRequirements {
     material_requirement_hashes: Vec<u32>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyPlugItemCraftingUnlockRequirement
+#[derive(Debug, Deserialize)]
+pub struct DestinyPlugItemCraftingUnlockRequirement {
+    #[serde(rename = "failureDescription")]
+    failure_description: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyPlugRuleDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyPlugRuleDefinition {
