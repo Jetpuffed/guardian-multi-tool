@@ -1187,6 +1187,18 @@ pub struct DestinyInventoryItemDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryItemStatDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyInventoryItemStatDefinition {
+    #[serde(rename = "statHash")]
+    stat_hash: u32,
+    value: i32,
+    minimum: i32,
+    maximum: i32,
+    #[serde(rename = "displayMaximum")]
+    display_maximum: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyLinkedGraphDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyLinkedGraphDefinition {
