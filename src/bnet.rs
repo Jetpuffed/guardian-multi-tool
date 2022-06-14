@@ -1212,6 +1212,15 @@ pub struct DestinyItemSocketBlockDefinition {
     socket_categories: Vec<DestinyItemSocketCategoryDefinition>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSocketCategoryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemSocketCategoryDefinition {
+    #[serde(rename = "socketCategoryHash")]
+    socket_category_hash: u32,
+    #[serde(rename = "socketIndexes")]
+    socket_indexes: Vec<i32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSocketEntryDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemSocketEntryDefinition {
