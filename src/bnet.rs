@@ -2873,6 +2873,15 @@ pub struct DestinyUnlockValueDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorAcceptedItemDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorAcceptedItemDefinition {
+    #[serde(rename = "acceptedInventoryBucketHash")]
+    accepted_inventory_bucket_hash: u32,
+    #[serde(rename = "destinationInventoryBucketHash")]
+    destination_inventory_bucket_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorActionDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyVendorActionDefinition {
