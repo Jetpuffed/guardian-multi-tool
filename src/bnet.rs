@@ -1641,6 +1641,20 @@ pub struct DestinyLoreDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyMaterialRequirement
+#[derive(Debug, Deserialize)]
+pub struct DestinyMaterialRequirement {
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+    #[serde(rename = "deleteOnAction")]
+    delete_on_action: bool,
+    count: i32,
+    #[serde(rename = "countIsConstant")]
+    count_is_constant: bool,
+    #[serde(rename = "omitFromRequirements")]
+    omit_from_requirements: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyMaterialRequirementSetDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyMaterialRequirementSetDefinition {
