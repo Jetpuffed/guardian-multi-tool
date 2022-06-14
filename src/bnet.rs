@@ -1788,6 +1788,20 @@ pub struct DestinyMilestoneQuestRewardItem {
     has_conditional_visibility: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneRewardCategoryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyMilestoneRewardCategoryDefinition {
+    #[serde(rename = "categoryHash")]
+    category_hash: u32,
+    #[serde(rename = "categoryIdentifier")]
+    category_identifier: String,
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "rewardEntries")]
+    reward_entries: HashMap<u32, DestinyMilestoneRewardEntryDefinition>,
+    order: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyObjectiveDefinition {
