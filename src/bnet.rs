@@ -996,6 +996,17 @@ pub struct DestinyItemGearsetBlockDefinition {
     item_list: Vec<u32>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemIntrinsicSocketEntryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemIntrinsicSocketEntryDefinition {
+    #[serde(rename = "plugItemHash")]
+    plug_item_hash: u32,
+    #[serde(rename = "socketTypeHash")]
+    socket_type_hash: u32,
+    #[serde(rename = "defaultVisible")]
+    default_visible: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemInventoryBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemInventoryBlockDefinition {
