@@ -1135,6 +1135,13 @@ pub struct DestinyItemTranslationBlockDefinition {
     has_geometry: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemVersionDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemVersionDefinition {
+    #[serde(rename = "powerCapHash")]
+    power_cap_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryBucketDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyInventoryBucketDefinition {
