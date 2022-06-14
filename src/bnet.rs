@@ -675,6 +675,23 @@ pub struct DestinyDerivedItemCategoryDefinition {
     items: Vec<DestinyDerivedItemDefinition>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyDerivedItemDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyDerivedItemDefinition {
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+    #[serde(rename = "itemName")]
+    item_name: String,
+    #[serde(rename = "itemDetail")]
+    item_detail: String,
+    #[serde(rename = "itemDescription")]
+    item_description: String,
+    #[serde(rename = "iconPath")]
+    icon_path: String,
+    #[serde(rename = "vendorItemIndex")]
+    vendor_item_index: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDestinationBubbleSettingDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyDestinationBubbleSettingDefinition {
