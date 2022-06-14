@@ -1734,6 +1734,22 @@ pub struct DestinyMilestoneDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneQuestDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyMilestoneQuestDefinition {
+    #[serde(rename = "questItemHash")]
+    quest_item_hash: u32,
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "overrideImage")]
+    override_image: String,
+    #[serde(rename = "questRewards")]
+    quest_rewards: DestinyMilestoneQuestRewardsDefinition,
+    activities: HashMap<u32, DestinyMilestoneActivityDefinition>,
+    #[serde(rename = "destinationHash")]
+    destination_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyObjectiveDefinition {
