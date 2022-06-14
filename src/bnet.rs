@@ -898,6 +898,21 @@ pub struct DestinyItemCategoryDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemCraftingBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemCraftingBlockDefinition {
+    #[serde(rename = "outputItemHash")]
+    output_item_hash: u32,
+    #[serde(rename = "requiredSocketTypeHashes")]
+    required_socket_type_hashes: Vec<u32>,
+    #[serde(rename = "failedRequirementStrings")]
+    failed_requirement_strings: Vec<String>,
+    #[serde(rename = "baseMaterialRequirements")]
+    base_material_requirements: u32,
+    #[serde(rename = "bonusPlugs")]
+    bonus_plugs: Vec<DestinyItemCraftingBlockBonusPlugDefinition>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemTierTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemTierTypeDefinition {
