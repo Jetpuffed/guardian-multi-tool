@@ -2555,6 +2555,15 @@ pub struct DestinySocketTypeDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinySocketTypeScalarMaterialRequirementEntry
+#[derive(Debug, Deserialize)]
+pub struct DestinySocketTypeScalarMaterialRequirementEntry {
+    #[serde(rename = "currencyItemHash")]
+    currency_item_hash: u32,
+    #[serde(rename = "scalarValue")]
+    scalar_value: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyStatDefinition {
