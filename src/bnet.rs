@@ -2639,6 +2639,46 @@ pub struct DestinyTalentGridDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentNodeDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyTalentNodeDefinition {
+    #[serde(rename = "nodeIndex")]
+    node_index: i32,
+    #[serde(rename = "nodeHash")]
+    node_hash: u32,
+    row: i32,
+    column: i32,
+    #[serde(rename = "prerequisiteNodeIndexes")]
+    prerequisite_node_indexes: Vec<i32>,
+    #[serde(rename = "binaryPairNodeIndex")]
+    binary_pair_node_index: i32,
+    #[serde(rename = "autoUnlocks")]
+    auto_unlocks: bool,
+    #[serde(rename = "lastStepRepeats")]
+    last_step_repeats: bool,
+    #[serde(rename = "isRandom")]
+    is_random: bool,
+    #[serde(rename = "randomActivationRequirement")]
+    random_activation_requirement: DestinyNodeActivationRequirement,
+    #[serde(rename = "isRandomRepurchasable")]
+    is_random_repurchasable: bool,
+    steps: Vec<DestinyNodeStepDefinition>,
+    #[serde(rename = "exclusiveWithNodeHashes")]
+    exclusive_with_node_hashes: Vec<u32>,
+    #[serde(rename = "randomStartProgressionBarAtProgression")]
+    random_start_progression_bar_at_progression: i32,
+    #[serde(rename = "layoutIdentifier")]
+    layout_identifier: String,
+    #[serde(rename = "groupHash")]
+    group_hash: u32,
+    #[serde(rename = "loreHash")]
+    lore_hash: u32,
+    #[serde(rename = "nodeStyleIdentifier")]
+    node_style_identifier: String,
+    #[serde(rename = "ignoreForCompletion")]
+    ignore_for_completion: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentNodeStepGroups
 #[derive(Debug, Deserialize)]
 pub struct DestinyTalentNodeStepGroups {
