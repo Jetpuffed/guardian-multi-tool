@@ -1224,6 +1224,13 @@ pub struct DestinyItemSocketEntryDefinition {
     default_visible: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSocketEntryPlugItemDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemSocketEntryPlugItemDefinition {
+    #[serde(rename = "plugItemHash")]
+    plug_item_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSourceBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemSourceBlockDefinition {
