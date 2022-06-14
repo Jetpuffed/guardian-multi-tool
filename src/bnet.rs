@@ -3266,6 +3266,13 @@ pub struct DyeReference {
     dye_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Config.GearAssetDataBaseDefinition
+#[derive(Debug, Deserialize)]
+pub struct GearAssetDataBaseDefinition {
+    version: i32,
+    path: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Links.HyperlinkReference
 #[derive(Debug, Deserialize)]
 pub struct HyperlinkReference {
