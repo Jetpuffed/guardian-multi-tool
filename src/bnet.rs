@@ -2661,3 +2661,12 @@ pub struct InterpolationPointFloat {
     value: f32,
     weight: f32,
 }
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.SchemaRecordStateBlock
+#[derive(Debug, Deserialize)]
+pub struct SchemaRecordStateBlock {
+    #[serde(rename = "featuredPriority")]
+    featured_priority: i32,
+    #[serde(rename = "obscuredString")]
+    obscured_string: String,
+}
