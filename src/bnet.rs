@@ -667,6 +667,14 @@ pub struct DestinyDamageTypeDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyDerivedItemCategoryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyDerivedItemCategoryDefinition {
+    #[serde(rename = "categoryDescription")]
+    category_description: String,
+    items: Vec<DestinyDerivedItemDefinition>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDestinationBubbleSettingDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyDestinationBubbleSettingDefinition {
