@@ -1189,6 +1189,18 @@ pub struct DestinyItemSetBlockEntryDefinition {
     item_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSocketBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemSocketBlockDefinition {
+    detail: String,
+    #[serde(rename = "socketEntries")]
+    socket_entries: Vec<DestinyItemSocketEntryDefinition>,
+    #[serde(rename = "intrinsicSockets")]
+    intrinsic_sockets: Vec<DestinyItemIntrinsicSocketEntryDefinition>,
+    #[serde(rename = "socketCategories")]
+    socket_categories: Vec<DestinyItemSocketCategoryDefinition>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSourceBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemSourceBlockDefinition {
