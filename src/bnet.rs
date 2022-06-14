@@ -2040,6 +2040,15 @@ pub struct DestinyPresentationNodeChildrenBlock {
     craftables: Vec<DestinyPresentationNodeCraftableChildEntry>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeChildEntry
+#[derive(Debug, Deserialize)]
+pub struct DestinyPresentationNodeChildEntry {
+    #[serde(rename = "presentationNodeHash")]
+    presentation_node_hash: u32,
+    #[serde(rename = "nodeDisplayPriority")]
+    node_display_priority: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyPresentationNodeDefinition {
