@@ -984,6 +984,15 @@ pub struct DestinyItemSetBlockDefinition {
     quest_step_summary: String,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSetBlockEntryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemSetBlockEntryDefinition {
+    #[serde(rename = "trackingValue")]
+    tracking_value: i32,
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemTierTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemTierTypeDefinition {
