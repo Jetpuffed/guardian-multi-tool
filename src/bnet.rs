@@ -39,6 +39,25 @@ pub async fn get_destiny_manifest(c: Client) -> Result<GetDestinyManifestRespons
     }
 }
 
+/// https://bungie-net.github.io/#Destiny2.GetDestinyManifest
+#[derive(Debug, Deserialize)]
+pub struct GetDestinyManifestResponse {
+    #[serde(rename = "Response")]
+    response: DestinyManifest,
+    #[serde(rename = "ErrorCode")]
+    error_code: i32,
+    #[serde(rename = "ThrottleSeconds")]
+    throttle_seconds: i32,
+    #[serde(rename = "ErrorStatus")]
+    error_status: String,
+    #[serde(rename = "Message")]
+    message: String,
+    #[serde(rename = "MessageData")]
+    message_data: HashMap<String, String>,
+    #[serde(rename = "DetailedErrorTrace")]
+    detailed_error_trace: String,
+}
+
 /// Where all the deserialized game content lives.
 /// 
 /// Returned by any function that deserializes the world content paths obtained
