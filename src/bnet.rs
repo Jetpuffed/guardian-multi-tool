@@ -1084,6 +1084,24 @@ pub struct DestinyItemSourceBlockDefinition {
     vendor_sources: Vec<DestinyItemVendorSourceReference>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sources.DestinyItemSourceDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemSourceDefinition {
+    level: i32,
+    #[serde(rename = "minQuality")]
+    min_quality: i32,
+    #[serde(rename = "maxQuality")]
+    max_quality: i32,
+    #[serde(rename = "minLevelRequired")]
+    min_level_required: i32,
+    #[serde(rename = "maxLevelRequired")]
+    max_level_required: i32,
+    #[serde(rename = "computedStats")]
+    computed_stats: HashMap<u32, DestinyInventoryItemStatDefinition>,
+    #[serde(rename = "sourceHashes")]
+    source_hashes: Vec<u32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemStatBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemStatBlockDefinition {
