@@ -993,6 +993,20 @@ pub struct DestinyItemSetBlockEntryDefinition {
     item_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemStatBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemStatBlockDefinition {
+    #[serde(rename = "disablePrimaryStatDisplay")]
+    disable_primary_stat_display: bool,
+    #[serde(rename = "statGroupHash")]
+    stat_group_hash: u32,
+    stats: HashMap<u32, DestinyInventoryItemStatDefinition>,
+    #[serde(rename = "hasDisplayableStats")]
+    has_displayable_stats: bool,
+    #[serde(rename = "primaryBaseStatHash")]
+    primary_base_stat_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemTierTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemTierTypeDefinition {
