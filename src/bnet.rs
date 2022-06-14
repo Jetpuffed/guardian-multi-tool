@@ -3081,6 +3081,58 @@ pub struct DestinyVendorInventoryFlyoutDefinition {
     equipment_slot_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorItemDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorItemDefinition {
+    #[serde(rename = "vendorItemIndex")]
+    vendor_item_index: i32,
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+    quantity: i32,
+    #[serde(rename = "failureIndexes")]
+    failure_indexes: Vec<i32>,
+    currencies: Vec<DestinyVendorItemQuantity>,
+    #[serde(rename = "refundPolicy")]
+    refund_policy: i32,
+    #[serde(rename = "refundTimeLimit")]
+    refund_time_limit: i32,
+    #[serde(rename = "creationLevels")]
+    creation_levels: Vec<DestinyItemCreationEntryLevelDefinition>,
+    #[serde(rename = "displayCategoryIndex")]
+    display_category_index: i32,
+    #[serde(rename = "categoryIndex")]
+    category_index: i32,
+    #[serde(rename = "originalCategoryIndex")]
+    original_category_index: i32,
+    #[serde(rename = "minimumLevel")]
+    minimum_level: i32,
+    #[serde(rename = "maximumLevel")]
+    maximum_level: i32,
+    action: DestinyVendorSaleItemActionBlockDefinition,
+    #[serde(rename = "displayCategory")]
+    display_category: String,
+    #[serde(rename = "inventoryBucketHash")]
+    inventory_bucket_hash: u32,
+    #[serde(rename = "visibilityScope")]
+    visibility_scope: i32,
+    #[serde(rename = "purchasableScope")]
+    purchasable_scope: i32,
+    exclusivity: i32,
+    #[serde(rename = "isOffer")]
+    is_offer: bool,
+    #[serde(rename = "isCrm")]
+    is_crm: bool,
+    #[serde(rename = "sortValue")]
+    sort_value: i32,
+    #[serde(rename = "expirationTooltip")]
+    expiration_tooltip: String,
+    #[serde(rename = "redirectToSaleIndexes")]
+    redirect_to_sale_indexes: Vec<i32>,
+    #[serde(rename = "socketOverrides")]
+    socket_overrides: Vec<DestinyVendorItemSocketOverride>,
+    unpurchasable: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.DyeReference
 #[derive(Debug, Deserialize)]
 pub struct DyeReference {
