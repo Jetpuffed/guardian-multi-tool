@@ -1282,6 +1282,17 @@ pub struct DestinyItemSocketEntryPlugItemDefinition {
     plug_item_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSocketEntryPlugItemRandomizedDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemSocketEntryPlugItemRandomizedDefinition {
+    #[serde(rename = "craftingRequirements")]
+    crafting_requirements: DestinyPlugItemCraftingRequirements,
+    #[serde(rename = "currentlyCanRoll")]
+    currently_can_roll: bool,
+    #[serde(rename = "plugItemHash")]
+    plug_item_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSourceBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemSourceBlockDefinition {
