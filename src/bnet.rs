@@ -1924,6 +1924,13 @@ pub struct DestinyObjectivePerkEntryDefinition {
     style: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveStatEntryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyObjectiveStatEntryDefinition {
+    stat: DestinyItemInvestmentStatDefinition,
+    style: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyParentItemOverride
 #[derive(Debug, Deserialize)]
 pub struct DestinyParentItemOverride {
