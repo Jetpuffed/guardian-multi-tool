@@ -2315,6 +2315,15 @@ pub struct DestinyRecordIntervalBlock {
     original_objective_array_insertion_index: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordIntervalObjective
+#[derive(Debug, Deserialize)]
+pub struct DestinyRecordIntervalObjective {
+    #[serde(rename = "intervalObjectiveHash")]
+    interval_objective_hash: u32,
+    #[serde(rename = "intervalScoreValue")]
+    interval_score_value: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordTitleBlock
 #[derive(Debug, Deserialize)]
 pub struct DestinyRecordTitleBlock {
