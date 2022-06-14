@@ -531,6 +531,14 @@ pub struct DestinyBreakerTypeDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyBubbleDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyBubbleDefinition {
+    hash: u32,
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Checklists.DestinyChecklistDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyChecklistDefinition {
