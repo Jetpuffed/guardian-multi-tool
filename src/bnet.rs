@@ -650,6 +650,13 @@ pub struct DestinyDamageTypeDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDestinationBubbleSettingDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyDestinationBubbleSettingDefinition {
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDestinationDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyDestinationDefinition {
@@ -662,7 +669,7 @@ pub struct DestinyDestinationDefinition {
     #[serde(rename = "activityGraphEntries")]
     activity_graph_entries: Vec<DestinyActivityGraphListEntryDefinition>,
     #[serde(rename = "bubbleSettings")]
-    bubble_settings: Vec<DestinyDestinationBubbleSettingsDefinition>,
+    bubble_settings: Vec<DestinyDestinationBubbleSettingDefinition>,
     bubbles: Vec<DestinyBubbleDefinition>,
     hash: u32,
     index: i32,
