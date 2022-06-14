@@ -1135,6 +1135,15 @@ pub struct DestinyItemTranslationBlockDefinition {
     has_geometry: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemValueBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemValueBlockDefinition {
+    #[serde(rename = "itemValue")]
+    item_value: Vec<DestinyItemQuantity>,
+    #[serde(rename = "valueDescription")]
+    value_description: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemVersionDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemVersionDefinition {
