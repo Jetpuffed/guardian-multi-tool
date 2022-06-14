@@ -1961,6 +1961,17 @@ pub struct DestinyPlaceDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyPlugItemCraftingRequirements
+#[derive(Debug, Deserialize)]
+pub struct DestinyPlugItemCraftingRequirements {
+    #[serde(rename = "unlockRequirements")]
+    unlock_requirements: Vec<DestinyPlugItemCraftingUnlockRequirement>,
+    #[serde(rename = "requiredLevel")]
+    required_level: i32,
+    #[serde(rename = "materialRequirementHashes")]
+    material_requirement_hashes: Vec<u32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyPlugRuleDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyPlugRuleDefinition {
