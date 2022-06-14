@@ -512,6 +512,13 @@ pub struct DestinyArtifactTierDefinition {
     minimum_unlock_points_used_requirement: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Artifacts.DestinyArtifactTierItemDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyArtifactTierItemDefinition {
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.BreakerTypes.DestinyBreakerTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyBreakerTypeDefinition {
