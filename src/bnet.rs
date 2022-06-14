@@ -748,6 +748,27 @@ pub struct DestinyDestinationDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDisplayCategoryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyDisplayCategoryDefinition {
+    index: i32,
+    identifier: String,
+    #[serde(rename = "displayCategoryHash")]
+    display_category_hash: u32,
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "displayInBanner")]
+    display_in_banner: bool,
+    #[serde(rename = "progressionHash")]
+    progression_hash: u32,
+    #[serde(rename = "sortOrder")]
+    sort_order: u32,
+    #[serde(rename = "displayStyleHash")]
+    display_style_hash: u32,
+    #[serde(rename = "displayStyleIdentifier")]
+    display_style_identifier: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Common.DestinyDisplayPropertiesDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyDisplayPropertiesDefinition {
