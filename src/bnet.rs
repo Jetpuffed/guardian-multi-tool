@@ -638,6 +638,12 @@ pub struct DestinyArtDyeReference {
     art_dye_channel_hash: Option<u32>,
 }
 
+impl DestinyArtDyeReference {
+    pub fn art_dye_channel_hash(&self) -> Option<u32> {
+        self.art_dye_channel_hash
+    }
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Artifacts.DestinyArtifactDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyArtifactDefinition {
