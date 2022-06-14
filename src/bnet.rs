@@ -3280,6 +3280,13 @@ pub struct HyperlinkReference {
     url: String,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Config.ImagePyramidEntry
+#[derive(Debug, Deserialize)]
+pub struct ImagePyramidEntry {
+    name: String,
+    factor: f32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Interpolation.InterpolationPoint
 #[derive(Debug, Deserialize)]
 pub struct InterpolationPoint {
