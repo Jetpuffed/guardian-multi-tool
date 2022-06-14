@@ -55,7 +55,7 @@ pub struct GetDestinyManifestResponse {
     #[serde(rename = "MessageData")]
     message_data: HashMap<String, String>,
     #[serde(rename = "DetailedErrorTrace")]
-    detailed_error_trace: String,
+    detailed_error_trace: Option<String>,
 }
 
 impl GetDestinyManifestResponse {
@@ -83,7 +83,7 @@ impl GetDestinyManifestResponse {
         &self.message_data
     }
 
-    pub fn detailed_error_trace(&self) -> &str {
+    pub fn detailed_error_trace(&self) -> Option<&String> {
         self.detailed_error_trace.as_ref()
     }
 }
