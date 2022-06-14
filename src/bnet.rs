@@ -1400,6 +1400,16 @@ pub struct DestinyProgressionMappingDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionRewardDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyProgressionRewardDefinition {
+    #[serde(rename = "progressionMappingHash")]
+    progression_mapping_hash: u32,
+    amount: i32,
+    #[serde(rename = "applyThrottles")]
+    apply_throttles: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyRaceDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyRaceDefinition {
