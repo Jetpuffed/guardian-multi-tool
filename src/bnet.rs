@@ -858,6 +858,15 @@ pub struct DestinyItemTierTypeDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemTierTypeInfusionBlock
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemTierTypeInfusionBlock {
+    #[serde(rename = "baseQualityTransferRatio")]
+    base_quality_transfer_ratio: f32,
+    #[serde(rename = "minimumQualityIncrement")]
+    minimum_quality_increment: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemTranslationBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemTranslationBlockDefinition {
