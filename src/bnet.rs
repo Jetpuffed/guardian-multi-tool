@@ -987,6 +987,15 @@ pub struct DestinyItemCraftingBlockDefinition {
     bonus_plugs: Vec<DestinyItemCraftingBlockBonusPlugDefinition>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemGearsetBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemGearsetBlockDefinition {
+    #[serde(rename = "trackingValueMax")]
+    tracking_value_max: i32,
+    #[serde(rename = "itemList")]
+    item_list: Vec<u32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemInventoryBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemInventoryBlockDefinition {
