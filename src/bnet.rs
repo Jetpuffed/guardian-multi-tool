@@ -3133,6 +3133,18 @@ pub struct DestinyVendorItemDefinition {
     unpurchasable: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorItemQuantity
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorItemQuantity {
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+    #[serde(rename = "itemInstanceId")]
+    item_instance_id: i64,
+    quantity: i32,
+    #[serde(rename = "hasConditionalVisibility")]
+    has_conditional_visibility: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.DyeReference
 #[derive(Debug, Deserialize)]
 pub struct DyeReference {
