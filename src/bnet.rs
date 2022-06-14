@@ -2608,6 +2608,15 @@ pub struct DestinyStatGroupDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatOverrideDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyStatOverrideDefinition {
+    #[serde(rename = "statHash")]
+    stat_hash: u32,
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentGridDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyTalentGridDefinition {
