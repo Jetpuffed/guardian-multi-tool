@@ -1606,3 +1606,12 @@ pub struct DestinyVendorGroupDefinition {
     index: i32,
     redacted: bool,
 }
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.DyeReference
+#[derive(Debug, Deserialize)]
+pub struct DyeReference {
+    #[serde(rename = "channelHash")]
+    channel_hash: u32,
+    #[serde(rename = "dyeHash")]
+    dye_hash: u32,
+}
