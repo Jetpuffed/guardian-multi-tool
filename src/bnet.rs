@@ -30,7 +30,7 @@ use serde::Deserialize;
 pub const BASE_URL: &str = "https://www.bungie.net";
 
 /// https://bungie-net.github.io/#Destiny2.GetDestinyManifest
-pub async fn get_destiny_manifest(c: Client) -> Result<GetDestinyManifestResponse, Box<dyn Error>> {
+pub async fn get_destiny_manifest(c: &Client) -> Result<GetDestinyManifestResponse, Box<dyn Error>> {
     const PATH: &str = "/platform/destiny2/manifest";
 
     match c.get([BASE_URL, PATH].join("")).send().await {
