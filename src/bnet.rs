@@ -905,6 +905,15 @@ pub struct DestinyIconSequenceDefinition {
     frames: Vec<String>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinyInsertPlugActionDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyInsertPlugActionDefinition {
+    #[serde(rename = "actionExecuteSeconds")]
+    action_execute_seconds: i32,
+    #[serde(rename = "actionType")]
+    action_type: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryBucketDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyInventoryBucketDefinition {
