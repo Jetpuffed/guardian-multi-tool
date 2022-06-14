@@ -1586,6 +1586,13 @@ pub struct DestinyPlaceDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyPlugRuleDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyPlugRuleDefinition {
+    #[serde(rename = "failureMessage")]
+    failure_message: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinyPlugSetDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyPlugSetDefinition {
