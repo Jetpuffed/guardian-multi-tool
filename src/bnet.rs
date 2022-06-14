@@ -2282,6 +2282,19 @@ pub struct DestinyRecordDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordTitleBlock
+#[derive(Debug, Deserialize)]
+pub struct DestinyRecordTitleBlock {
+    #[serde(rename = "hasTitle")]
+    has_title: bool,
+    #[serde(rename = "titlesByGender")]
+    titles_by_gender: HashMap<i32, String>,
+    #[serde(rename = "titlesByGenderHash")]
+    titles_by_gender_hash: HashMap<u32, String>,
+    #[serde(rename = "gildingTrackingRecordHash")]
+    gilding_tracking_record_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Reporting.DestinyReportReasonCategoryDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyReportReasonCategoryDefinition {
