@@ -694,6 +694,15 @@ pub struct DestinyFactionDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyGearArtArrangementReference
+#[derive(Debug, Deserialize)]
+pub struct DestinyGearArtArrangementReference {
+    #[serde(rename = "classHash")]
+    class_hash: u32,
+    #[serde(rename = "artArrangementHash")]
+    art_arrangement_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyGenderDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyGenderDefinition {
