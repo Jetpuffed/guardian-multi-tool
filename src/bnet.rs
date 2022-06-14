@@ -3171,6 +3171,15 @@ pub struct DestinyVendorItemSocketOverride {
     socket_type_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Vendors.DestinyVendorLocationDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorLocationDefinition {
+    #[serde(rename = "destinationHash")]
+    destination_hash: u32,
+    #[serde(rename = "backgroundImagePath")]
+    background_image_path: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorSaleItemActionBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyVendorSaleItemActionBlockDefinition {
