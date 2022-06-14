@@ -2901,6 +2901,18 @@ pub struct DestinyVendorCategoryEntryDefinition {
     reset_offset_minutes_override: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorCategoryOverlayDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorCategoryOverlayDefinition {
+    #[serde(rename = "choiceDescription")]
+    choice_description: String,
+    description: String,
+    icon: String,
+    title: String,
+    #[serde(rename = "currencyItemHash")]
+    currency_item_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyVendorDefinition {
