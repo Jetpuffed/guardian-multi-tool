@@ -3055,6 +3055,22 @@ pub struct DestinyVendorInteractionSackEntryDefinition {
     sack_type: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorInventoryFlyoutDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorInventoryFlyoutDefinition {
+    #[serde(rename = "lockedDescription")]
+    locked_description: String,
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    buckets: Vec<DestinyVendorInventoryFlyoutBucketDefinition>,
+    #[serde(rename = "flyoutId")]
+    flyout_id: u32,
+    #[serde(rename = "suppressNewness")]
+    suppress_newness: bool,
+    #[serde(rename = "equipmentSlotHash")]
+    equipment_slot_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.DyeReference
 #[derive(Debug, Deserialize)]
 pub struct DyeReference {
