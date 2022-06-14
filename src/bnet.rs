@@ -3048,6 +3048,13 @@ pub struct DestinyVendorInteractionReplyDefinition {
     reply_type: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorInteractionSackEntryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorInteractionSackEntryDefinition {
+    #[serde(rename = "sackType")]
+    sack_type: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.DyeReference
 #[derive(Debug, Deserialize)]
 pub struct DyeReference {
