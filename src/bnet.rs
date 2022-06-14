@@ -2295,6 +2295,15 @@ pub struct DestinyRecordCompletionBlock {
     toast_style: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordExpirationBlock
+#[derive(Debug, Deserialize)]
+pub struct DestinyRecordExpirationBlock {
+    #[serde(rename = "hasExpiration")]
+    has_expiration: bool,
+    description: String,
+    icon: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordTitleBlock
 #[derive(Debug, Deserialize)]
 pub struct DestinyRecordTitleBlock {
