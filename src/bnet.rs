@@ -2324,6 +2324,13 @@ pub struct DestinyRecordIntervalObjective {
     interval_score_value: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordIntervalRewards
+#[derive(Debug, Deserialize)]
+pub struct DestinyRecordIntervalRewards {
+    #[serde(rename = "intervalRewardItems")]
+    interval_reward_items: Vec<DestinyItemQuantity>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordTitleBlock
 #[derive(Debug, Deserialize)]
 pub struct DestinyRecordTitleBlock {
