@@ -1817,6 +1817,13 @@ pub struct DestinyMilestoneRewardEntryDefinition {
     order: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneVendorDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyMilestoneVendorDefinition {
+    #[serde(rename = "vendorHash")]
+    vendor_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyObjectiveDefinition {
