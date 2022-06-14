@@ -2580,6 +2580,19 @@ pub struct DestinyStatDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatDisplayDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyStatDisplayDefinition {
+    #[serde(rename = "statHash")]
+    stat_hash: u32,
+    #[serde(rename = "maximumValue")]
+    maximum_value: i32,
+    #[serde(rename = "displayAsNumeric")]
+    display_as_numeric: bool,
+    #[serde(rename = "displayInterpolation")]
+    display_interpolation: Vec<InterpolationPoint>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatGroupDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyStatGroupDefinition {
