@@ -2355,6 +2355,15 @@ pub struct DestinyReportReasonCategoryDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Reporting.DestinyReportReasonDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyReportReasonDefinition {
+    #[serde(rename = "reasonHash")]
+    reason_hash: u32,
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyRewardSourceDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyRewardSourceDefinition {
