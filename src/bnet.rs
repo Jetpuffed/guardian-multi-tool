@@ -770,6 +770,17 @@ pub struct DestinyFactionDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyFactionVendorDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyFactionVendorDefinition {
+    #[serde(rename = "vendorHash")]
+    vendor_hash: u32,
+    #[serde(rename = "destinationHash")]
+    destination_hash: u32,
+    #[serde(rename = "backgroundImagePath")]
+    background_image_path: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyGearArtArrangementReference
 #[derive(Debug, Deserialize)]
 pub struct DestinyGearArtArrangementReference {
