@@ -1756,6 +1756,22 @@ pub struct DestinyMilestoneQuestRewardsDefinition {
     items: Vec<DestinyMilestoneQuestRewardItem>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneQuestRewardItem
+#[derive(Debug, Deserialize)]
+pub struct DestinyMilestoneQuestRewardItem {
+    #[serde(rename = "vendorHash")]
+    vendor_hash: u32,
+    #[serde(rename = "vendorItemIndex")]
+    vendor_item_index: i32,
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+    #[serde(rename = "itemInstanceId")]
+    item_instance_id: i64,
+    quantity: i32,
+    #[serde(rename = "hasConditionalVisibility")]
+    has_conditional_visibility: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyObjectiveDefinition {
