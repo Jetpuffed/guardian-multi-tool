@@ -2865,6 +2865,42 @@ pub struct DestinyVendorActionDefinition {
     auto_perform_action: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorCategoryEntryDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorCategoryEntryDefinition {
+    #[serde(rename = "categoryIndex")]
+    category_index: i32,
+    #[serde(rename = "sortValue")]
+    sort_value: i32,
+    #[serde(rename = "categoryHash")]
+    category_hash: i32,
+    #[serde(rename = "quantityAvailable")]
+    quantity_available: i32,
+    #[serde(rename = "showUnavailableItems")]
+    show_unavailable_items: bool,
+    #[serde(rename = "hideIfNoCurrency")]
+    hide_if_no_currency: bool,
+    #[serde(rename = "hideFromRegularPurchase")]
+    hide_from_regular_purchase: bool,
+    #[serde(rename = "buyStringOverride")]
+    buy_string_override: String,
+    #[serde(rename = "disabledDescription")]
+    disabled_description: String,
+    #[serde(rename = "displayTitle")]
+    display_title: String,
+    overlay: DestinyVendorCategoryOverlayDefinition,
+    #[serde(rename = "vendorItemIndexes")]
+    vendor_item_indexes: Vec<i32>,
+    #[serde(rename = "isPreview")]
+    is_preview: bool,
+    #[serde(rename = "isDisplayOnly")]
+    is_display_only: bool,
+    #[serde(rename = "resetIntervalMinutesOverride")]
+    reset_interval_minutes_override: i32,
+    #[serde(rename = "resetOffsetMinutesOverride")]
+    reset_offset_minutes_override: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyVendorDefinition {
