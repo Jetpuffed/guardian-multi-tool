@@ -1,6 +1,8 @@
 use std::collections::HashMap;
+use std::error::Error;
 
 use chrono::prelude::*;
+use reqwest::Client;
 use serde::Deserialize;
 
 /* Definitions with no known documentation:
@@ -24,6 +26,18 @@ use serde::Deserialize;
  *     DestinyUnlockEventDefinition
  *     DestinyUnlockExpressionMappingDefinition
  */
+
+pub const BASE_URL: &str = "https://www.bungie.net";
+
+/// https://bungie-net.github.io/#Destiny2.GetDestinyManifest
+pub async fn get_destiny_manifest(c: Client) -> Result<GetDestinyManifestResponse, Box<dyn Error>> {
+    const PATH: &str = "/platform/destiny2/manifest";
+
+    match c.get([BASE_URL, PATH].join("")).send().await {
+        Ok(resp) => return Ok(resp.json::<GetDestinyManifestResponse>().await?),
+        Err(e) => panic!("{}", e),
+    }
+}
 
 /// Where all the deserialized game content lives.
 /// 
