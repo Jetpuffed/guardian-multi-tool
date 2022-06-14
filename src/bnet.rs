@@ -1705,6 +1705,14 @@ pub struct DestinyMilestoneActivityDefinition {
     variants: HashMap<u32, DestinyMilestoneActivityVariantDefinition>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneActivityVariantDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyMilestoneActivityVariantDefinition {
+    #[serde(rename = "activityHash")]
+    activity_hash: u32,
+    order: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyMilestoneDefinition {
