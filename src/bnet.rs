@@ -1038,6 +1038,16 @@ pub struct DestinyItemInventoryBlockDefinition {
     recipe_item_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemInvestmentStatDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemInvestmentStatDefinition {
+    #[serde(rename = "statTypeHash")]
+    stat_type_hash: u32,
+    value: i32,
+    #[serde(rename = "isConditionallyActive")]
+    is_conditionally_active: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemMetricBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemMetricBlockDefinition {
