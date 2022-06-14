@@ -2711,6 +2711,18 @@ pub struct DestinyTalentGridDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentNodeCategory
+#[derive(Debug, Deserialize)]
+pub struct DestinyTalentNodeCategory {
+    identifier: String,
+    #[serde(rename = "isLoreDriven")]
+    is_lore_driven: bool,
+    #[serde(rename = "displayProperties")]
+    display_properties: DestinyDisplayPropertiesDefinition,
+    #[serde(rename = "nodeHashes")]
+    node_hashes: Vec<u32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentNodeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyTalentNodeDefinition {
