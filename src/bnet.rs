@@ -1073,6 +1073,17 @@ pub struct DestinyItemSetBlockEntryDefinition {
     item_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSourceBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemSourceBlockDefinition {
+    #[serde(rename = "sourceHashes")]
+    source_hashes: Vec<u32>,
+    sources: Vec<DestinyItemSourceDefinition>,
+    exclusive: i32,
+    #[serde(rename = "vendorSources")]
+    vendor_sources: Vec<DestinyItemVendorSourceReference>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemStatBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemStatBlockDefinition {
