@@ -3171,6 +3171,12 @@ pub struct DestinyVendorSaleItemActionBlockDefinition {
     is_positive: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorServiceDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorServiceDefinition {
+    name: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.DyeReference
 #[derive(Debug, Deserialize)]
 pub struct DyeReference {
