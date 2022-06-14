@@ -2736,6 +2736,13 @@ pub struct DestinyTalentNodeDefinition {
     ignore_for_completion: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentNodeExclusiveSetDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyTalentNodeExclusiveSetDefinition {
+    #[serde(rename = "nodeIndexes")]
+    node_indexes: Vec<i32>,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentNodeStepGroups
 #[derive(Debug, Deserialize)]
 pub struct DestinyTalentNodeStepGroups {
