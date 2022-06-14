@@ -922,6 +922,37 @@ pub struct DestinyItemCraftingBlockDefinition {
     bonus_plugs: Vec<DestinyItemCraftingBlockBonusPlugDefinition>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemInventoryBlockDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemInventoryBlockDefinition {
+    #[serde(rename = "stackUniqueLabel")]
+    stack_unique_label: String,
+    #[serde(rename = "maxStackSize")]
+    max_stack_size: i32,
+    #[serde(rename = "bucketTypeHash")]
+    bucket_type_hash: u32,
+    #[serde(rename = "recoveryBucketTypeHash")]
+    recovery_bucket_type_hash: u32,
+    #[serde(rename = "tierTypeHash")]
+    tier_type_hash: u32,
+    #[serde(rename = "isInstanceItem")]
+    is_instance_item: bool,
+    #[serde(rename = "tierTypeName")]
+    tier_type_name: String,
+    #[serde(rename = "tierType")]
+    tier_type: i32,
+    #[serde(rename = "expirationTooltip")]
+    expiration_tooltip: String,
+    #[serde(rename = "expiredInActivityMessage")]
+    expired_in_activity_message: String,
+    #[serde(rename = "expiredInOrbitMessage")]
+    expired_in_orbit_message: String,
+    #[serde(rename = "suppressExpirationWhenObjectivesComplete")]
+    suppress_expiration_when_objectives_complete: bool,
+    #[serde(rename = "recipeItemHash")]
+    recipe_item_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemTierTypeDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemTierTypeDefinition {
