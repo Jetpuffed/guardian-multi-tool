@@ -1027,6 +1027,45 @@ pub struct DestinyItemObjectiveBlockDefinition {
     display_as_stat_tracker: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemPlugDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemPlugDefinition {
+    #[serde(rename = "insertionRules")]
+    insertion_rules: Vec<DestinyPlugRuleDefinition>,
+    #[serde(rename = "plugCategoryIdentifier")]
+    plug_category_identifier: String,
+    #[serde(rename = "plugCategoryHash")]
+    plug_category_hash: u32,
+    #[serde(rename = "onActionRecreateSelf")]
+    on_action_recreate_self: bool,
+    #[serde(rename = "insertionMaterialRequirementHash")]
+    insertion_material_requirement_hash: u32,
+    #[serde(rename = "previewItemOverrideHash")]
+    preview_item_override_hash: u32,
+    #[serde(rename = "enabledMaterialRequirementHash")]
+    enabled_material_requirement_hash: u32,
+    #[serde(rename = "enabledRules")]
+    enabled_rules: Vec<DestinyPlugRuleDefinition>,
+    #[serde(rename = "uiPlugLabel")]
+    ui_plug_label: String,
+    #[serde(rename = "plugStyle")]
+    plug_style: i32,
+    #[serde(rename = "plugAvailability")]
+    plug_availability: i32,
+    #[serde(rename = "alternateUiPlugLabel")]
+    alternate_ui_plug_label: String,
+    #[serde(rename = "alternatePlugStyle")]
+    alternate_plug_style: i32,
+    #[serde(rename = "isDummyPlug")]
+    is_dummy_plug: bool,
+    #[serde(rename = "parentItemOverride")]
+    parent_item_override: DestinyParentItemOverride,
+    #[serde(rename = "energyCapacity")]
+    energy_capacity: DestinyEnergyCapacityEntry,
+    #[serde(rename = "energyCost")]
+    energy_cost: DestinyEnergyCostEntry,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemPreviewBlockDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemPreviewBlockDefinition {
