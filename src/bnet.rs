@@ -850,6 +850,16 @@ pub struct DestinyItemActionBlockDefinition {
     use_on_acquire: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemActionRequiredItemDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyItemActionRequiredItemDefinition {
+    count: i32,
+    #[serde(rename = "itemHash")]
+    item_hash: u32,
+    #[serde(rename = "deleteOnAction")]
+    delete_on_action: bool,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemCategoryDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyItemCategoryDefinition {
