@@ -2568,6 +2568,21 @@ pub struct DestinyTalentGridDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentNodeStepGroups
+#[derive(Debug, Deserialize)]
+pub struct DestinyTalentNodeStepGroups {
+    #[serde(rename = "weaponPerformance")]
+    weapon_performance: i32,
+    #[serde(rename = "impactEffects")]
+    impact_effects: i32,
+    #[serde(rename = "guardianAttributes")]
+    guardian_attributes: i32,
+    #[serde(rename = "lightAbilities")]
+    light_abilities: i32,
+    #[serde(rename = "damageTypes")]
+    damage_types: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Traits.DestinyTraitDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyTraitDefinition {
