@@ -2483,6 +2483,15 @@ pub struct DestinySeasonPreviewDefinition {
     images: Vec<DestinySeasonPreviewImageDefinition>,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Seasons.DestinySeasonPreviewImageDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinySeasonPreviewImageDefinition {
+    #[serde(rename = "thumbnailImage")]
+    thumbnail_image: String,
+    #[serde(rename = "highResImage")]
+    high_res_image: String,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinySocketCategoryDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinySocketCategoryDefinition {
