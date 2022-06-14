@@ -3024,6 +3024,13 @@ pub struct DestinyVendorGroupDefinition {
     redacted: bool,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorGroupReference
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorGroupReference {
+    #[serde(rename = "vendorGroupHash")]
+    vendor_group_hash: u32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorInteractionDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyVendorInteractionDefinition {
