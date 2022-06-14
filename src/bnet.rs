@@ -3055,6 +3055,16 @@ pub struct DestinyVendorInteractionSackEntryDefinition {
     sack_type: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorInventoryFlyoutBucketDefinition
+#[derive(Debug, Deserialize)]
+pub struct DestinyVendorInventoryFlyoutBucketDefinition {
+    collapsible: bool,
+    #[serde(rename = "inventoryBucketHash")]
+    inventory_bucket_hash: u32,
+    #[serde(rename = "sortItemsBy")]
+    sort_items_by: i32,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorInventoryFlyoutDefinition
 #[derive(Debug, Deserialize)]
 pub struct DestinyVendorInventoryFlyoutDefinition {
