@@ -3,7 +3,7 @@ use std::error::Error;
 
 use chrono::prelude::*;
 use reqwest::Client;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 /* Definitions with no known documentation:
  *     DestinyAchievementDefinition
@@ -30,36 +30,32 @@ use serde::Deserialize;
 pub const BASE_URL: &str = "https://www.bungie.net";
 
 /// https://bungie-net.github.io/#Destiny2.GetDestinyManifest
-pub async fn get_destiny_manifest(c: &Client) -> Result<GetDestinyManifestResponse, Box<dyn Error>> {
+pub async fn get_destiny_manifest(
+    c: &Client,
+) -> Result<BungieResponse<DestinyManifest>, Box<dyn Error>> {
     const PATH: &str = "/platform/destiny2/manifest";
 
     match c.get([BASE_URL, PATH].join("")).send().await {
-        Ok(resp) => return Ok(resp.json::<GetDestinyManifestResponse>().await?),
+        Ok(resp) => return Ok(resp.json::<BungieResponse<DestinyManifest>>().await?),
         Err(e) => panic!("{}", e),
     }
 }
 
 /// https://bungie-net.github.io/#Destiny2.GetDestinyManifest
-#[derive(Debug, Deserialize)]
-pub struct GetDestinyManifestResponse {
-    #[serde(rename = "Response")]
-    response: DestinyManifest,
-    #[serde(rename = "ErrorCode")]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct BungieResponse<T> {
+    response: T,
     error_code: i32,
-    #[serde(rename = "ThrottleSeconds")]
     throttle_seconds: i32,
-    #[serde(rename = "ErrorStatus")]
     error_status: String,
-    #[serde(rename = "Message")]
     message: String,
-    #[serde(rename = "MessageData")]
     message_data: HashMap<String, String>,
-    #[serde(rename = "DetailedErrorTrace")]
     detailed_error_trace: Option<String>,
 }
 
-impl GetDestinyManifestResponse {
-    pub fn response(&self) -> &DestinyManifest {
+impl<T> BungieResponse<T> {
+    pub fn response(&self) -> &T {
         &self.response
     }
 
@@ -89,24 +85,17 @@ impl GetDestinyManifestResponse {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Config.DestinyManifest
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyManifest {
     version: String,
-    #[serde(rename = "mobileAssetContentPath")]
     mobile_asset_content_path: String,
-    #[serde(rename = "mobileGearAssetDataBases")]
     mobile_gear_asset_data_bases: Vec<GearAssetDataBaseDefinition>,
-    #[serde(rename = "mobileWorldContentPaths")]
     mobile_world_content_paths: HashMap<String, String>,
-    #[serde(rename = "jsonWorldContentPaths")]
     json_world_content_paths: HashMap<String, String>,
-    #[serde(rename = "jsonWorldComponentContentPaths")]
     json_world_component_content_paths: HashMap<String, HashMap<String, String>>,
-    #[serde(rename = "mobileClanBannerDatabasePath")]
     mobile_clan_banner_database_path: String,
-    #[serde(rename = "mobileGearCDN")]
-    mobile_gear_cdn: HashMap<String, String>,
-    #[serde(rename = "iconImagePyramidInfo")]
+    mobile_gear_c_d_n: HashMap<String, String>,
     icon_image_pyramid_info: Vec<ImagePyramidEntry>,
 }
 
@@ -140,7 +129,7 @@ impl DestinyManifest {
     }
 
     pub fn mobile_gear_cdn(&self) -> &HashMap<String, String> {
-        &self.mobile_gear_cdn
+        &self.mobile_gear_c_d_n
     }
 
     pub fn icon_image_pyramid_info(&self) -> &[ImagePyramidEntry] {
@@ -149,260 +138,164 @@ impl DestinyManifest {
 }
 
 /// Where all the deserialized game content lives.
-/// 
+///
 /// Returned by any function that deserializes the world content paths obtained
 /// from the manifest in Bungie's API.
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "PascalCase")]
 pub struct DestinyWorldContent {
-    // #[serde(rename = "DestinyAchievementDefinition")]
-    // achievement_definition: HashMap<String, DestinyAchievementDefinition>,
-    #[serde(rename = "DestinyActivityDefinition")]
-    activity_definition: HashMap<String, DestinyActivityDefinition>,
-    #[serde(rename = "DestinyActivityGraphDefinition")]
-    activity_graph_definition: HashMap<String, DestinyActivityGraphDefinition>,
-    // #[serde(rename = "DestinyActivityInteractableDefinition")]
-    // activity_interactable_definition: HashMap<String, DestinyActivityGraphDefinition>,
-    #[serde(rename = "DestinyActivityModeDefinition")]
-    activity_mode_definition: HashMap<String, DestinyActivityModeDefinition>,
-    #[serde(rename = "DestinyActivityModifierDefinition")]
-    activity_modifier_definition: HashMap<String, DestinyActivityModifierDefinition>,
-    #[serde(rename = "DestinyActivityTypeDefinition")]
-    activity_type_definition: HashMap<String, DestinyActivityTypeDefinition>,
-    // #[serde(rename = "DestinyArtDyeChannelDefinition")]
-    // art_dye_channel_definition: HashMap<String, DestinyArtDyeChannelDefinition>,
-    #[serde(rename = "DestinyArtDyeReferenceDefinition")]
-    art_dye_reference_definition: HashMap<String, DestinyArtDyeReference>,
-    #[serde(rename = "DestinyArtifactDefinition")]
-    artifact_definition: HashMap<String, DestinyArtifactDefinition>,
-    // #[serde(rename = "DestinyBondDefinition")]
-    // bond_definition: HashMap<String, DestinyBondDefinition>,
-    #[serde(rename = "DestinyBreakerTypeDefinition")]
-    breaker_type_definition: HashMap<String, DestinyBreakerTypeDefinition>,
-    // #[serde(rename = "DestinyCharacterCustomizationCategoryDefinition")]
-    // character_customization_category_definition: HashMap<String, DestinyCharacterCustomizationCategoryDefinition>,
-    // #[serde(rename = "DestinyCharacterCustomizationOptionDefinition")]
-    // character_customization_option_definition: HashMap<String, DestinyCharacterCustomizationOptionDefinition>,
-    #[serde(rename = "DestinyChecklistDefinition")]
-    checklist_definition: HashMap<String, DestinyChecklistDefinition>,
-    #[serde(rename = "DestinyClassDefinition")]
-    class_definition: HashMap<String, DestinyClassDefinition>,
-    #[serde(rename = "DestinyCollectibleDefinition")]
-    collectible_definition: HashMap<String, DestinyCollectibleDefinition>,
-    #[serde(rename = "DestinyDamageTypeDefinition")]
-    damage_type_definition: HashMap<String, DestinyDamageTypeDefinition>,
-    #[serde(rename = "DestinyDestinationDefinition")]
-    destination_definition: HashMap<String, DestinyDestinationDefinition>,
-    #[serde(rename = "DestinyEnergyTypeDefinition")]
-    energy_type_definition: HashMap<String, DestinyEnergyTypeDefinition>,
-    // #[serde(rename = "DestinyEntitlementOfferDefinition")]
-    // entitlement_offer_definition: HashMap<String, DestinyEntitlementOfferDefinition>,
-    #[serde(rename = "DestinyEquipmentSlotDefinition")]
-    equipment_slot_definition: HashMap<String, DestinyEquipmentSlotDefinition>,
-    #[serde(rename = "DestinyFactionDefinition")]
-    faction_definition: HashMap<String, DestinyFactionDefinition>,
-    #[serde(rename = "DestinyGenderDefinition")]
-    gender_definition: HashMap<String, DestinyGenderDefinition>,
-    #[serde(rename = "DestinyItemCategoryDefinition")]
-    item_category_definition: HashMap<String, DestinyItemCategoryDefinition>,
-    #[serde(rename = "DestinyItemTierTypeDefinition")]
-    item_tier_type_definition: HashMap<String, DestinyItemTierTypeDefinition>,
-    #[serde(rename = "DestinyInventoryBucketDefinition")]
-    inventory_bucket_definition: HashMap<String, DestinyInventoryBucketDefinition>,
-    #[serde(rename = "DestinyInventoryItemDefinition")]
-    inventory_item_definition: HashMap<String, DestinyInventoryItemDefinition>,
-    // #[serde(rename = "DestinyInventoryItemLiteDefinition")]
-    // inventory_item_lite_definition: HashMap<String, DestinyInventoryItemLiteDefinition>,
-    #[serde(rename = "DestinyLocationDefinition")]
-    location_definition: HashMap<String, DestinyLocationDefinition>,
-    #[serde(rename = "DestinyLoreDefinition")]
-    lore_definition: HashMap<String, DestinyLoreDefinition>,
-    #[serde(rename = "DestinyMaterialRequirementSetDefinition")]
-    material_requirement_set_definition: HashMap<String, DestinyMaterialRequirementSetDefinition>,
-    #[serde(rename = "DestinyMedalTierDefinition")]
-    medal_tier_definition: HashMap<String, DestinyMedalTierDefinition>,
-    #[serde(rename = "DestinyMetricDefinition")]
-    metric_definition: HashMap<String, DestinyMetricDefinition>,
-    #[serde(rename = "DestinyMilestoneDefinition")]
-    milestone_definition: HashMap<String, DestinyMilestoneDefinition>,
-    // #[serde(rename = "DestinyNodeStepSummaryDefinition")]
-    // node_step_summary_definition: HashMap<String, DestinyNodeStepSummaryDefinition>,
-    #[serde(rename = "DestinyObjectiveDefinition")]
-    objective_definition: HashMap<String, DestinyObjectiveDefinition>,
-    #[serde(rename = "DestinyPlaceDefinition")]
-    place_definition: HashMap<String, DestinyPlaceDefinition>,
-    // #[serde(rename = "DestinyPlatformBucketMappingDefinition")]
-    // platform_bucket_mapping_definition: HashMap<String, DestinyPlatformBucketMappingDefinition>,
-    #[serde(rename = "DestinyPlugSetDefinition")]
-    plug_set_definition: HashMap<String, DestinyPlugSetDefinition>,
-    #[serde(rename = "DestinyPowerCapDefinition")]
-    power_cap_definition: HashMap<String, DestinyPowerCapDefinition>,
-    #[serde(rename = "DestinyPresentationNodeDefinition")]
-    presentation_node_definition: HashMap<String, DestinyPresentationNodeDefinition>,
-    #[serde(rename = "DestinyProgressionDefinition")]
-    progression_definition: HashMap<String, DestinyProgressionDefinition>,
-    #[serde(rename = "DestinyProgressionLevelRequirementDefinition")]
-    progression_level_requirement_definition: HashMap<String, DestinyProgressionLevelRequirementDefinition>,
-    #[serde(rename = "DestinyProgressionMappingDefinition")]
-    progression_mapping_definition: HashMap<String, DestinyProgressionMappingDefinition>,
-    #[serde(rename = "DestinyRaceDefinition")]
-    race_definition: HashMap<String, DestinyRaceDefinition>,
-    #[serde(rename = "DestinyRecordDefinition")]
-    record_definition: HashMap<String, DestinyRecordDefinition>,
-    #[serde(rename = "DestinyReportReasonCategoryDefinition")]
-    report_reason_category_definition: HashMap<String, DestinyReportReasonCategoryDefinition>,
-    // #[serde(rename = "DestinyRewardAdjusterPointerDefinition")]
-    // reward_adjuster_pointer_definition: HashMap<String, DestinyRewardAdjusterPointerDefinition>,
-    // #[serde(rename = "DestinyRewardAdjusterProgressionMapDefinition")]
-    // reward_adjuster_progression_map_definition: HashMap<String, DestinyRewardAdjusterProgressionMapDefinition>,
-    // #[serde(rename = "DestinyRewardItemListDefinition")]
-    // reward_item_list_definition: HashMap<String, DestinyRewardItemListDefinition>,
-    // #[serde(rename = "DestinyRewardMappingDefinition")]
-    // reward_mapping_definition: HashMap<String, DestinyRewardMappingDefinition>,
-    // #[serde(rename = "DestinyRewardSheetDefinition")]
-    // reward_sheet_definition: HashMap<String, DestinyRewardSheetDefinition>,
-    #[serde(rename = "DestinyRewardSourceDefinition")]
-    reward_source_definition: HashMap<String, DestinyRewardSourceDefinition>,
-    // #[serde(rename = "DestinySackRewardItemListDefinition")]
-    // sack_reward_item_list_definition: HashMap<String, DestinySackRewardItemListDefinition>,
-    #[serde(rename = "DestinySandboxPatternDefinition")]
-    sandbox_pattern_definition: HashMap<String, DestinySandboxPatternDefinition>,
-    #[serde(rename = "DestinySandboxPerkDefinition")]
-    sandbox_perk_definition: HashMap<String, DestinySandboxPerkDefinition>,
-    #[serde(rename = "DestinySeasonDefinition")]
-    season_definition: HashMap<String, DestinySeasonDefinition>,
-    #[serde(rename = "DestinySeasonPassDefinition")]
-    season_pass_definition: HashMap<String, DestinySeasonPassDefinition>,
-    #[serde(rename = "DestinySocketCategoryDefinition")]
-    socket_category_definition: HashMap<String, DestinySocketCategoryDefinition>,
-    #[serde(rename = "DestinySocketTypeDefinition")]
-    socket_type_definition: HashMap<String, DestinySocketTypeDefinition>,
-    #[serde(rename = "DestinyStatDefinition")]
-    stat_definition: HashMap<String, DestinyStatDefinition>,
-    #[serde(rename = "DestinyStatGroupDefinition")]
-    stat_group_definition: HashMap<String, DestinyStatGroupDefinition>,
-    #[serde(rename = "DestinyTalentGridDefinition")]
-    talent_grid_definition: HashMap<String, DestinyTalentGridDefinition>,
-    #[serde(rename = "DestinyTraitDefinition")]
-    trait_definition: HashMap<String, DestinyTraitDefinition>,
-    #[serde(rename = "DestinyTraitCategoryDefinition")]
-    trait_category_definition: HashMap<String, DestinyTraitCategoryDefinition>,
-    // #[serde(rename = "DestinyUnlockCountMappingDefinition")]
-    // unlock_count_mapping_definition: HashMap<String, DestinyUnlockCountMappingDefinition>,
-    #[serde(rename = "DestinyUnlockDefinition")]
-    unlock_definition: HashMap<String, DestinyUnlockDefinition>,
-    // #[serde(rename = "DestinyUnlockEventDefinition")]
-    // unlock_event_definition: HashMap<String, DestinyUnlockEventDefinition>,
-    // #[serde(rename = "DestinyUnlockExpressionMappingDefinition")]
-    // unlock_expression_mapping_definition: HashMap<String, DestinyUnlockExpressionMappingDefinition>,
-    #[serde(rename = "DestinyUnlockValueDefinition")]
-    unlock_value_definition: HashMap<String, DestinyUnlockValueDefinition>,
-    #[serde(rename = "DestinyVendorDefinition")]
-    vendor_definition: HashMap<String, DestinyVendorDefinition>,
-    #[serde(rename = "DestinyVendorGroupDefinition")]
-    vendor_group_definition: HashMap<String, DestinyVendorGroupDefinition>,
+    // destiny_achievement_definition: HashMap<String, DestinyAchievementDefinition>,
+    destiny_activity_definition: HashMap<String, DestinyActivityDefinition>,
+    destiny_activity_graph_definition: HashMap<String, DestinyActivityGraphDefinition>,
+    // destiny_activity_interactable_definition: HashMap<String, DestinyActivityGraphDefinition>,
+    destiny_activity_mode_definition: HashMap<String, DestinyActivityModeDefinition>,
+    destiny_activity_modifier_definition: HashMap<String, DestinyActivityModifierDefinition>,
+    destiny_activity_type_definition: HashMap<String, DestinyActivityTypeDefinition>,
+    // destiny_art_dye_channel_definition: HashMap<String, DestinyArtDyeChannelDefinition>,
+    destiny_art_dye_reference_definition: HashMap<String, DestinyArtDyeReference>,
+    destiny_artifact_definition: HashMap<String, DestinyArtifactDefinition>,
+    // destiny_bond_definition: HashMap<String, DestinyBondDefinition>,
+    destiny_breaker_type_definition: HashMap<String, DestinyBreakerTypeDefinition>,
+    // destiny_character_customization_category_definition: HashMap<String, DestinyCharacterCustomizationCategoryDefinition>,
+    // destiny_character_customization_option_definition: HashMap<String, DestinyCharacterCustomizationOptionDefinition>,
+    destiny_checklist_definition: HashMap<String, DestinyChecklistDefinition>,
+    destiny_class_definition: HashMap<String, DestinyClassDefinition>,
+    destiny_collectible_definition: HashMap<String, DestinyCollectibleDefinition>,
+    destiny_damage_type_definition: HashMap<String, DestinyDamageTypeDefinition>,
+    destiny_destination_definition: HashMap<String, DestinyDestinationDefinition>,
+    destiny_energy_type_definition: HashMap<String, DestinyEnergyTypeDefinition>,
+    // destiny_entitlement_offer_definition: HashMap<String, DestinyEntitlementOfferDefinition>,
+    destiny_equipment_slot_definition: HashMap<String, DestinyEquipmentSlotDefinition>,
+    destiny_faction_definition: HashMap<String, DestinyFactionDefinition>,
+    destiny_gender_definition: HashMap<String, DestinyGenderDefinition>,
+    destiny_item_category_definition: HashMap<String, DestinyItemCategoryDefinition>,
+    destiny_item_tier_type_definition: HashMap<String, DestinyItemTierTypeDefinition>,
+    destiny_inventory_bucket_definition: HashMap<String, DestinyInventoryBucketDefinition>,
+    destiny_inventory_item_definition: HashMap<String, DestinyInventoryItemDefinition>,
+    // destiny_inventory_item_lite_definition: HashMap<String, DestinyInventoryItemLiteDefinition>,
+    destiny_location_definition: HashMap<String, DestinyLocationDefinition>,
+    destiny_lore_definition: HashMap<String, DestinyLoreDefinition>,
+    destiny_material_requirement_set_definition: HashMap<String, DestinyMaterialRequirementSetDefinition>,
+    destiny_medal_tier_definition: HashMap<String, DestinyMedalTierDefinition>,
+    destiny_metric_definition: HashMap<String, DestinyMetricDefinition>,
+    destiny_milestone_definition: HashMap<String, DestinyMilestoneDefinition>,
+    // destiny_node_step_summary_definition: HashMap<String, DestinyNodeStepSummaryDefinition>,
+    destiny_objective_definition: HashMap<String, DestinyObjectiveDefinition>,
+    destiny_place_definition: HashMap<String, DestinyPlaceDefinition>,
+    // destiny_platform_bucket_mapping_definition: HashMap<String, DestinyPlatformBucketMappingDefinition>,
+    destiny_plug_set_definition: HashMap<String, DestinyPlugSetDefinition>,
+    destiny_power_cap_definition: HashMap<String, DestinyPowerCapDefinition>,
+    destiny_presentation_node_definition: HashMap<String, DestinyPresentationNodeDefinition>,
+    destiny_progression_definition: HashMap<String, DestinyProgressionDefinition>,
+    destiny_progression_level_requirement_definition: HashMap<String, DestinyProgressionLevelRequirementDefinition>,
+    destiny_progression_mapping_definition: HashMap<String, DestinyProgressionMappingDefinition>,
+    destiny_race_definition: HashMap<String, DestinyRaceDefinition>,
+    destiny_record_definition: HashMap<String, DestinyRecordDefinition>,
+    destiny_report_reason_category_definition: HashMap<String, DestinyReportReasonCategoryDefinition>,
+    // destiny_reward_adjuster_pointer_definition: HashMap<String, DestinyRewardAdjusterPointerDefinition>,
+    // destiny_reward_adjuster_progression_map_definition: HashMap<String, DestinyRewardAdjusterProgressionMapDefinition>,
+    // destiny_reward_item_list_definition: HashMap<String, DestinyRewardItemListDefinition>,
+    // destiny_reward_mapping_definition: HashMap<String, DestinyRewardMappingDefinition>,
+    // destiny_reward_sheet_definition: HashMap<String, DestinyRewardSheetDefinition>,
+    destiny_reward_source_definition: HashMap<String, DestinyRewardSourceDefinition>,
+    // destiny_sack_reward_item_list_definition: HashMap<String, DestinySackRewardItemListDefinition>,
+    destiny_sandbox_pattern_definition: HashMap<String, DestinySandboxPatternDefinition>,
+    destiny_sandbox_perk_definition: HashMap<String, DestinySandboxPerkDefinition>,
+    destiny_season_definition: HashMap<String, DestinySeasonDefinition>,
+    destiny_season_pass_definition: HashMap<String, DestinySeasonPassDefinition>,
+    destiny_socket_category_definition: HashMap<String, DestinySocketCategoryDefinition>,
+    destiny_socket_type_definition: HashMap<String, DestinySocketTypeDefinition>,
+    destiny_stat_definition: HashMap<String, DestinyStatDefinition>,
+    destiny_stat_group_definition: HashMap<String, DestinyStatGroupDefinition>,
+    destiny_talent_grid_definition: HashMap<String, DestinyTalentGridDefinition>,
+    destiny_trait_definition: HashMap<String, DestinyTraitDefinition>,
+    destiny_trait_category_definition: HashMap<String, DestinyTraitCategoryDefinition>,
+    // destiny_unlock_count_mapping_definition: HashMap<String, DestinyUnlockCountMappingDefinition>,
+    destiny_unlock_definition: HashMap<String, DestinyUnlockDefinition>,
+    // destiny_unlock_event_definition: HashMap<String, DestinyUnlockEventDefinition>,
+    // destiny_unlock_expression_mapping_definition: HashMap<String, DestinyUnlockExpressionMappingDefinition>,
+    destiny_unlock_value_definition: HashMap<String, DestinyUnlockValueDefinition>,
+    destiny_vendor_definition: HashMap<String, DestinyVendorDefinition>,
+    destiny_vendor_group_definition: HashMap<String, DestinyVendorGroupDefinition>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Dates.DateRange
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DateRange {
     start: DateTime<Utc>,
     end: DateTime<Utc>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "originalDisplayProperties")]
     original_display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "selectionScreenDisplayProperties")]
-    selection_screen_display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "releaseIcon")]
-    release_icon: String,
-    #[serde(rename = "releaseTime")]
+    selection_screen_display_properties: Option<DestinyDisplayPropertiesDefinition>,
+    release_icon: Option<String>,
     release_time: i32,
-    #[serde(rename = "activityLightLevel")]
     activity_light_level: i32,
-    #[serde(rename = "destinationHash")]
     destination_hash: u32,
-    #[serde(rename = "placeHash")]
     place_hash: u32,
-    #[serde(rename = "activityTypeHash")]
     activity_type_hash: u32,
     tier: i32,
-    #[serde(rename = "pgcrImage")]
-    pgcr_image: String,
-    rewards: Vec<DestinyActivityRewardDefinition>,
-    modifiers: Vec<DestinyActivityModifierReferenceDefinition>,
-    #[serde(rename = "isPlaylist")]
+    pgcr_image: Option<String>,
+    rewards: Option<Vec<DestinyActivityRewardDefinition>>,
+    modifiers: Option<Vec<DestinyActivityModifierReferenceDefinition>>,
     is_playlist: bool,
-    challenges: Vec<DestinyActivityChallengeDefinition>,
-    #[serde(rename = "optionalUnlockStrings")]
-    optional_unlock_strings: Vec<DestinyActivityUnlockStringDefinition>,
-    #[serde(rename = "playlistItems")]
-    playlist_items: Vec<DestinyActivityPlaylistItemDefinition>,
-    #[serde(rename = "activityGraphList")]
-    activity_graph_list: Vec<DestinyActivityGraphListEntryDefinition>,
-    matchmaking: DestinyActivityMatchmakingBlockDefinition,
-    #[serde(rename = "guidedGame")]
-    guided_game: DestinyActivityGuidedBlockDefinition,
-    #[serde(rename = "directActivityModeHash")]
-    direct_activity_mode_hash: u32,
-    #[serde(rename = "directActivityModeType")]
-    direct_activity_mode_type: i32,
-    loadouts: Vec<DestinyActivityLoadoutRequirementSet>,
-    #[serde(rename = "activityModeHashes")]
-    activity_mode_hashes: Vec<u32>,
-    #[serde(rename = "activityModeTypes")]
-    activity_mode_types: Vec<i32>,
-    #[serde(rename = "isPvP")]
-    is_pvp: bool,
-    #[serde(rename = "insertionPoints")]
-    insertion_points: Vec<DestinyActivityInsertionPointDefinition>,
-    #[serde(rename = "activityLocationMappings")]
-    activity_location_mappings: Vec<DestinyEnvironmentLocationMapping>,
+    challenges: Option<Vec<DestinyActivityChallengeDefinition>>,
+    optional_unlock_strings: Option<Vec<DestinyActivityUnlockStringDefinition>>,
+    playlist_items: Option<Vec<DestinyActivityPlaylistItemDefinition>>,
+    activity_graph_list: Option<Vec<DestinyActivityGraphListEntryDefinition>>,
+    matchmaking: Option<DestinyActivityMatchmakingBlockDefinition>,
+    guided_game: Option<DestinyActivityGuidedBlockDefinition>,
+    direct_activity_mode_hash: Option<u32>,
+    direct_activity_mode_type: Option<i32>,
+    loadouts: Option<Vec<DestinyActivityLoadoutRequirementSet>>,
+    activity_mode_hashes: Option<Vec<u32>>,
+    activity_mode_types: Option<Vec<i32>>,
+    is_pvp: Option<bool>,
+    insertion_points: Option<Vec<DestinyActivityInsertionPointDefinition>>,
+    activity_location_mappings: Option<Vec<DestinyEnvironmentLocationMapping>>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityChallengeDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityChallengeDefinition {
-    #[serde(rename = "objectiveHash")]
     objective_hash: u32,
-    #[serde(rename = "dummyRewards")]
     dummy_rewards: Vec<DestinyItemQuantity>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphArtElementDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityGraphArtElementDefinition {
     position: DestinyPositionDefinition,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphConnectionDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityGraphConnectionDefinition {
-    #[serde(rename = "sourceNodeHash")]
     source_node_hash: u32,
-    #[serde(rename = "destNodeHash")]
     dest_node_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityGraphDefinition {
     nodes: Vec<DestinyActivityGraphNodeDefinition>,
-    #[serde(rename = "artElements")]
     art_elements: Vec<DestinyActivityGraphArtElementDefinition>,
     connections: Vec<DestinyActivityGraphConnectionDefinition>,
-    #[serde(rename = "displayObjectives")]
     display_objectives: Vec<DestinyActivityGraphDisplayObjectiveDefinition>,
-    #[serde(rename = "displayProgressions")]
     display_progressions: Vec<DestinyActivityGraphDisplayProgressionDefinition>,
-    #[serde(rename = "linkedGraphs")]
     linked_graphs: Vec<DestinyLinkedGraphDefinition>,
     hash: u32,
     index: i32,
@@ -410,135 +303,118 @@ pub struct DestinyActivityGraphDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphDisplayObjectiveDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityGraphDisplayObjectiveDefinition {
     id: u32,
-    #[serde(rename = "objectiveHash")]
     objective_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphDisplayProgressionDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityGraphDisplayProgressionDefinition {
     id: u32,
-    #[serde(rename = "progressionHash")]
     progression_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityGraphListEntryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityGraphListEntryDefinition {
-    #[serde(rename = "activityGraphHash")]
     activity_graph_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphNodeActivityDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityGraphNodeActivityDefinition {
-    #[serde(rename = "nodeActivityId")]
     node_activity_id: u32,
-    #[serde(rename = "activityHash")]
     activity_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphNodeDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityGraphNodeDefinition {
-    #[serde(rename = "nodeId")]
     node_id: u32,
-    #[serde(rename = "overrideDisplay")]
     override_display: DestinyDisplayPropertiesDefinition,
     position: DestinyPositionDefinition,
-    #[serde(rename = "featuringStates")]
     featuring_states: Vec<DestinyActivityGraphNodeFeaturingStateDefinition>,
     activities: Vec<DestinyActivityGraphNodeActivityDefinition>,
     states: Vec<DestinyActivityGraphNodeStateEntry>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphNodeFeaturingStateDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityGraphNodeFeaturingStateDefinition {
-    #[serde(rename = "highlightType")]
     highlight_type: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyActivityGraphNodeStateEntry
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityGraphNodeStateEntry {
     state: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityGuidedBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityGuidedBlockDefinition {
-    #[serde(rename = "guidedMaxLobbySize")]
     guided_max_lobby_size: i32,
-    #[serde(rename = "guidedMinLobbySize")]
     guided_min_lobby_size: i32,
-    #[serde(rename = "guidedDisbandCount")]
     guided_disband_count: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityInsertionPointDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityInsertionPointDefinition {
-    #[serde(rename = "phaseHash")]
     phase_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityLoadoutRequirement
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityLoadoutRequirement {
-    #[serde(rename = "equipmentSlotHash")]
     equipment_slot_hash: u32,
-    #[serde(rename = "allowedEquippedItemHashes")]
     allowed_equipped_item_hashes: Vec<u32>,
-    #[serde(rename = "allowedWeaponSubTypes")]
     allowed_weapon_sub_types: Vec<i32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityLoadoutRequirementSet
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityLoadoutRequirementSet {
     requirements: Vec<DestinyActivityLoadoutRequirement>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityMatchmakingBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityMatchmakingBlockDefinition {
-    #[serde(rename = "isMatchmade")]
     is_matchmade: bool,
-    #[serde(rename = "minParty")]
     min_party: i32,
-    #[serde(rename = "maxParty")]
     max_party: i32,
-    #[serde(rename = "maxPlayers")]
     max_players: i32,
-    #[serde(rename = "requiresGuardianOath")]
     requires_guardian_oath: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityModeDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityModeDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "pgcrImage")]
     pgcr_image: String,
-    #[serde(rename = "modeType")]
     mode_type: i32,
-    #[serde(rename = "activityModeCategory")]
     activity_mode_category: i32,
-    #[serde(rename = "isTeamBased")]
     is_team_based: bool,
-    #[serde(rename = "isAggregateMode")]
     is_aggregate_mode: bool,
-    #[serde(rename = "parentHashes")]
-    parent_hashes: Vec<u32>,
-    #[serde(rename = "friendlyName")]
+    parent_hashes: Option<Vec<u32>>,
     friendly_name: String,
-    #[serde(rename = "activityModeMappings")]
-    activity_mode_mappings: HashMap<u32, i32>,
+    activity_mode_mappings: Option<HashMap<u32, i32>>,
     display: bool,
     order: i32,
     hash: u32,
@@ -547,13 +423,11 @@ pub struct DestinyActivityModeDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.ActivityModifiers.DestinyActivityModifierDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityModifierDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "displayInNavMode")]
     display_in_nav_mode: bool,
-    #[serde(rename = "displayInActivitySelection")]
     display_in_activity_selection: bool,
     hash: u32,
     index: i32,
@@ -561,40 +435,35 @@ pub struct DestinyActivityModifierDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityModifierReferenceDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityModifierReferenceDefinition {
-    #[serde(rename = "activityModifierHash")]
     activity_modifier_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityPlaylistItemDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityPlaylistItemDefinition {
-    #[serde(rename = "activityHash")]
     activity_hash: u32,
-    #[serde(rename = "directActivityModeHash")]
-    direct_activity_mode_hash: u32,
-    #[serde(rename = "directActivityModeType")]
-    direct_activity_mode_type: i32,
-    #[serde(rename = "activityModeHashes")]
+    direct_activity_mode_hash: Option<u32>,
+    direct_activity_mode_type: Option<i32>,
     activity_mode_hashes: Vec<u32>,
-    #[serde(rename = "activityModeTypes")]
     activity_mode_types: Vec<i32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityRewardDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityRewardDefinition {
-    #[serde(rename = "rewardText")]
-    reward_text: String,
-    #[serde(rename = "rewardItems")]
+    reward_text: Option<String>,
     reward_items: Vec<DestinyItemQuantity>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityTypeDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityTypeDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     hash: u32,
     index: i32,
@@ -602,54 +471,43 @@ pub struct DestinyActivityTypeDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyActivityUnlockStringDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyActivityUnlockStringDefinition {
-    #[serde(rename = "displayString")]
     display_string: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Animations.DestinyAnimationReference
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyAnimationReference {
-    #[serde(rename = "animName")]
     anim_name: String,
-    #[serde(rename = "animIdentifier")]
     anim_identifier: String,
     path: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyArrangementRegionFilterDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyArrangementRegionFilterDefinition {
-    #[serde(rename = "artArrangementRegionHash")]
     art_arrangement_region_hash: u32,
-    #[serde(rename = "artArrangementRegionIndex")]
     art_arrangement_region_index: i32,
-    #[serde(rename = "statHash")]
     stat_hash: u32,
-    #[serde(rename = "arrangementIndexByStatValue")]
     arrangement_index_by_stat_value: HashMap<i32, i32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyArtDyeReference
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyArtDyeReference {
-    #[serde(rename = "artDyeChannelHash")]
     art_dye_channel_hash: Option<u32>,
 }
 
-impl DestinyArtDyeReference {
-    pub fn art_dye_channel_hash(&self) -> Option<u32> {
-        self.art_dye_channel_hash
-    }
-}
-
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Artifacts.DestinyArtifactDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyArtifactDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "translationBlock")]
     translation_block: DestinyItemTranslationBlockDefinition,
     tiers: Vec<DestinyArtifactTierDefinition>,
     hash: u32,
@@ -658,32 +516,28 @@ pub struct DestinyArtifactDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Artifacts.DestinyArtifactTierDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyArtifactTierDefinition {
-    #[serde(rename = "tierHash")]
     tier_hash: u32,
-    #[serde(rename = "displayTitle")]
     display_title: String,
-    #[serde(rename = "progressRequirementMessage")]
-    progress_requirement_message: String,
+    progress_requirement_message: Option<String>,
     items: Vec<DestinyArtifactTierItemDefinition>,
-    #[serde(rename = "minimumUnlockPointsUsedRequirement")]
     minimum_unlock_points_used_requirement: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Artifacts.DestinyArtifactTierItemDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyArtifactTierItemDefinition {
-    #[serde(rename = "itemHash")]
     item_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.BreakerTypes.DestinyBreakerTypeDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyBreakerTypeDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "enumValue")]
     enum_value: i32,
     hash: u32,
     index: i32,
@@ -691,19 +545,18 @@ pub struct DestinyBreakerTypeDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyBubbleDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyBubbleDefinition {
     hash: u32,
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Checklists.DestinyChecklistDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyChecklistDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "viewActionString")]
     view_action_string: String,
     scope: i32,
     entries: Vec<DestinyChecklistEntryDefinition>,
@@ -713,96 +566,84 @@ pub struct DestinyChecklistDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Checklists.DestinyChecklistEntryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyChecklistEntryDefinition {
     hash: u32,
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "destinationHash")]
-    destination_hash: u32,
-    #[serde(rename = "locationHash")]
-    location_hash: u32,
-    #[serde(rename = "bubbleHash")]
-    bubble_hash: u32,
-    #[serde(rename = "activityHash")]
-    activity_hash: u32,
-    #[serde(rename = "itemHash")]
-    item_hash: u32,
-    #[serde(rename = "vendorHash")]
-    vendor_hash: u32,
-    #[serde(rename = "vendorInteractionIndex")]
-    vendor_interaction_index: i32,
+    destination_hash: Option<u32>,
+    location_hash: Option<u32>,
+    bubble_hash: Option<u32>,
+    activity_hash: Option<u32>,
+    item_hash: Option<u32>,
+    vendor_hash: Option<u32>,
+    vendor_interaction_index: Option<i32>,
     scope: i32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.DestinyClass
+#[derive(Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+pub enum DestinyClass {
+    Titan = 0,
+    Hunter = 1,
+    Warlock = 2,
+    Unknown = 3,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyClassDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyClassDefinition {
-    #[serde(rename = "classType")]
     class_type: i32,
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "genderedClassNames")]
-    gendered_class_names: HashMap<i32, String>,
-    #[serde(rename = "genderedClassNamesByGenderHash")]
+    gendered_class_names: HashMap<DestinyGender, String>,
     gendered_class_names_by_gender_hash: HashMap<u32, String>,
-    #[serde(rename = "mentorVendorHash")]
-    mentor_vendor_hash: u32,
+    mentor_vendor_hash: Option<u32>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Collectibles.DestinyCollectibleAcquisitionBlock
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyCollectibleAcquisitionBlock {
-    #[serde(rename = "acquireMaterialRequirementHash")]
-    acquire_material_requirement_hash: u32,
-    #[serde(rename = "acquireTimestampUnlockValueHash")]
-    acquire_timestamp_unlock_value_hash: u32,
+    acquire_material_requirement_hash: Option<u32>,
+    acquire_timestamp_unlock_value_hash: Option<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Collectibles.DestinyCollectibleDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyCollectibleDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     scope: i32,
-    #[serde(rename = "sourceString")]
-    source_string: String,
-    #[serde(rename = "sourceHash")]
-    source_hash: u32,
-    #[serde(rename = "itemHash")]
+    source_string: Option<String>,
+    source_hash: Option<u32>,
     item_hash: u32,
-    #[serde(rename = "acquisitionInfo")]
-    acquisition_info: DestinyCollectibleAcquisitionBlock,
-    #[serde(rename = "stateInfo")]
-    state_info: DestinyCollectibleStateBlock,
-    #[serde(rename = "presentationInfo")]
-    presentation_info: DestinyPresentationChildBlock,
-    #[serde(rename = "presentationNodeType")]
+    acquisition_info: Option<DestinyCollectibleAcquisitionBlock>,
+    state_info: Option<DestinyCollectibleStateBlock>,
+    presentation_info: Option<DestinyPresentationChildBlock>,
     presentation_node_type: i32,
-    #[serde(rename = "traitIds")]
-    trait_ids: Vec<String>,
-    #[serde(rename = "traitHashes")]
-    trait_hashes: Vec<u32>,
-    #[serde(rename = "parentNodeHashes")]
-    parent_node_hashes: Vec<u32>,
+    trait_ids: Option<Vec<String>>,
+    trait_hashes: Option<Vec<u32>>,
+    parent_node_hashes: Option<Vec<u32>>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Collectibles.DestinyCollectibleStateBlock
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyCollectibleStateBlock {
-    #[serde(rename = "obscuredOverrideItemHash")]
-    obscured_override_item_hash: u32,
+    obscured_override_item_hash: Option<u32>,
     requirements: DestinyPresentationNodeRequirementsBlock,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Misc.DestinyColor
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyColor {
     red: u8,
     green: u8,
@@ -811,15 +652,12 @@ pub struct DestinyColor {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDamageTypeDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyDamageTypeDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "transparentIconPath")]
-    transparent_icon_path: String,
-    #[serde(rename = "showIcon")]
+    transparent_icon_path: Option<String>,
     show_icon: bool,
-    #[serde(rename = "enumValue")]
     enum_value: i32,
     hash: u32,
     index: i32,
@@ -827,49 +665,40 @@ pub struct DestinyDamageTypeDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyDerivedItemCategoryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyDerivedItemCategoryDefinition {
-    #[serde(rename = "categoryDescription")]
     category_description: String,
     items: Vec<DestinyDerivedItemDefinition>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyDerivedItemDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyDerivedItemDefinition {
-    #[serde(rename = "itemHash")]
     item_hash: u32,
-    #[serde(rename = "itemName")]
-    item_name: String,
-    #[serde(rename = "itemDetail")]
-    item_detail: String,
-    #[serde(rename = "itemDescription")]
-    item_description: String,
-    #[serde(rename = "iconPath")]
-    icon_path: String,
-    #[serde(rename = "vendorItemIndex")]
+    item_name: Option<String>,
+    item_detail: Option<String>,
+    item_description: Option<String>,
+    icon_path: Option<String>,
     vendor_item_index: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDestinationBubbleSettingDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyDestinationBubbleSettingDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDestinationDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyDestinationDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "placeHash")]
     place_hash: u32,
-    #[serde(rename = "defaultFreeroamActivityHash")]
     default_freeroam_activity_hash: u32,
-    #[serde(rename = "activityGraphEntries")]
     activity_graph_entries: Vec<DestinyActivityGraphListEntryDefinition>,
-    #[serde(rename = "bubbleSettings")]
     bubble_settings: Vec<DestinyDestinationBubbleSettingDefinition>,
     bubbles: Vec<DestinyBubbleDefinition>,
     hash: u32,
@@ -878,76 +707,59 @@ pub struct DestinyDestinationDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyDisplayCategoryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyDisplayCategoryDefinition {
     index: i32,
     identifier: String,
-    #[serde(rename = "displayCategoryHash")]
     display_category_hash: u32,
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "displayInBanner")]
     display_in_banner: bool,
-    #[serde(rename = "progressionHash")]
-    progression_hash: u32,
-    #[serde(rename = "sortOrder")]
+    progression_hash: Option<u32>,
     sort_order: u32,
-    #[serde(rename = "displayStyleHash")]
-    display_style_hash: u32,
-    #[serde(rename = "displayStyleIdentifier")]
-    display_style_identifier: String,
+    display_style_hash: Option<u32>,
+    display_style_identifier: Option<String>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Common.DestinyDisplayPropertiesDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyDisplayPropertiesDefinition {
-    description: String,
-    name: String,
-    icon: String,
-    #[serde(rename = "iconSequences")]
-    icon_sequences: Vec<DestinyIconSequenceDefinition>,
-    #[serde(rename = "highResIcon")]
-    high_res_icon: String,
-    #[serde(rename = "hasIcon")]
+    description: Option<String>,
+    name: Option<String>,
+    icon: Option<String>,
+    icon_sequences: Option<Vec<DestinyIconSequenceDefinition>>,
+    high_res_icon: Option<String>,
     has_icon: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyEnergyCapacityEntry
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyEnergyCapacityEntry {
-    #[serde(rename = "capacityValue")]
     capacity_value: i32,
-    #[serde(rename = "energyTypeHash")]
     energy_type_hash: u32,
-    #[serde(rename = "energyType")]
     energy_type: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyEnergyCostEntry
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyEnergyCostEntry {
-    #[serde(rename = "energyCost")]
     energy_cost: i32,
-    #[serde(rename = "energyTypeHash")]
     energy_type_hash: u32,
-    #[serde(rename = "energyType")]
     energy_type: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.EnergyTypes.DestinyEnergyTypeDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyEnergyTypeDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "transparentIconPath")]
     transparent_icon_path: String,
-    #[serde(rename = "showIcon")]
     show_icon: bool,
-    #[serde(rename = "enumValue")]
     enum_value: i32,
-    #[serde(rename = "capacityStatHash")]
-    capacity_stat_hash: u32,
-    #[serde(rename = "costStatHash")]
+    capacity_stat_hash: Option<u32>,
     cost_stat_hash: u32,
     hash: u32,
     index: i32,
@@ -955,32 +767,24 @@ pub struct DestinyEnergyTypeDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Constants.DestinyEnvironmentLocationMapping
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyEnvironmentLocationMapping {
-    #[serde(rename = "locationHash")]
     location_hash: u32,
-    #[serde(rename = "activationSource")]
     activation_source: String,
-    #[serde(rename = "itemHash")]
-    item_hash: u32,
-    #[serde(rename = "objectiveHash")]
-    objective_hash: u32,
-    #[serde(rename = "activityHash")]
+    item_hash: Option<u32>,
+    objective_hash: Option<u32>,
     activity_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyEquipmentSlotDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyEquipmentSlotDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "equipmentCategoryHash")]
     equipment_category_hash: u32,
-    #[serde(rename = "bucketTypeHash")]
     bucket_type_hash: u32,
-    #[serde(rename = "applyCustomArtDyes")]
     apply_custom_art_dyes: bool,
-    #[serde(rename = "artDyeChannels")]
     art_dye_channels: Vec<DestinyArtDyeReference>,
     hash: u32,
     index: i32,
@@ -988,68 +792,63 @@ pub struct DestinyEquipmentSlotDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyEquippingBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyEquippingBlockDefinition {
-    #[serde(rename = "gearsetItemHash")]
-    gearset_item_hash: u32,
-    #[serde(rename = "uniqueLabel")]
-    unique_label: String,
-    #[serde(rename = "uniqueLabelHash")]
+    gearset_item_hash: Option<u32>,
+    unique_label: Option<String>,
     unique_label_hash: u32,
-    #[serde(rename = "equipmentSlotTypeHash")]
     equipment_slot_type_hash: u32,
     attributes: i32,
-    #[serde(rename = "ammoType")]
     ammo_type: i32,
-    #[serde(rename = "displayStrings")]
     display_strings: Vec<String>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyFactionDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyFactionDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "progressionHash")]
     progression_hash: u32,
-    #[serde(rename = "tokenValues")]
-    token_values: HashMap<u32, u32>,
-    #[serde(rename = "rewardItemHash")]
+    token_values: Option<HashMap<u32, u32>>,
     reward_item_hash: u32,
-    #[serde(rename = "rewardVendorHash")]
     reward_vendor_hash: u32,
-    vendors: Vec<DestinyFactionVendorDefinition>,
+    vendors: Option<Vec<DestinyFactionVendorDefinition>>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyFactionVendorDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyFactionVendorDefinition {
-    #[serde(rename = "vendorHash")]
     vendor_hash: u32,
-    #[serde(rename = "destinationHash")]
     destination_hash: u32,
-    #[serde(rename = "backgroundImagePath")]
     background_image_path: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyGearArtArrangementReference
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyGearArtArrangementReference {
-    #[serde(rename = "classHash")]
     class_hash: u32,
-    #[serde(rename = "artArrangementHash")]
     art_arrangement_hash: u32,
 }
 
+/// https://bungie-net.github.io/#/components/schemas/Destiny.DestinyGender
+#[derive(Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+pub enum DestinyGender {
+    Male = 0,
+    Female = 1,
+    Unknown = 2,
+}
+
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyGenderDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyGenderDefinition {
-    #[serde(rename = "genderType")]
     gender_type: i32,
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     hash: u32,
     index: i32,
@@ -1057,33 +856,30 @@ pub struct DestinyGenderDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Common.DestinyIconSequenceDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyIconSequenceDefinition {
     frames: Vec<String>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinyInsertPlugActionDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyInsertPlugActionDefinition {
-    #[serde(rename = "actionExecuteSeconds")]
     action_execute_seconds: i32,
-    #[serde(rename = "actionType")]
     action_type: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryBucketDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyInventoryBucketDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     scope: i32,
     category: i32,
-    #[serde(rename = "bucketOrder")]
     bucket_order: i32,
-    #[serde(rename = "itemCount")]
     item_count: i32,
     location: i32,
-    #[serde(rename = "hasTransferDestination")]
     has_transfer_destination: bool,
     enabled: bool,
     fifo: bool,
@@ -1093,203 +889,134 @@ pub struct DestinyInventoryBucketDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryItemDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyInventoryItemDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "tooltipNotifications")]
-    tooltip_notifications: Vec<DestinyItemTooltipNotification>,
-    #[serde(rename = "collectibleHash")]
-    collectible_hash: u32,
-    #[serde(rename = "iconWatermark")]
-    icon_watermark: String,
-    #[serde(rename = "iconWatermarkedShelved")]
-    icon_watermark_shelved: String,
-    #[serde(rename = "secondaryIcon")]
-    secondary_icon: String,
-    #[serde(rename = "secondaryOverlay")]
-    secondary_overlay: String,
-    #[serde(rename = "secondarySpecial")]
-    secondary_special: String,
-    #[serde(rename = "backgroundColor")]
-    background_color: DestinyColor,
-    screenshot: String,
-    #[serde(rename = "itemTypeDisplayName")]
-    item_type_display_name: String,
-    #[serde(rename = "flavorText")]
-    flavor_text: String,
-    #[serde(rename = "uiItemDisplayStyle")]
-    ui_item_display_style: String,
-    #[serde(rename = "itemTypeAndTierDisplayName")]
-    item_type_and_tier_display_name: String,
-    #[serde(rename = "displaySource")]
-    display_source: String,
-    #[serde(rename = "tooltipStyle")]
-    tooltip_style: String,
-    action: DestinyItemActionBlockDefinition,
-    crafting: DestinyItemCraftingBlockDefinition,
+    tooltip_notifications: Option<Vec<DestinyItemTooltipNotification>>,
+    collectible_hash: Option<u32>,
+    icon_watermark: Option<String>,
+    icon_watermark_shelved: Option<String>,
+    secondary_icon: Option<String>,
+    secondary_overlay: Option<String>,
+    secondary_special: Option<String>,
+    background_color: Option<DestinyColor>,
+    screenshot: Option<String>,
+    item_type_display_name: Option<String>,
+    flavor_text: Option<String>,
+    ui_item_display_style: Option<String>,
+    item_type_and_tier_display_name: Option<String>,
+    display_source: Option<String>,
+    tooltip_style: Option<String>,
+    action: Option<DestinyItemActionBlockDefinition>,
+    crafting: Option<DestinyItemCraftingBlockDefinition>,
     inventory: DestinyItemInventoryBlockDefinition,
-    #[serde(rename = "setData")]
-    set_data: DestinyItemSetBlockDefinition,
-    stats: DestinyItemStatBlockDefinition,
-    #[serde(rename = "emblemObjectiveHash")]
-    emblem_objective_hash: u32,
-    #[serde(rename = "equippingBlock")]
-    equipping_block: DestinyEquippingBlockDefinition,
-    #[serde(rename = "translationBlock")]
-    translation_block: DestinyItemTranslationBlockDefinition,
-    preview: DestinyItemPreviewBlockDefinition,
-    quality: DestinyItemQualityBlockDefinition,
-    value: DestinyItemValueBlockDefinition,
-    #[serde(rename = "sourceData")]
-    source_data: DestinyItemSourceBlockDefinition,
-    objectives: DestinyItemObjectiveBlockDefinition,
-    metrics: DestinyItemMetricBlockDefinition,
-    plug: DestinyItemPlugDefinition,
-    gearset: DestinyItemGearsetBlockDefinition,
-    sack: DestinyItemSackBlockDefinition,
-    sockets: DestinyItemSocketBlockDefinition,
-    summary: DestinyItemSummaryBlockDefinition,
-    #[serde(rename = "talentGrid")]
-    talent_grid: DestinyItemTalentGridBlockDefinition,
-    #[serde(rename = "investmentStats")]
-    investment_stats: Vec<DestinyItemInvestmentStatDefinition>,
-    perks: Vec<DestinyItemPerkEntryDefinition>,
-    #[serde(rename = "loreHash")]
-    lore_hash: u32,
-    #[serde(rename = "summaryItemHash")]
-    summary_item_hash: u32,
-    animations: Vec<DestinyAnimationReference>,
-    #[serde(rename = "allowActions")]
+    set_data: Option<DestinyItemSetBlockDefinition>,
+    stats: Option<DestinyItemStatBlockDefinition>,
+    emblem_objective_hash: Option<u32>,
+    equipping_block: Option<DestinyEquippingBlockDefinition>,
+    translation_block: Option<DestinyItemTranslationBlockDefinition>,
+    preview: Option<DestinyItemPreviewBlockDefinition>,
+    quality: Option<DestinyItemQualityBlockDefinition>,
+    value: Option<DestinyItemValueBlockDefinition>,
+    source_data: Option<DestinyItemSourceBlockDefinition>,
+    objectives: Option<DestinyItemObjectiveBlockDefinition>,
+    metrics: Option<DestinyItemMetricBlockDefinition>,
+    plug: Option<DestinyItemPlugDefinition>,
+    gearset: Option<DestinyItemGearsetBlockDefinition>,
+    sack: Option<DestinyItemSackBlockDefinition>,
+    sockets: Option<DestinyItemSocketBlockDefinition>,
+    summary: Option<DestinyItemSummaryBlockDefinition>,
+    talent_grid: Option<DestinyItemTalentGridBlockDefinition>,
+    investment_stats: Option<Vec<DestinyItemInvestmentStatDefinition>>,
+    perks: Option<Vec<DestinyItemPerkEntryDefinition>>,
+    lore_hash: Option<u32>,
+    summary_item_hash: Option<u32>,
+    animations: Option<Vec<DestinyAnimationReference>>,
     allow_actions: bool,
-    links: Vec<HyperlinkReference>,
-    #[serde(rename = "doesPostmasterPullHaveSideEffects")]
+    links: Option<Vec<HyperlinkReference>>,
     does_postmaster_pull_have_side_effects: bool,
-    #[serde(rename = "nonTransferrable")]
     non_transferrable: bool,
-    #[serde(rename = "itemCategoryHashes")]
-    item_category_hashes: Vec<u32>,
-    #[serde(rename = "specialItemType")]
+    item_category_hashes: Option<Vec<u32>>,
     special_item_type: i32,
-    #[serde(rename = "itemType")]
     item_type: i32,
-    #[serde(rename = "itemSubType")]
     item_sub_type: i32,
-    #[serde(rename = "classType")]
     class_type: i32,
-    #[serde(rename = "breakerType")]
     breaker_type: i32,
-    #[serde(rename = "breakerTypeHash")]
-    breaker_type_hash: u32,
+    breaker_type_hash: Option<u32>,
     equippable: bool,
-    #[serde(rename = "damageTypeHashes")]
-    damage_type_hashes: Vec<u32>,
-    #[serde(rename = "damageTypes")]
-    damage_types: Vec<i32>,
-    #[serde(rename = "defaultDamageType")]
+    damage_type_hashes: Option<Vec<u32>>,
+    damage_types: Option<Vec<i32>>,
     default_damage_type: i32,
-    #[serde(rename = "defaultDamageTypeHash")]
-    default_damage_type_hash: u32,
-    #[serde(rename = "seasonHash")]
-    season_hash: u32,
-    #[serde(rename = "isWrapper")]
+    default_damage_type_hash: Option<u32>,
+    season_hash: Option<u32>,
     is_wrapper: bool,
-    #[serde(rename = "traitIds")]
-    traid_ids: Vec<String>,
-    #[serde(rename = "traitHashes")]
-    trait_hashes: Vec<u32>,
+    trait_ids: Option<Vec<String>>,
+    trait_hashes: Option<Vec<u32>>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyInventoryItemStatDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyInventoryItemStatDefinition {
-    #[serde(rename = "statHash")]
     stat_hash: u32,
     value: i32,
     minimum: i32,
     maximum: i32,
-    #[serde(rename = "displayMaximum")]
-    display_maximum: i32,
+    display_maximum: Option<i32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemActionBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemActionBlockDefinition {
-    #[serde(rename = "verbName")]
     verb_name: String,
-    #[serde(rename = "verbDescription")]
     verb_description: String,
-    #[serde(rename = "isPositive")]
     is_positive: bool,
-    #[serde(rename = "overlayScreenName")]
-    overlay_screen_name: String,
-    #[serde(rename = "overlayIcon")]
-    overlay_icon: String,
-    #[serde(rename = "requiredCooldownSeconds")]
+    overlay_screen_name: Option<String>,
+    overlay_icon: Option<String>,
     required_cooldown_seconds: i32,
-    #[serde(rename = "requiredItems")]
     required_items: Vec<DestinyItemActionRequiredItemDefinition>,
-    #[serde(rename = "progressionRewards")]
     progression_rewards: Vec<DestinyProgressionRewardDefinition>,
-    #[serde(rename = "actionTypeLabel")]
-    action_type_label: String,
-    #[serde(rename = "requiredLocation")]
-    required_location: String,
-    #[serde(rename = "requiredCooldownHash")]
+    action_type_label: Option<String>,
+    required_location: Option<String>,
     required_cooldown_hash: u32,
-    #[serde(rename = "deleteOnAction")]
     delete_on_action: bool,
-    #[serde(rename = "consumeEntireStack")]
     consume_entire_stack: bool,
-    #[serde(rename = "useOnAcquire")]
     use_on_acquire: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemActionRequiredItemDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemActionRequiredItemDefinition {
     count: i32,
-    #[serde(rename = "itemHash")]
     item_hash: u32,
-    #[serde(rename = "deleteOnAction")]
     delete_on_action: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemCategoryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemCategoryDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     visible: bool,
     deprecated: bool,
-    #[serde(rename = "shortTitle")]
     short_title: String,
-    #[serde(rename = "itemTypeRegex")]
-    item_type_regex: String,
-    #[serde(rename = "grantDestinyBreakerType")]
+    item_type_regex: Option<String>,
     grant_destiny_breaker_type: i32,
-    #[serde(rename = "plugCategoryIdentifier")]
-    plug_category_identifier: String,
-    #[serde(rename = "itemTypeRegexNot")]
-    item_type_regex_not: String,
-    #[serde(rename = "originBucketIdentifier")]
-    origin_bucket_identifier: String,
-    #[serde(rename = "grantDestinyItemType")]
+    plug_category_identifier: Option<String>,
+    item_type_regex_not: Option<String>,
+    origin_bucket_identifier: Option<String>,
     grant_destiny_item_type: i32,
-    #[serde(rename = "grantDestinySubType")]
     grant_destiny_sub_type: i32,
-    #[serde(rename = "grantDestinyClass")]
     grant_destiny_class: i32,
-    #[serde(rename = "traitId")]
-    trait_id: String,
-    #[serde(rename = "groupedCategoryHashes")]
+    trait_id: Option<String>,
     grouped_category_hashes: Vec<u32>,
-    #[serde(rename = "parentCategoryHashes")]
     parent_category_hashes: Vec<u32>,
-    #[serde(rename = "groupCategoryOnly")]
     group_category_only: bool,
     hash: u32,
     index: i32,
@@ -1297,402 +1024,305 @@ pub struct DestinyItemCategoryDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemCraftingBlockBonusPlugDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemCraftingBlockBonusPlugDefinition {
-    #[serde(rename = "socketTypeHash")]
     socket_type_hash: u32,
-    #[serde(rename = "plugItemHash")]
     plug_item_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemCraftingBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemCraftingBlockDefinition {
-    #[serde(rename = "outputItemHash")]
     output_item_hash: u32,
-    #[serde(rename = "requiredSocketTypeHashes")]
     required_socket_type_hashes: Vec<u32>,
-    #[serde(rename = "failedRequirementStrings")]
     failed_requirement_strings: Vec<String>,
-    #[serde(rename = "baseMaterialRequirements")]
-    base_material_requirements: u32,
-    #[serde(rename = "bonusPlugs")]
+    base_material_requirements: Option<u32>,
     bonus_plugs: Vec<DestinyItemCraftingBlockBonusPlugDefinition>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemCreationEntryLevelDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemCreationEntryLevelDefinition {
     level: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemGearsetBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemGearsetBlockDefinition {
-    #[serde(rename = "trackingValueMax")]
     tracking_value_max: i32,
-    #[serde(rename = "itemList")]
     item_list: Vec<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemIntrinsicSocketEntryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemIntrinsicSocketEntryDefinition {
-    #[serde(rename = "plugItemHash")]
     plug_item_hash: u32,
-    #[serde(rename = "socketTypeHash")]
     socket_type_hash: u32,
-    #[serde(rename = "defaultVisible")]
     default_visible: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemInventoryBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemInventoryBlockDefinition {
-    #[serde(rename = "stackUniqueLabel")]
-    stack_unique_label: String,
-    #[serde(rename = "maxStackSize")]
+    stack_unique_label: Option<String>,
     max_stack_size: i32,
-    #[serde(rename = "bucketTypeHash")]
     bucket_type_hash: u32,
-    #[serde(rename = "recoveryBucketTypeHash")]
     recovery_bucket_type_hash: u32,
-    #[serde(rename = "tierTypeHash")]
     tier_type_hash: u32,
-    #[serde(rename = "isInstanceItem")]
     is_instance_item: bool,
-    #[serde(rename = "tierTypeName")]
-    tier_type_name: String,
-    #[serde(rename = "tierType")]
+    tier_type_name: Option<String>,
     tier_type: i32,
-    #[serde(rename = "expirationTooltip")]
-    expiration_tooltip: String,
-    #[serde(rename = "expiredInActivityMessage")]
-    expired_in_activity_message: String,
-    #[serde(rename = "expiredInOrbitMessage")]
-    expired_in_orbit_message: String,
-    #[serde(rename = "suppressExpirationWhenObjectivesComplete")]
+    expiration_tooltip: Option<String>,
+    expired_in_activity_message: Option<String>,
+    expired_in_orbit_message: Option<String>,
     suppress_expiration_when_objectives_complete: bool,
-    #[serde(rename = "recipeItemHash")]
-    recipe_item_hash: u32,
+    recipe_item_hash: Option<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemInvestmentStatDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemInvestmentStatDefinition {
-    #[serde(rename = "statTypeHash")]
     stat_type_hash: u32,
     value: i32,
-    #[serde(rename = "isConditionallyActive")]
     is_conditionally_active: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemMetricBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemMetricBlockDefinition {
-    #[serde(rename = "availableMetricCategoryNodeHashes")]
     available_metric_category_node_hashes: Vec<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemObjectiveBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemObjectiveBlockDefinition {
-    #[serde(rename = "objectiveHashes")]
     objective_hashes: Vec<u32>,
-    #[serde(rename = "displayActivityHashes")]
     display_activity_hashes: Vec<u32>,
-    #[serde(rename = "requireFullObjectiveCompletion")]
     require_full_objective_completion: bool,
-    #[serde(rename = "questlineItemHash")]
     questline_item_hash: u32,
     narrative: String,
-    #[serde(rename = "objectiveVerbName")]
     objective_verb_name: String,
-    #[serde(rename = "questTypeIdentifier")]
     quest_type_identifier: String,
-    #[serde(rename = "questTypeHash")]
     quest_type_hash: u32,
-    #[serde(rename = "perObjectiveDisplayProperties")]
     per_objective_display_properties: Vec<DestinyObjectiveDisplayProperties>,
-    #[serde(rename = "displayAsStatTracker")]
     display_as_stat_tracker: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemPerkEntryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemPerkEntryDefinition {
-    #[serde(rename = "requirementDisplayString")]
     requirement_display_string: String,
-    #[serde(rename = "perkHash")]
     perk_hash: u32,
-    #[serde(rename = "perkVisibility")]
     perk_visibility: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemPlugDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemPlugDefinition {
-    #[serde(rename = "insertionRules")]
     insertion_rules: Vec<DestinyPlugRuleDefinition>,
-    #[serde(rename = "plugCategoryIdentifier")]
     plug_category_identifier: String,
-    #[serde(rename = "plugCategoryHash")]
     plug_category_hash: u32,
-    #[serde(rename = "onActionRecreateSelf")]
     on_action_recreate_self: bool,
-    #[serde(rename = "insertionMaterialRequirementHash")]
     insertion_material_requirement_hash: u32,
-    #[serde(rename = "previewItemOverrideHash")]
     preview_item_override_hash: u32,
-    #[serde(rename = "enabledMaterialRequirementHash")]
     enabled_material_requirement_hash: u32,
-    #[serde(rename = "enabledRules")]
     enabled_rules: Vec<DestinyPlugRuleDefinition>,
-    #[serde(rename = "uiPlugLabel")]
     ui_plug_label: String,
-    #[serde(rename = "plugStyle")]
     plug_style: i32,
-    #[serde(rename = "plugAvailability")]
     plug_availability: i32,
-    #[serde(rename = "alternateUiPlugLabel")]
     alternate_ui_plug_label: String,
-    #[serde(rename = "alternatePlugStyle")]
     alternate_plug_style: i32,
-    #[serde(rename = "isDummyPlug")]
     is_dummy_plug: bool,
-    #[serde(rename = "parentItemOverride")]
-    parent_item_override: DestinyParentItemOverride,
-    #[serde(rename = "energyCapacity")]
-    energy_capacity: DestinyEnergyCapacityEntry,
-    #[serde(rename = "energyCost")]
-    energy_cost: DestinyEnergyCostEntry,
+    parent_item_override: Option<DestinyParentItemOverride>,
+    energy_capacity: Option<DestinyEnergyCapacityEntry>,
+    energy_cost: Option<DestinyEnergyCostEntry>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemPreviewBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemPreviewBlockDefinition {
-    #[serde(rename = "screenStyle")]
     screen_style: String,
-    #[serde(rename = "previewVendorHash")]
     preview_vendor_hash: u32,
-    #[serde(rename = "artifactHash")]
-    artifact_hash: u32,
-    #[serde(rename = "previewActionString")]
+    artifact_hash: Option<u32>,
     preview_action_string: String,
-    #[serde(rename = "derivedItemCategories")]
-    derived_item_categories: Vec<DestinyDerivedItemCategoryDefinition>,
+    derived_item_categories: Option<Vec<DestinyDerivedItemCategoryDefinition>>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemQualityBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemQualityBlockDefinition {
-    #[serde(rename = "itemLevels")]
     item_levels: Vec<i32>,
-    #[serde(rename = "qualityLevel")]
     quality_level: i32,
-    #[serde(rename = "infusionCategoryName")]
     infusion_category_name: String,
-    #[serde(rename = "infusionCategoryHash")]
     infusion_category_hash: u32,
-    #[serde(rename = "infusionCategoryHashes")]
     infusion_category_hashes: Vec<u32>,
-    #[serde(rename = "progressionLevelRequirementHash")]
-    progression_level_requirement: u32,
-    #[serde(rename = "currentVersion")]
+    progression_level_requirement: Option<u32>,
     current_version: u32,
     versions: Vec<DestinyItemVersionDefinition>,
-    #[serde(rename = "displayVersionWatermarkIcons")]
     display_version_watermark_icons: Vec<String>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.DestinyItemQuantity
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemQuantity {
-    #[serde(rename = "itemHash")]
     item_hash: u32,
-    #[serde(rename = "itemInstanceId")]
-    item_instance_id: i64,
+    item_instance_id: Option<i64>,
     quantity: i32,
-    #[serde(rename = "hasConditionalVisibility")]
     has_conditional_visibility: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSackBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemSackBlockDefinition {
-    #[serde(rename = "detailAction")]
     detail_action: String,
-    #[serde(rename = "openAction")]
     open_action: String,
-    #[serde(rename = "selectItemCount")]
     select_item_count: i32,
-    #[serde(rename = "vendorSackType")]
-    vendor_sack_type: String,
-    #[serde(rename = "openOnAcquire")]
+    vendor_sack_type: Option<String>,
     open_on_acquire: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSetBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemSetBlockDefinition {
-    #[serde(rename = "itemList")]
     item_list: Vec<DestinyItemSetBlockEntryDefinition>,
-    #[serde(rename = "requireOrderedSetItemAdd")]
     require_ordered_set_item_add: bool,
-    #[serde(rename = "setIsFeatured")]
     set_is_featured: bool,
-    #[serde(rename = "setType")]
     set_type: String,
-    #[serde(rename = "questLineName")]
     quest_line_name: String,
-    #[serde(rename = "questLineDescription")]
     quest_line_description: String,
-    #[serde(rename = "questStepSummary")]
     quest_step_summary: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSetBlockEntryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemSetBlockEntryDefinition {
-    #[serde(rename = "trackingValue")]
     tracking_value: i32,
-    #[serde(rename = "itemHash")]
     item_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSocketBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemSocketBlockDefinition {
     detail: String,
-    #[serde(rename = "socketEntries")]
     socket_entries: Vec<DestinyItemSocketEntryDefinition>,
-    #[serde(rename = "intrinsicSockets")]
     intrinsic_sockets: Vec<DestinyItemIntrinsicSocketEntryDefinition>,
-    #[serde(rename = "socketCategories")]
     socket_categories: Vec<DestinyItemSocketCategoryDefinition>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSocketCategoryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemSocketCategoryDefinition {
-    #[serde(rename = "socketCategoryHash")]
     socket_category_hash: u32,
-    #[serde(rename = "socketIndexes")]
     socket_indexes: Vec<i32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSocketEntryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemSocketEntryDefinition {
-    #[serde(rename = "socketTypeHash")]
     socket_type_hash: u32,
-    #[serde(rename = "singleInitialItemHash")]
     single_initial_item_hash: u32,
-    #[serde(rename = "reusablePlugItems")]
     reusable_plug_items: Vec<DestinyItemSocketEntryPlugItemDefinition>,
-    #[serde(rename = "preventInitializationOnVendorPurchase")]
     prevent_initialization_on_vendor_purchase: bool,
-    #[serde(rename = "hidePerksInItemTooltip")]
     hide_perks_in_item_tooltip: bool,
-    #[serde(rename = "plugSources")]
     plug_sources: i32,
-    #[serde(rename = "reusablePlugSetHash")]
-    reusable_plug_set_hash: u32,
-    #[serde(rename = "randomizedPlugSetHash")]
-    randomized_plug_set_hash: u32,
-    #[serde(rename = "defaultVisible")]
+    reusable_plug_set_hash: Option<u32>,
+    randomized_plug_set_hash: Option<u32>,
     default_visible: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSocketEntryPlugItemDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemSocketEntryPlugItemDefinition {
-    #[serde(rename = "plugItemHash")]
     plug_item_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSocketEntryPlugItemRandomizedDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemSocketEntryPlugItemRandomizedDefinition {
-    #[serde(rename = "craftingRequirements")]
-    crafting_requirements: DestinyPlugItemCraftingRequirements,
-    #[serde(rename = "currentlyCanRoll")]
+    crafting_requirements: Option<DestinyPlugItemCraftingRequirements>,
     currently_can_roll: bool,
-    #[serde(rename = "plugItemHash")]
     plug_item_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSourceBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemSourceBlockDefinition {
-    #[serde(rename = "sourceHashes")]
     source_hashes: Vec<u32>,
     sources: Vec<DestinyItemSourceDefinition>,
     exclusive: i32,
-    #[serde(rename = "vendorSources")]
     vendor_sources: Vec<DestinyItemVendorSourceReference>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sources.DestinyItemSourceDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemSourceDefinition {
     level: i32,
-    #[serde(rename = "minQuality")]
     min_quality: i32,
-    #[serde(rename = "maxQuality")]
     max_quality: i32,
-    #[serde(rename = "minLevelRequired")]
     min_level_required: i32,
-    #[serde(rename = "maxLevelRequired")]
     max_level_required: i32,
-    #[serde(rename = "computedStats")]
     computed_stats: HashMap<u32, DestinyInventoryItemStatDefinition>,
-    #[serde(rename = "sourceHashes")]
     source_hashes: Vec<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemStatBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemStatBlockDefinition {
-    #[serde(rename = "disablePrimaryStatDisplay")]
     disable_primary_stat_display: bool,
-    #[serde(rename = "statGroupHash")]
-    stat_group_hash: u32,
+    stat_group_hash: Option<u32>,
     stats: HashMap<u32, DestinyInventoryItemStatDefinition>,
-    #[serde(rename = "hasDisplayableStats")]
     has_displayable_stats: bool,
-    #[serde(rename = "primaryBaseStatHash")]
     primary_base_stat_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemSummaryBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemSummaryBlockDefinition {
-    #[serde(rename = "sortPriority")]
     sort_priority: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemTalentGridBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemTalentGridBlockDefinition {
-    #[serde(rename = "talentGridHash")]
     talent_grid_hash: u32,
-    #[serde(rename = "itemDetailString")]
     item_detail_string: String,
-    #[serde(rename = "buildName")]
-    build_name: String,
-    #[serde(rename = "hudDamageType")]
+    build_name: Option<String>,
     hud_damage_type: i32,
-    #[serde(rename = "hudIcon")]
-    hud_icon: String,
+    hud_icon: Option<String>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemTierTypeDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemTierTypeDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "infusionProcess")]
     infusion_process: DestinyItemTierTypeInfusionBlock,
     hash: u32,
     index: i32,
@@ -1700,170 +1330,143 @@ pub struct DestinyItemTierTypeDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyItemTierTypeInfusionBlock
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemTierTypeInfusionBlock {
-    #[serde(rename = "baseQualityTransferRatio")]
     base_quality_transfer_ratio: f32,
-    #[serde(rename = "minimumQualityIncrement")]
     minimum_quality_increment: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemTooltipNotification
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemTooltipNotification {
-    #[serde(rename = "displayString")]
     display_string: String,
-    #[serde(rename = "displayStyle")]
     display_style: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemTranslationBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemTranslationBlockDefinition {
-    #[serde(rename = "weaponPatternIdentifier")]
-    weapon_pattern_identifier: String,
-    #[serde(rename = "weaponPatternHash")]
+    weapon_pattern_identifier: Option<String>,
     weapon_pattern_hash: u32,
-    #[serde(rename = "defaultDyes")]
     default_dyes: Vec<DyeReference>,
-    #[serde(rename = "lockedDyes")]
     locked_dyes: Vec<DyeReference>,
-    #[serde(rename = "customDyes")]
     custom_dyes: Vec<DyeReference>,
     arrangements: Vec<DestinyGearArtArrangementReference>,
-    #[serde(rename = "hasGeometry")]
     has_geometry: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemValueBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemValueBlockDefinition {
-    #[serde(rename = "itemValue")]
     item_value: Vec<DestinyItemQuantity>,
-    #[serde(rename = "valueDescription")]
     value_description: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemVendorSourceReference
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemVendorSourceReference {
-    #[serde(rename = "vendorHash")]
     vendor_hash: u32,
-    #[serde(rename = "vendorItemIndexes")]
     vendor_item_indexes: Vec<i32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyItemVersionDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyItemVersionDefinition {
-    #[serde(rename = "powerCapHash")]
     power_cap_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyLinkedGraphDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyLinkedGraphDefinition {
     description: String,
     name: String,
-    #[serde(rename = "unlockExpression")]
     unlock_expression: DestinyUnlockExpressionDefinition,
-    #[serde(rename = "linkedGraphId")]
     linked_graph_id: u32,
-    #[serde(rename = "linkedGraphs")]
     linked_graphs: Vec<DestinyLinkedGraphEntryDefinition>,
     overview: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Director.DestinyLinkedGraphEntryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyLinkedGraphEntryDefinition {
-    #[serde(rename = "activityGraphHash")]
     activity_graph_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyLocationDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyLocationDefinition {
-    #[serde(rename = "vendorHash")]
     vendor_hash: u32,
-    #[serde(rename = "locationReleases")]
-    location_releases: Vec<DestinyLocationReleaseDefinition>,
+    location_releases: Option<Vec<DestinyLocationReleaseDefinition>>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyLocationReleaseDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyLocationReleaseDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "smallTransparentIcon")]
-    small_transparent_icon: String,
-    #[serde(rename = "mapIcon")]
-    map_icon: String,
-    #[serde(rename = "largeTransparentIcon")]
-    large_transparent_icon: String,
-    #[serde(rename = "spawnPoint")]
+    small_transparent_icon: Option<String>,
+    map_icon: Option<String>,
+    large_transparent_icon: Option<String>,
     spawn_point: u32,
-    #[serde(rename = "destinationHash")]
     destination_hash: u32,
-    #[serde(rename = "activityHash")]
     activity_hash: u32,
-    #[serde(rename = "activityGraphHash")]
     activity_graph_hash: u32,
-    #[serde(rename = "activityGraphNodeHash")]
     activity_graph_node_hash: u32,
-    #[serde(rename = "activityBubbleName")]
     activity_bubble_name: u32,
-    #[serde(rename = "activityPathBundle")]
     activity_path_bundle: u32,
-    #[serde(rename = "activityPathDestination")]
     activity_path_destination: u32,
-    #[serde(rename = "navPointType")]
     nav_point_type: i32,
-    #[serde(rename = "worldPosition")]
     world_position: Vec<i32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Lore.DestinyLoreDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyLoreDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    subtitle: String,
+    subtitle: Option<String>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyMaterialRequirement
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMaterialRequirement {
-    #[serde(rename = "itemHash")]
     item_hash: u32,
-    #[serde(rename = "deleteOnAction")]
     delete_on_action: bool,
     count: i32,
-    #[serde(rename = "countIsConstant")]
     count_is_constant: bool,
-    #[serde(rename = "omitFromRequirements")]
     omit_from_requirements: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyMaterialRequirementSetDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMaterialRequirementSetDefinition {
-    materials: Vec<DestinyMaterialRequirement>,
+    materials: Option<Vec<DestinyMaterialRequirement>>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyMedalTierDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMedalTierDefinition {
-    #[serde(rename = "tierName")]
     tier_name: String,
     order: i32,
     hash: u32,
@@ -1872,21 +1475,15 @@ pub struct DestinyMedalTierDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Metrics.DestinyMetricDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMetricDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "trackingObjectiveHash")]
     tracking_objective_hash: u32,
-    #[serde(rename = "lowerValueIsBetter")]
     lower_value_is_better: bool,
-    #[serde(rename = "presentationNodeType")]
     presentation_node_type: i32,
-    #[serde(rename = "traitIds")]
     trait_ids: Vec<String>,
-    #[serde(rename = "traitHashes")]
     trait_hashes: Vec<u32>,
-    #[serde(rename = "parentNodeHashes")]
     parent_node_hashes: Vec<u32>,
     hash: u32,
     index: i32,
@@ -1894,86 +1491,74 @@ pub struct DestinyMetricDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneActivityDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneActivityDefinition {
-    #[serde(rename = "conceptualActivityHash")]
     conceptual_activity_hash: u32,
     variants: HashMap<u32, DestinyMilestoneActivityVariantDefinition>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneActivityVariantDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneActivityVariantDefinition {
-    #[serde(rename = "activityHash")]
     activity_hash: u32,
     order: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneChallengeActivityDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneChallengeActivityDefinition {
-    #[serde(rename = "activityHash")]
     activity_hash: u32,
     challenges: Vec<DestinyMilestoneChallengeDefinition>,
-    #[serde(rename = "activityGraphNodes")]
     activity_graph_nodes: Vec<DestinyMilestoneChallengeActivityGraphNodeEntry>,
-    phases: Vec<DestinyMilestoneChallengeActivityPhase>,
+    phases: Option<Vec<DestinyMilestoneChallengeActivityPhase>>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneChallengeActivityGraphNodeEntry
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneChallengeActivityGraphNodeEntry {
-    #[serde(rename = "activityGraphHash")]
     activity_graph_hash: u32,
-    #[serde(rename = "activityGraphNodeHash")]
     activity_graph_node_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneChallengeActivityPhase
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneChallengeActivityPhase {
-    #[serde(rename = "phaseHash")]
     phase_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneChallengeDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneChallengeDefinition {
-    #[serde(rename = "challengeObjectiveHash")]
     challenge_objective_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "displayPreference")]
-    display_preference: i32,
-    image: String,
-    #[serde(rename = "milestoneType")]
+    display_preference: Option<i32>,
+    image: Option<String>,
     milestone_type: i32,
     recruitable: bool,
-    #[serde(rename = "friendlyName")]
-    friendly_name: String,
-    #[serde(rename = "showInExplorer")]
+    friendly_name: Option<String>,
     show_in_explorer: bool,
-    #[serde(rename = "showInMilestones")]
     show_in_milestones: bool,
-    #[serde(rename = "explorePrioritizesActivityImage")]
     explore_prioritizes_activity_image: bool,
-    #[serde(rename = "hasPredictableDates")]
     has_predictable_dates: bool,
-    quests: HashMap<u32, DestinyMilestoneQuestDefinition>,
-    rewards: HashMap<u32, DestinyMilestoneRewardCategoryDefinition>,
-    #[serde(rename = "vendorsDisplayTitle")]
-    vendors_display_title: String,
-    vendors: Vec<DestinyMilestoneVendorDefinition>,
-    values: HashMap<String, DestinyMilestoneValueDefinition>,
-    #[serde(rename = "isInGameMilestone")]
+    quests: Option<HashMap<u32, DestinyMilestoneQuestDefinition>>,
+    rewards: Option<HashMap<u32, DestinyMilestoneRewardCategoryDefinition>>,
+    vendors_display_title: Option<String>,
+    vendors: Option<Vec<DestinyMilestoneVendorDefinition>>,
+    values: Option<HashMap<String, DestinyMilestoneValueDefinition>>,
     is_in_game_milestone: bool,
-    activities: Vec<DestinyMilestoneChallengeActivityDefinition>,
-    #[serde(rename = "defaultOrder")]
+    activities: Option<Vec<DestinyMilestoneChallengeActivityDefinition>>,
     default_order: i32,
     hash: u32,
     index: i32,
@@ -1981,179 +1566,134 @@ pub struct DestinyMilestoneDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneQuestDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneQuestDefinition {
-    #[serde(rename = "questItemHash")]
     quest_item_hash: u32,
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "overrideImage")]
-    override_image: String,
-    #[serde(rename = "questRewards")]
-    quest_rewards: DestinyMilestoneQuestRewardsDefinition,
-    activities: HashMap<u32, DestinyMilestoneActivityDefinition>,
-    #[serde(rename = "destinationHash")]
-    destination_hash: u32,
+    override_image: Option<String>,
+    quest_rewards: Option<DestinyMilestoneQuestRewardsDefinition>,
+    activities: Option<HashMap<u32, DestinyMilestoneActivityDefinition>>,
+    destination_hash: Option<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneQuestRewardsDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneQuestRewardsDefinition {
     items: Vec<DestinyMilestoneQuestRewardItem>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneQuestRewardItem
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneQuestRewardItem {
-    #[serde(rename = "vendorHash")]
-    vendor_hash: u32,
-    #[serde(rename = "vendorItemIndex")]
-    vendor_item_index: i32,
-    #[serde(rename = "itemHash")]
+    vendor_hash: Option<u32>,
+    vendor_item_index: Option<i32>,
     item_hash: u32,
-    #[serde(rename = "itemInstanceId")]
-    item_instance_id: i64,
+    item_instance_id: Option<i64>,
     quantity: i32,
-    #[serde(rename = "hasConditionalVisibility")]
     has_conditional_visibility: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneRewardCategoryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneRewardCategoryDefinition {
-    #[serde(rename = "categoryHash")]
     category_hash: u32,
-    #[serde(rename = "categoryIdentifier")]
     category_identifier: String,
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "rewardEntries")]
     reward_entries: HashMap<u32, DestinyMilestoneRewardEntryDefinition>,
     order: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneRewardEntryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneRewardEntryDefinition {
-    #[serde(rename = "rewardEntryHash")]
     reward_entry_hash: u32,
-    #[serde(rename = "rewardEntryIdentifier")]
     reward_entry_identifier: String,
     items: Vec<DestinyItemQuantity>,
-    #[serde(rename = "vendorHash")]
-    vendor_hash: u32,
-    #[serde(rename = "displayProperties")]
+    vendor_hash: Option<u32>,
     display_properties: DestinyDisplayPropertiesDefinition,
     order: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneValueDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneValueDefinition {
     key: String,
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Milestones.DestinyMilestoneVendorDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyMilestoneVendorDefinition {
-    #[serde(rename = "vendorHash")]
     vendor_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyNodeActivationRequirement
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyNodeActivationRequirement {
-    #[serde(rename = "gridLevel")]
     grid_level: i32,
-    #[serde(rename = "materialRequirementHashes")]
     material_requirement_hashes: Vec<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyNodeSocketReplaceResponse
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyNodeSocketReplaceResponse {
-    #[serde(rename = "socketTypeHash")]
     socket_type_hash: u32,
-    #[serde(rename = "plugItemHash")]
     plug_item_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyNodeStepDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyNodeStepDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "stepIndex")]
     step_index: i32,
-    #[serde(rename = "nodeStepHash")]
     node_step_hash: u32,
-    #[serde(rename = "interactionDescription")]
     interaction_description: String,
-    #[serde(rename = "damageType")]
     damage_type: i32,
-    #[serde(rename = "damageTypeHash")]
-    damage_type_hash: u32,
-    #[serde(rename = "activationRequirement")]
+    damage_type_hash: Option<u32>,
     activation_requirement: DestinyNodeActivationRequirement,
-    #[serde(rename = "canActivateNextStep")]
     can_activate_next_step: bool,
-    #[serde(rename = "nextStepIndex")]
     next_step_index: i32,
-    #[serde(rename = "isNextStepRandom")]
     is_next_step_random: bool,
-    #[serde(rename = "perkHashes")]
     perk_hashes: Vec<u32>,
-    #[serde(rename = "startProgressionBarAtProgress")]
     start_progression_bar_at_progress: i32,
-    #[serde(rename = "statHashes")]
     stat_hashes: Vec<u32>,
-    #[serde(rename = "affectsQuality")]
     affects_quality: bool,
-    #[serde(rename = "stepGroups")]
-    step_groups: DestinyTalentNodeStepGroups,
-    #[serde(rename = "affectsLevel")]
+    step_groups: Option<DestinyTalentNodeStepGroups>,
     affects_level: bool,
-    #[serde(rename = "socketReplacements")]
-    socket_replacements: Vec<DestinyNodeSocketReplaceResponse>,
+    socket_replacements: Option<Vec<DestinyNodeSocketReplaceResponse>>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyObjectiveDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "completionValue")]
     completion_value: i32,
     scope: i32,
-    #[serde(rename = "locationHash")]
     location_hash: u32,
-    #[serde(rename = "allowNegativeValue")]
     allow_negative_value: bool,
-    #[serde(rename = "allowValueChangeWhenCompleted")]
     allow_value_change_when_completed: bool,
-    #[serde(rename = "isCountingDownward")]
     is_counting_downward: bool,
-    #[serde(rename = "valueStyle")]
     value_style: i32,
-    #[serde(rename = "progressDescription")]
     progress_description: String,
-    perks: DestinyObjectivePerkEntryDefinition,
-    stats: DestinyObjectiveStatEntryDefinition,
-    #[serde(rename = "minimumVisibilityThreshold")]
+    perks: Option<DestinyObjectivePerkEntryDefinition>,
+    stats: Option<DestinyObjectiveStatEntryDefinition>,
     minimum_visibility_threshold: i32,
-    #[serde(rename = "allowOvercompletion")]
     allow_overcompletion: bool,
-    #[serde(rename = "showValueOnComplete")]
     show_value_on_complete: bool,
-    #[serde(rename = "completedValueStyle")]
     completed_value_style: i32,
-    #[serde(rename = "inProgressValueStyle")]
     in_progress_value_style: i32,
-    #[serde(rename = "uiLabel")]
-    ui_label: String,
-    #[serde(rename = "uiStyle")]
+    ui_label: Option<String>,
     ui_style: i32,
     hash: u32,
     index: i32,
@@ -2161,42 +1701,41 @@ pub struct DestinyObjectiveDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveDisplayProperties
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyObjectiveDisplayProperties {
-    #[serde(rename = "activityHash")]
-    activity_hash: u32,
-    #[serde(rename = "displayOnItemPreviewScreen")]
+    activity_hash: Option<u32>,
     display_on_item_preview_screen: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectivePerkEntryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyObjectivePerkEntryDefinition {
-    #[serde(rename = "perkHash")]
     perk_hash: u32,
     style: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyObjectiveStatEntryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyObjectiveStatEntryDefinition {
-    stat: DestinyItemInvestmentStatDefinition,
+    stat: Option<DestinyItemInvestmentStatDefinition>,
     style: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyParentItemOverride
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyParentItemOverride {
-    #[serde(rename = "additionalEquipRequirementsDisplayStrings")]
     additional_equip_requirements_display_strings: Vec<String>,
-    #[serde(rename = "pipIcon")]
     pip_icon: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyPlaceDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPlaceDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     hash: u32,
     index: i32,
@@ -2204,38 +1743,34 @@ pub struct DestinyPlaceDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyPlugItemCraftingRequirements
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPlugItemCraftingRequirements {
-    #[serde(rename = "unlockRequirements")]
     unlock_requirements: Vec<DestinyPlugItemCraftingUnlockRequirement>,
-    #[serde(rename = "requiredLevel")]
-    required_level: i32,
-    #[serde(rename = "materialRequirementHashes")]
+    required_level: Option<i32>,
     material_requirement_hashes: Vec<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyPlugItemCraftingUnlockRequirement
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPlugItemCraftingUnlockRequirement {
-    #[serde(rename = "failureDescription")]
     failure_description: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Items.DestinyPlugRuleDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPlugRuleDefinition {
-    #[serde(rename = "failureMessage")]
     failure_message: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinyPlugSetDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPlugSetDefinition {
-    #[serde(rename = "displayProperties")]
-    display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "reusablePlugItems")]
-    reusable_plug_items: Vec<DestinyItemSocketEntryPlugItemRandomizedDefinition>,
-    #[serde(rename = "isFakePlugSet")]
+    display_properties: Option<DestinyDisplayPropertiesDefinition>,
+    reusable_plug_items: Option<Vec<DestinyItemSocketEntryPlugItemRandomizedDefinition>>,
     is_fake_plug_set: bool,
     hash: u32,
     index: i32,
@@ -2243,18 +1778,17 @@ pub struct DestinyPlugSetDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinyPlugWhitelistEntryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPlugWhitelistEntryDefinition {
-    #[serde(rename = "categoryHash")]
     category_hash: u32,
-    #[serde(rename = "categoryIdentifier")]
     category_identifier: String,
-    #[serde(rename = "reinitializationPossiblePlugHashes")]
-    reinitialization_possible_plug_hashes: Vec<u32>,
+    reinitialization_possible_plug_hashes: Option<Vec<u32>>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Common.DestinyPositionDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPositionDefinition {
     x: i32,
     y: i32,
@@ -2262,9 +1796,9 @@ pub struct DestinyPositionDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.PowerCaps.DestinyPowerCapDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPowerCapDefinition {
-    #[serde(rename = "powerCap")]
     power_cap: i32,
     hash: u32,
     index: i32,
@@ -2272,20 +1806,18 @@ pub struct DestinyPowerCapDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationChildBlock
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPresentationChildBlock {
-    #[serde(rename = "presentationNodeType")]
     presentation_node_type: i32,
-    #[serde(rename = "parentPresentationNodeHashes")]
     parent_presentation_node_hashes: Vec<u32>,
-    #[serde(rename = "displayStyle")]
     display_style: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeChildrenBlock
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPresentationNodeChildrenBlock {
-    #[serde(rename = "presentationNodes")]
     presentation_nodes: Vec<DestinyPresentationNodeChildEntry>,
     collectibles: Vec<DestinyPresentationNodeCollectibleChildEntry>,
     records: Vec<DestinyPresentationNodeRecordChildEntry>,
@@ -2294,83 +1826,65 @@ pub struct DestinyPresentationNodeChildrenBlock {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeChildEntry
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPresentationNodeChildEntry {
-    #[serde(rename = "presentationNodeHash")]
     presentation_node_hash: u32,
-    #[serde(rename = "nodeDisplayPriority")]
     node_display_priority: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeCollectibleChildEntry
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPresentationNodeCollectibleChildEntry {
-    #[serde(rename = "collectibleHash")]
     collectible_hash: u32,
-    #[serde(rename = "nodeDisplayPriority")]
     node_display_priority: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeCraftableChildEntry
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPresentationNodeCraftableChildEntry {
-    #[serde(rename = "craftableItemHash")]
     craftable_item_hash: u32,
-    #[serde(rename = "nodeDisplayPriority")]
     node_display_priority: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeMetricChildEntry
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPresentationNodeMetricChildEntry {
-    #[serde(rename = "metricHash")]
     metric_hash: u32,
-    #[serde(rename = "nodeDisplayPriority")]
     node_display_priority: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeRecordChildEntry
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPresentationNodeRecordChildEntry {
-    #[serde(rename = "recordHash")]
     record_hash: u32,
-    #[serde(rename = "nodeDisplayPriority")]
     node_display_priority: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPresentationNodeDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "originalIcon")]
-    original_icon: String,
-    #[serde(rename = "rootViewIcon")]
-    root_view_icon: String,
-    #[serde(rename = "nodeType")]
+    original_icon: Option<String>,
+    root_view_icon: Option<String>,
     node_type: i32,
     scope: i32,
-    #[serde(rename = "objectiveHash")]
-    objective_hash: u32,
-    #[serde(rename = "completionRecordHash")]
-    completion_record_hash: u32,
+    objective_hash: Option<u32>,
+    completion_record_hash: Option<u32>,
     children: DestinyPresentationNodeChildrenBlock,
-    #[serde(rename = "displayStyle")]
     display_style: i32,
-    #[serde(rename = "screenStyle")]
     screen_style: i32,
     requirements: DestinyPresentationNodeRequirementsBlock,
-    #[serde(rename = "disableChildSubscreenNavigation")]
     disable_child_subscreen_navigation: bool,
-    #[serde(rename = "maxCategoryRecordScore")]
     max_category_record_score: i32,
-    #[serde(rename = "presentationNodeType")]
     presentation_node_type: i32,
-    #[serde(rename = "traitIds")]
     trait_ids: Vec<String>,
-    #[serde(rename = "traitHashes")]
     trait_hashes: Vec<u32>,
-    #[serde(rename = "parentNodeHashes")]
     parent_node_hashes: Vec<u32>,
     hash: u32,
     index: i32,
@@ -2378,41 +1892,36 @@ pub struct DestinyPresentationNodeDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Presentation.DestinyPresentationNodeRequirementsBlock
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyPresentationNodeRequirementsBlock {
-    #[serde(rename = "entitlementUnavailableMessage")]
     entitlement_unavailable_message: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyProgressionDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     scope: i32,
-    #[serde(rename = "repeatLastStep")]
     repeat_last_step: bool,
-    source: String,
-    steps: Vec<DestinyProgressionStepDefinition>,
+    source: Option<String>,
+    steps: Option<Vec<DestinyProgressionStepDefinition>>,
     visible: bool,
-    #[serde(rename = "factionHash")]
-    faction_hash: u32,
-    color: DestinyColor,
-    #[serde(rename = "rankIcon")]
-    rank_icon: String,
-    #[serde(rename = "rewardItems")]
-    reward_items: Vec<DestinyProgressionRewardItemQuantity>,
+    faction_hash: Option<u32>,
+    color: Option<DestinyColor>,
+    rank_icon: Option<String>,
+    reward_items: Option<Vec<DestinyProgressionRewardItemQuantity>>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Progression.DestinyProgressionLevelRequirementDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyProgressionLevelRequirementDefinition {
-    #[serde(rename = "requirementCurve")]
     requirement_curve: Vec<InterpolationPointFloat>,
-    #[serde(rename = "progressionHash")]
     progression_hash: u32,
     hash: u32,
     index: i32,
@@ -2420,71 +1929,66 @@ pub struct DestinyProgressionLevelRequirementDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionMappingDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyProgressionMappingDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "displayUnits")]
-    display_units: String,
+    display_units: Option<String>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionRewardDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyProgressionRewardDefinition {
-    #[serde(rename = "progressionMappingHash")]
     progression_mapping_hash: u32,
     amount: i32,
-    #[serde(rename = "applyThrottles")]
     apply_throttles: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionRewardItemQuantity
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyProgressionRewardItemQuantity {
-    #[serde(rename = "rewardedAtProgressionLevel")]
     rewarded_at_progression_level: i32,
-    #[serde(rename = "acquisitionBehavior")]
     acquisition_behavior: i32,
-    #[serde(rename = "uiDisplayStyle")]
     ui_display_style: String,
-    #[serde(rename = "claimUnlockDisplayStrings")]
     claim_unlock_display_strings: Vec<String>,
-    #[serde(rename = "itemHash")]
     item_hash: u32,
-    #[serde(rename = "itemInstanceId")]
-    item_instance_id: i64,
+    item_instance_id: Option<i64>,
     quantity: i32,
-    #[serde(rename = "hasConditionalVisibility")]
     has_conditional_visibility: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyProgressionStepDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyProgressionStepDefinition {
-    #[serde(rename = "stepName")]
     step_name: String,
-    #[serde(rename = "displayEffectType")]
     display_effect_type: i32,
-    #[serde(rename = "progressTotal")]
     progress_total: i32,
-    #[serde(rename = "rewardItems")]
-    reward_items: Vec<DestinyItemQuantity>,
-    icon: String,
+    reward_items: Option<Vec<DestinyItemQuantity>>,
+    icon: Option<String>,
+}
+
+/// https://bungie-net.github.io/#/components/schemas/Destiny.DestinyRace
+#[derive(Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+pub enum DestinyRace {
+    Human = 0,
+    Awoken = 1,
+    Exo = 2,
+    Unknown = 3,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyRaceDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyRaceDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "raceType")]
     race_type: i32,
-    #[serde(rename = "genderedRaceNames")]
-    gendered_race_names: HashMap<i32, String>,
-    #[serde(rename = "genderedRaceNamesByGenderHash")]
+    gendered_race_names: HashMap<DestinyGender, String>,
     gendered_race_names_by_gender_hash: HashMap<u32, String>,
     hash: u32,
     index: i32,
@@ -2492,43 +1996,27 @@ pub struct DestinyRaceDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyRecordDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     scope: i32,
-    #[serde(rename = "presentationInfo")]
-    presentation_info: DestinyPresentationChildBlock,
-    #[serde(rename = "loreHash")]
-    lore_hash: u32,
-    #[serde(rename = "objectiveHashes")]
+    presentation_info: Option<DestinyPresentationChildBlock>,
+    lore_hash: Option<u32>,
     objective_hashes: Vec<u32>,
-    #[serde(rename = "recordValueStyle")]
     record_value_style: i32,
-    #[serde(rename = "forTitleGilding")]
     for_title_gilding: bool,
-    #[serde(rename = "shouldShowLargeIcons")]
     should_show_large_icons: bool,
-    #[serde(rename = "titleInfo")]
     title_info: DestinyRecordTitleBlock,
-    #[serde(rename = "completionInfo")]
     completion_info: DestinyRecordCompletionBlock,
-    #[serde(rename = "stateInfo")]
     state_info: SchemaRecordStateBlock,
     requirements: DestinyPresentationNodeRequirementsBlock,
-    #[serde(rename = "expirationInfo")]
     expiration_info: DestinyRecordExpirationBlock,
-    #[serde(rename = "intervalInfo")]
     interval_info: DestinyRecordIntervalBlock,
-    #[serde(rename = "rewardItems")]
     reward_items: Vec<DestinyItemQuantity>,
-    #[serde(rename = "presentationNodeType")]
     presentation_node_type: i32,
-    #[serde(rename = "traitIds")]
     trait_ids: Vec<String>,
-    #[serde(rename = "traitHashes")]
     trait_hashes: Vec<u32>,
-    #[serde(rename = "parentNodeHashes")]
     parent_node_hashes: Vec<u32>,
     hash: u32,
     index: i32,
@@ -2536,71 +2024,62 @@ pub struct DestinyRecordDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordCompletionBlock
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyRecordCompletionBlock {
-    #[serde(rename = "partialCompletionObjectiveCountThreshold")]
     partial_completion_objective_count_threshold: i32,
-    #[serde(rename = "ScoreValue")]
-    score_value: i32,
-    #[serde(rename = "shouldFireToast")]
+    score_value: Option<i32>,
     should_fire_toast: bool,
-    #[serde(rename = "toastStyle")]
     toast_style: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordExpirationBlock
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyRecordExpirationBlock {
-    #[serde(rename = "hasExpiration")]
     has_expiration: bool,
     description: String,
-    icon: String,
+    icon: Option<String>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordIntervalBlock
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyRecordIntervalBlock {
-    #[serde(rename = "intervalObjectives")]
     interval_objectives: Vec<DestinyRecordIntervalObjective>,
-    #[serde(rename = "intervalRewards")]
     interval_rewards: Vec<DestinyRecordIntervalRewards>,
-    #[serde(rename = "originalObjectiveArrayInsertionIndex")]
     original_objective_array_insertion_index: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordIntervalObjective
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyRecordIntervalObjective {
-    #[serde(rename = "intervalObjectiveHash")]
     interval_objective_hash: u32,
-    #[serde(rename = "intervalScoreValue")]
     interval_score_value: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordIntervalRewards
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyRecordIntervalRewards {
-    #[serde(rename = "intervalRewardItems")]
     interval_reward_items: Vec<DestinyItemQuantity>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.DestinyRecordTitleBlock
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyRecordTitleBlock {
-    #[serde(rename = "hasTitle")]
     has_title: bool,
-    #[serde(rename = "titlesByGender")]
-    titles_by_gender: HashMap<i32, String>,
-    #[serde(rename = "titlesByGenderHash")]
-    titles_by_gender_hash: HashMap<u32, String>,
-    #[serde(rename = "gildingTrackingRecordHash")]
-    gilding_tracking_record_hash: u32,
+    titles_by_gender: Option<HashMap<DestinyGender, String>>,
+    titles_by_gender_hash: Option<HashMap<u32, String>>,
+    gilding_tracking_record_hash: Option<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Reporting.DestinyReportReasonCategoryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyReportReasonCategoryDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     reasons: HashMap<u32, DestinyReportReasonDefinition>,
     hash: u32,
@@ -2609,18 +2088,17 @@ pub struct DestinyReportReasonCategoryDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Reporting.DestinyReportReasonDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyReportReasonDefinition {
-    #[serde(rename = "reasonHash")]
     reason_hash: u32,
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyRewardSourceDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyRewardSourceDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     category: i32,
     hash: u32,
@@ -2629,83 +2107,62 @@ pub struct DestinyRewardSourceDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinySandboxPatternDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinySandboxPatternDefinition {
-    #[serde(rename = "patternHash")]
     pattern_hash: u32,
-    #[serde(rename = "patternGlobalTagIdHash")]
     pattern_global_tag_id_hash: u32,
-    #[serde(rename = "weaponContentGroupHash")]
     weapon_content_group_hash: u32,
-    #[serde(rename = "weaponTranslationGroupHash")]
     weapon_translation_group_hash: u32,
-    #[serde(rename = "weaponTypeHash")]
-    weapon_type_hash: u32,
-    #[serde(rename = "weaponType")]
+    weapon_type_hash: Option<u32>,
     weapon_type: i32,
-    filters: Vec<DestinyArrangementRegionFilterDefinition>,
+    filters: Option<Vec<DestinyArrangementRegionFilterDefinition>>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinySandboxPerkDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinySandboxPerkDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "perkIdentifier")]
-    perk_identifier: String,
-    #[serde(rename = "isDisplayable")]
+    perk_identifier: Option<String>,
     is_displayable: bool,
-    #[serde(rename = "damageType")]
     damage_type: i32,
-    #[serde(rename = "damageTypeHash")]
-    damage_type_hash: u32,
-    #[serde(rename = "perkGroups")]
-    perk_groups: DestinyTalentNodeStepGroups,
+    damage_type_hash: Option<u32>,
+    perk_groups: Option<DestinyTalentNodeStepGroups>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Seasons.DestinySeasonDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinySeasonDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "backgroundImagePath")]
-    background_image_path: String,
-    #[serde(rename = "seasonNumber")]
+    background_image_path: Option<String>,
     season_number: i32,
-    #[serde(rename = "startDate")]
-    start_date: DateTime<Utc>,
-    #[serde(rename = "endDate")]
-    end_date: DateTime<Utc>,
-    #[serde(rename = "seasonPassHash")]
-    season_pass_hash: u32,
-    #[serde(rename = "seasonPassProgressionHash")]
+    start_date: Option<DateTime<Utc>>,
+    end_date: Option<DateTime<Utc>>,
+    season_pass_hash: Option<u32>,
     season_pass_progression_hash: u32,
-    #[serde(rename = "artifactItemHash")]
-    artifact_item_hash: u32,
-    #[serde(rename = "sealPresentationNodeHash")]
-    seal_presentation_node_hash: u32,
-    #[serde(rename = "seasonalChallengesPresentationNodeHash")]
-    seasonal_challenges_presentation_node_hash: u32,
-    preview: DestinySeasonPreviewDefinition,
+    artifact_item_hash: Option<u32>,
+    seal_presentation_node_hash: Option<u32>,
+    seasonal_challenges_presentation_node_hash: Option<u32>,
+    preview: Option<DestinySeasonPreviewDefinition>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Seasons.DestinySeasonPassDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinySeasonPassDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "rewardProgressionHash")]
     reward_progression_hash: u32,
-    #[serde(rename = "prestigeProgressionHash")]
     prestige_progression_hash: u32,
     hash: u32,
     index: i32,
@@ -2713,33 +2170,29 @@ pub struct DestinySeasonPassDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Seasons.DestinySeasonPreviewDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinySeasonPreviewDefinition {
     description: String,
-    #[serde(rename = "linkPath")]
     link_path: String,
-    #[serde(rename = "videoLink")]
-    video_link: String,
+    video_link: Option<String>,
     images: Vec<DestinySeasonPreviewImageDefinition>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Seasons.DestinySeasonPreviewImageDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinySeasonPreviewImageDefinition {
-    #[serde(rename = "thumbnailImage")]
     thumbnail_image: String,
-    #[serde(rename = "highResImage")]
     high_res_image: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinySocketCategoryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinySocketCategoryDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "uiCategoryStyle")]
     ui_category_style: u32,
-    #[serde(rename = "categoryStyle")]
     category_style: i32,
     hash: u32,
     index: i32,
@@ -2747,53 +2200,40 @@ pub struct DestinySocketCategoryDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinySocketTypeDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinySocketTypeDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "insertAction")]
-    insert_action: DestinyInsertPlugActionDefinition,
-    #[serde(rename = "plugWhitelist")]
-    plug_whitelist: Vec<DestinyPlugWhitelistEntryDefinition>,
-    #[serde(rename = "socketCategoryHash")]
+    insert_action: Option<DestinyInsertPlugActionDefinition>,
+    plug_whitelist: Option<Vec<DestinyPlugWhitelistEntryDefinition>>,
     socket_category_hash: u32,
     visibility: i32,
-    #[serde(rename = "alwaysRandomizeSockets")]
     always_randomize_sockets: bool,
-    #[serde(rename = "isPreviewEnabled")]
     is_preview_enabled: bool,
-    #[serde(rename = "hideDuplicateReusablePlugs")]
     hide_duplicate_reusable_plugs: bool,
-    #[serde(rename = "overridesUiAppearance")]
     overrides_ui_appearance: bool,
-    #[serde(rename = "avoidDuplicatesOnInitialization")]
     avoid_duplicates_on_initialization: bool,
-    #[serde(rename = "currencyScalars")]
-    currency_scalars: Vec<DestinySocketTypeScalarMaterialRequirementEntry>,
+    currency_scalars: Option<Vec<DestinySocketTypeScalarMaterialRequirementEntry>>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Sockets.DestinySocketTypeScalarMaterialRequirementEntry
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinySocketTypeScalarMaterialRequirementEntry {
-    #[serde(rename = "currencyItemHash")]
     currency_item_hash: u32,
-    #[serde(rename = "scalarValue")]
     scalar_value: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyStatDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "aggregationType")]
     aggregation_type: i32,
-    #[serde(rename = "hasComputedBlock")]
     has_computed_block: bool,
-    #[serde(rename = "statCategory")]
     stat_category: i32,
     hash: u32,
     index: i32,
@@ -2801,26 +2241,21 @@ pub struct DestinyStatDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatDisplayDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyStatDisplayDefinition {
-    #[serde(rename = "statHash")]
     stat_hash: u32,
-    #[serde(rename = "maximumValue")]
     maximum_value: i32,
-    #[serde(rename = "displayAsNumeric")]
     display_as_numeric: bool,
-    #[serde(rename = "displayInterpolation")]
     display_interpolation: Vec<InterpolationPoint>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatGroupDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyStatGroupDefinition {
-    #[serde(rename = "maximumValue")]
     maximum_value: i32,
-    #[serde(rename = "uiPosition")]
     ui_position: i32,
-    #[serde(rename = "scaledStats")]
     scaled_stats: Vec<DestinyStatDisplayDefinition>,
     overrides: HashMap<u32, DestinyStatOverrideDefinition>,
     hash: u32,
@@ -2829,45 +2264,35 @@ pub struct DestinyStatGroupDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyStatOverrideDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyStatOverrideDefinition {
-    #[serde(rename = "statHash")]
     stat_hash: u32,
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentExclusiveGroup
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyTalentExclusiveGroup {
-    #[serde(rename = "groupHash")]
     group_hash: u32,
-    #[serde(rename = "loreHash")]
-    lore_hash: u32,
-    #[serde(rename = "nodeHashes")]
+    lore_hash: Option<u32>,
     node_hashes: Vec<u32>,
-    #[serde(rename = "opposingGroupHashes")]
     opposing_group_hashes: Vec<u32>,
-    #[serde(rename = "opposingNodeHashes")]
     opposing_node_hashes: Vec<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentGridDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyTalentGridDefinition {
-    #[serde(rename = "maxGridLevel")]
     max_grid_level: i32,
-    #[serde(rename = "gridLevelPerColumn")]
     grid_level_per_column: i32,
-    #[serde(rename = "progressionHash")]
     progression_hash: u32,
     nodes: Vec<DestinyTalentNodeDefinition>,
-    #[serde(rename = "exclusiveSets")]
     exclusive_sets: Vec<DestinyTalentNodeExclusiveSetDefinition>,
-    #[serde(rename = "independentNodeIndexes")]
     independent_node_indexes: Vec<i32>,
     groups: HashMap<u32, DestinyTalentExclusiveGroup>,
-    #[serde(rename = "nodeCategories")]
     node_categories: Vec<DestinyTalentNodeCategory>,
     hash: u32,
     index: i32,
@@ -2875,89 +2300,65 @@ pub struct DestinyTalentGridDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentNodeCategory
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyTalentNodeCategory {
     identifier: String,
-    #[serde(rename = "isLoreDriven")]
     is_lore_driven: bool,
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "nodeHashes")]
     node_hashes: Vec<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentNodeDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyTalentNodeDefinition {
-    #[serde(rename = "nodeIndex")]
     node_index: i32,
-    #[serde(rename = "nodeHash")]
     node_hash: u32,
     row: i32,
     column: i32,
-    #[serde(rename = "prerequisiteNodeIndexes")]
     prerequisite_node_indexes: Vec<i32>,
-    #[serde(rename = "binaryPairNodeIndex")]
     binary_pair_node_index: i32,
-    #[serde(rename = "autoUnlocks")]
     auto_unlocks: bool,
-    #[serde(rename = "lastStepRepeats")]
     last_step_repeats: bool,
-    #[serde(rename = "isRandom")]
     is_random: bool,
-    #[serde(rename = "randomActivationRequirement")]
-    random_activation_requirement: DestinyNodeActivationRequirement,
-    #[serde(rename = "isRandomRepurchasable")]
+    random_activation_requirement: Option<DestinyNodeActivationRequirement>,
     is_random_repurchasable: bool,
     steps: Vec<DestinyNodeStepDefinition>,
-    #[serde(rename = "exclusiveWithNodeHashes")]
     exclusive_with_node_hashes: Vec<u32>,
-    #[serde(rename = "randomStartProgressionBarAtProgression")]
     random_start_progression_bar_at_progression: i32,
-    #[serde(rename = "layoutIdentifier")]
     layout_identifier: String,
-    #[serde(rename = "groupHash")]
-    group_hash: u32,
-    #[serde(rename = "loreHash")]
-    lore_hash: u32,
-    #[serde(rename = "nodeStyleIdentifier")]
+    group_hash: Option<u32>,
+    lore_hash: Option<u32>,
     node_style_identifier: String,
-    #[serde(rename = "ignoreForCompletion")]
     ignore_for_completion: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentNodeExclusiveSetDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyTalentNodeExclusiveSetDefinition {
-    #[serde(rename = "nodeIndexes")]
     node_indexes: Vec<i32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyTalentNodeStepGroups
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyTalentNodeStepGroups {
-    #[serde(rename = "weaponPerformance")]
     weapon_performance: i32,
-    #[serde(rename = "impactEffects")]
     impact_effects: i32,
-    #[serde(rename = "guardianAttributes")]
     guardian_attributes: i32,
-    #[serde(rename = "lightAbilities")]
     light_abilities: i32,
-    #[serde(rename = "damageTypes")]
     damage_types: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Traits.DestinyTraitDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyTraitDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "traitCategoryId")]
-    trait_category_id: String,
-    #[serde(rename = "traitCategoryHash")]
+    trait_category_id: Option<String>,
     trait_category_hash: u32,
-    #[serde(rename = "displayHint")]
     display_hint: String,
     hash: u32,
     index: i32,
@@ -2965,13 +2366,11 @@ pub struct DestinyTraitDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Traits.DestinyTraitCategoryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyTraitCategoryDefinition {
-    #[serde(rename = "traitCategoryId")]
     trait_category_id: String,
-    #[serde(rename = "traitHashes")]
     trait_hashes: Vec<u32>,
-    #[serde(rename = "traitIds")]
     trait_ids: Vec<String>,
     hash: u32,
     index: i32,
@@ -2979,9 +2378,9 @@ pub struct DestinyTraitCategoryDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyUnlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyUnlockDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     hash: u32,
     index: i32,
@@ -2989,13 +2388,15 @@ pub struct DestinyUnlockDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyUnlockExpressionDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyUnlockExpressionDefinition {
     scope: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyUnlockValueDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyUnlockValueDefinition {
     hash: u32,
     index: i32,
@@ -3003,150 +2404,107 @@ pub struct DestinyUnlockValueDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorAcceptedItemDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorAcceptedItemDefinition {
-    #[serde(rename = "acceptedInventoryBucketHash")]
     accepted_inventory_bucket_hash: u32,
-    #[serde(rename = "destinationInventoryBucketHash")]
     destination_inventory_bucket_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorActionDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorActionDefinition {
     description: String,
-    #[serde(rename = "executeSeconds")]
     execute_seconds: i32,
-    icon: String,
+    icon: Option<String>,
     name: String,
     verb: String,
-    #[serde(rename = "isPositive")]
     is_positive: bool,
-    #[serde(rename = "actionId")]
     action_id: String,
-    #[serde(rename = "actionHash")]
     action_hash: u32,
-    #[serde(rename = "autoPerformAction")]
     auto_perform_action: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorCategoryEntryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorCategoryEntryDefinition {
-    #[serde(rename = "categoryIndex")]
     category_index: i32,
-    #[serde(rename = "sortValue")]
     sort_value: i32,
-    #[serde(rename = "categoryHash")]
-    category_hash: i32,
-    #[serde(rename = "quantityAvailable")]
+    category_hash: u32,
     quantity_available: i32,
-    #[serde(rename = "showUnavailableItems")]
     show_unavailable_items: bool,
-    #[serde(rename = "hideIfNoCurrency")]
     hide_if_no_currency: bool,
-    #[serde(rename = "hideFromRegularPurchase")]
     hide_from_regular_purchase: bool,
-    #[serde(rename = "buyStringOverride")]
     buy_string_override: String,
-    #[serde(rename = "disabledDescription")]
     disabled_description: String,
-    #[serde(rename = "displayTitle")]
-    display_title: String,
-    overlay: DestinyVendorCategoryOverlayDefinition,
-    #[serde(rename = "vendorItemIndexes")]
+    display_title: Option<String>,
+    overlay: Option<DestinyVendorCategoryOverlayDefinition>,
     vendor_item_indexes: Vec<i32>,
-    #[serde(rename = "isPreview")]
     is_preview: bool,
-    #[serde(rename = "isDisplayOnly")]
     is_display_only: bool,
-    #[serde(rename = "resetIntervalMinutesOverride")]
     reset_interval_minutes_override: i32,
-    #[serde(rename = "resetOffsetMinutesOverride")]
     reset_offset_minutes_override: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorCategoryOverlayDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorCategoryOverlayDefinition {
-    #[serde(rename = "choiceDescription")]
     choice_description: String,
     description: String,
     icon: String,
     title: String,
-    #[serde(rename = "currencyItemHash")]
-    currency_item_hash: u32,
+    currency_item_hash: Option<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorDefinition {
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
-    #[serde(rename = "vendorProgressionType")]
     vendor_progression_type: i32,
-    #[serde(rename = "buyString")]
-    buy_string: String,
-    #[serde(rename = "sellString")]
-    sell_string: String,
-    #[serde(rename = "displayItemHash")]
+    buy_string: Option<String>,
+    sell_string: Option<String>,
     display_item_hash: u32,
-    #[serde(rename = "inhibitBuying")]
     inhibit_buying: bool,
-    #[serde(rename = "inhibitSelling")]
     inhibit_selling: bool,
-    #[serde(rename = "factionHash")]
     faction_hash: u32,
-    #[serde(rename = "resetIntervalMinutes")]
     reset_interval_minutes: i32,
-    #[serde(rename = "resetOffsetMinutes")]
     reset_offset_minutes: i32,
-    #[serde(rename = "failureStrings")]
-    failure_strings: Vec<String>,
-    #[serde(rename = "unlockRanges")]
-    unlock_ranges: Vec<DateRange>,
-    #[serde(rename = "vendorIdentifier")]
-    vendor_identifier: String,
-    #[serde(rename = "vendorPortrait")]
-    vendor_portrait: String,
-    #[serde(rename = "vendorBanner")]
-    vendor_banner: String,
+    failure_strings: Option<Vec<String>>,
+    unlock_ranges: Option<Vec<DateRange>>,
+    vendor_identifier: Option<String>,
+    vendor_portrait: Option<String>,
+    vendor_banner: Option<String>,
     enabled: bool,
     visible: bool,
-    #[serde(rename = "vendorSubcategoryIdentifier")]
-    vendor_subcategory_identifier: String,
-    #[serde(rename = "consolidateCategories")]
+    vendor_subcategory_identifier: Option<String>,
     consolidate_categories: bool,
-    actions: Vec<DestinyVendorActionDefinition>,
-    categories: Vec<DestinyVendorCategoryEntryDefinition>,
-    #[serde(rename = "originalCategories")]
-    original_categories: Vec<DestinyVendorCategoryEntryDefinition>,
-    #[serde(rename = "displayCategories")]
-    display_categories: Vec<DestinyDisplayCategoryDefinition>,
-    interactions: Vec<DestinyVendorInteractionDefinition>,
-    #[serde(rename = "inventoryFlyouts")]
-    inventory_flyouts: Vec<DestinyVendorInventoryFlyoutDefinition>,
-    #[serde(rename = "itemList")]
-    item_list: Vec<DestinyVendorItemDefinition>,
-    services: Vec<DestinyVendorServiceDefinition>,
-    #[serde(rename = "acceptedItems")]
-    accepted_items: Vec<DestinyVendorAcceptedItemDefinition>,
-    #[serde(rename = "returnWithVendorRequest")]
+    actions: Option<Vec<DestinyVendorActionDefinition>>,
+    categories: Option<Vec<DestinyVendorCategoryEntryDefinition>>,
+    original_categories: Option<Vec<DestinyVendorCategoryEntryDefinition>>,
+    display_categories: Option<Vec<DestinyDisplayCategoryDefinition>>,
+    interactions: Option<Vec<DestinyVendorInteractionDefinition>>,
+    inventory_flyouts: Option<Vec<DestinyVendorInventoryFlyoutDefinition>>,
+    item_list: Option<Vec<DestinyVendorItemDefinition>>,
+    services: Option<Vec<DestinyVendorServiceDefinition>>,
+    accepted_items: Option<Vec<DestinyVendorAcceptedItemDefinition>>,
     return_with_vendor_request: bool,
-    locations: Vec<DestinyVendorLocationDefinition>,
-    groups: Vec<DestinyVendorGroupReference>,
-    #[serde(rename = "ignoreSaleItemHashes")]
-    ignore_sale_item_hashes: Vec<u32>,
+    locations: Option<Vec<DestinyVendorLocationDefinition>>,
+    groups: Option<Vec<DestinyVendorGroupReference>>,
+    ignore_sale_item_hashes: Option<Vec<u32>>,
     hash: u32,
     index: i32,
     redacted: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorGroupDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorGroupDefinition {
     order: i32,
-    #[serde(rename = "categoryName")]
     category_name: String,
     hash: u32,
     index: i32,
@@ -3154,232 +2512,194 @@ pub struct DestinyVendorGroupDefinition {
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorGroupReference
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorGroupReference {
-    #[serde(rename = "vendorGroupHash")]
     vendor_group_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorInteractionDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorInteractionDefinition {
-    #[serde(rename = "interactionIndex")]
     interaction_index: i32,
     replies: Vec<DestinyVendorInteractionReplyDefinition>,
-    #[serde(rename = "vendorCategoryIndex")]
     vendor_category_index: i32,
-    #[serde(rename = "questlineItemHash")]
     questline_item_hash: u32,
-    #[serde(rename = "sackInteractionList")]
     sack_interaction_list: Vec<DestinyVendorInteractionSackEntryDefinition>,
-    #[serde(rename = "uiInteractionType")]
     ui_interaction_type: u32,
-    #[serde(rename = "interactionType")]
     interaction_type: i32,
-    #[serde(rename = "rewardBlockLabel")]
     reward_block_label: String,
-    #[serde(rename = "rewardVendorCategoryIndex")]
     reward_vendor_category_index: i32,
-    #[serde(rename = "flavorLineOne")]
     flavor_line_one: String,
-    #[serde(rename = "flavorLineTwo")]
     flavor_line_two: String,
-    #[serde(rename = "headerDisplayProperties")]
     header_display_properties: DestinyDisplayPropertiesDefinition,
     instructions: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorInteractionReplyDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorInteractionReplyDefinition {
-    #[serde(rename = "itemRewardsSelection")]
     item_rewards_selection: i32,
     reply: String,
-    #[serde(rename = "replyType")]
     reply_type: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorInteractionSackEntryDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorInteractionSackEntryDefinition {
-    #[serde(rename = "sackType")]
     sack_type: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorInventoryFlyoutBucketDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorInventoryFlyoutBucketDefinition {
     collapsible: bool,
-    #[serde(rename = "inventoryBucketHash")]
     inventory_bucket_hash: u32,
-    #[serde(rename = "sortItemsBy")]
     sort_items_by: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorInventoryFlyoutDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorInventoryFlyoutDefinition {
-    #[serde(rename = "lockedDescription")]
     locked_description: String,
-    #[serde(rename = "displayProperties")]
     display_properties: DestinyDisplayPropertiesDefinition,
     buckets: Vec<DestinyVendorInventoryFlyoutBucketDefinition>,
-    #[serde(rename = "flyoutId")]
     flyout_id: u32,
-    #[serde(rename = "suppressNewness")]
     suppress_newness: bool,
-    #[serde(rename = "equipmentSlotHash")]
-    equipment_slot_hash: u32,
+    equipment_slot_hash: Option<u32>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorItemDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorItemDefinition {
-    #[serde(rename = "vendorItemIndex")]
     vendor_item_index: i32,
-    #[serde(rename = "itemHash")]
     item_hash: u32,
     quantity: i32,
-    #[serde(rename = "failureIndexes")]
     failure_indexes: Vec<i32>,
     currencies: Vec<DestinyVendorItemQuantity>,
-    #[serde(rename = "refundPolicy")]
     refund_policy: i32,
-    #[serde(rename = "refundTimeLimit")]
     refund_time_limit: i32,
-    #[serde(rename = "creationLevels")]
     creation_levels: Vec<DestinyItemCreationEntryLevelDefinition>,
-    #[serde(rename = "displayCategoryIndex")]
     display_category_index: i32,
-    #[serde(rename = "categoryIndex")]
     category_index: i32,
-    #[serde(rename = "originalCategoryIndex")]
     original_category_index: i32,
-    #[serde(rename = "minimumLevel")]
     minimum_level: i32,
-    #[serde(rename = "maximumLevel")]
     maximum_level: i32,
     action: DestinyVendorSaleItemActionBlockDefinition,
-    #[serde(rename = "displayCategory")]
     display_category: String,
-    #[serde(rename = "inventoryBucketHash")]
     inventory_bucket_hash: u32,
-    #[serde(rename = "visibilityScope")]
     visibility_scope: i32,
-    #[serde(rename = "purchasableScope")]
     purchasable_scope: i32,
     exclusivity: i32,
-    #[serde(rename = "isOffer")]
-    is_offer: bool,
-    #[serde(rename = "isCrm")]
-    is_crm: bool,
-    #[serde(rename = "sortValue")]
+    is_offer: Option<bool>,
+    is_crm: Option<bool>,
     sort_value: i32,
-    #[serde(rename = "expirationTooltip")]
     expiration_tooltip: String,
-    #[serde(rename = "redirectToSaleIndexes")]
     redirect_to_sale_indexes: Vec<i32>,
-    #[serde(rename = "socketOverrides")]
     socket_overrides: Vec<DestinyVendorItemSocketOverride>,
-    unpurchasable: bool,
+    unpurchasable: Option<bool>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorItemQuantity
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorItemQuantity {
-    #[serde(rename = "itemHash")]
     item_hash: u32,
-    #[serde(rename = "itemInstanceId")]
-    item_instance_id: i64,
+    item_instance_id: Option<i64>,
     quantity: i32,
-    #[serde(rename = "hasConditionalVisibility")]
     has_conditional_visibility: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorItemSocketOverride
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorItemSocketOverride {
-    #[serde(rename = "singleItemHash")]
-    single_item_hash: u32,
-    #[serde(rename = "randomizedOptionsCount")]
+    single_item_hash: Option<u32>,
     randomized_options_count: i32,
-    #[serde(rename = "socketTypeHash")]
     socket_type_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Vendors.DestinyVendorLocationDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorLocationDefinition {
-    #[serde(rename = "destinationHash")]
     destination_hash: u32,
-    #[serde(rename = "backgroundImagePath")]
-    background_image_path: String,
+    background_image_path: Option<String>,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorSaleItemActionBlockDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorSaleItemActionBlockDefinition {
-    #[serde(rename = "executeSeconds")]
     execute_seconds: f32,
-    #[serde(rename = "isPositive")]
     is_positive: bool,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.DestinyVendorServiceDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DestinyVendorServiceDefinition {
     name: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.DyeReference
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct DyeReference {
-    #[serde(rename = "channelHash")]
     channel_hash: u32,
-    #[serde(rename = "dyeHash")]
     dye_hash: u32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Config.GearAssetDataBaseDefinition
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct GearAssetDataBaseDefinition {
     version: i32,
     path: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Links.HyperlinkReference
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct HyperlinkReference {
     title: String,
     url: String,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Config.ImagePyramidEntry
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ImagePyramidEntry {
     name: String,
     factor: f32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Interpolation.InterpolationPoint
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct InterpolationPoint {
     value: i32,
     weight: i32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Interpolation.InterpolationPointFloat
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct InterpolationPointFloat {
     value: f32,
     weight: f32,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Destiny.Definitions.Records.SchemaRecordStateBlock
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SchemaRecordStateBlock {
-    #[serde(rename = "featuredPriority")]
     featured_priority: i32,
-    #[serde(rename = "obscuredString")]
-    obscured_string: String,
+    obscured_string: Option<String>,
 }
