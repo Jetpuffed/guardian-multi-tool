@@ -169,7 +169,7 @@ pub struct DestinyWorldContent {
     // destiny_achievement_definition: HashMap<String, DestinyAchievementDefinition>,
     destiny_activity_definition: HashMap<String, DestinyActivityDefinition>,
     destiny_activity_graph_definition: HashMap<String, DestinyActivityGraphDefinition>,
-    // destiny_activity_interactable_definition: HashMap<String, DestinyActivityGraphDefinition>,
+    // destiny_activity_interactable_definition: HashMap<String, DestinyActivityInteractableDefinition>,
     destiny_activity_mode_definition: HashMap<String, DestinyActivityModeDefinition>,
     destiny_activity_modifier_definition: HashMap<String, DestinyActivityModifierDefinition>,
     destiny_activity_type_definition: HashMap<String, DestinyActivityTypeDefinition>,
@@ -239,6 +239,300 @@ pub struct DestinyWorldContent {
     destiny_unlock_value_definition: HashMap<String, DestinyUnlockValueDefinition>,
     destiny_vendor_definition: HashMap<String, DestinyVendorDefinition>,
     destiny_vendor_group_definition: HashMap<String, DestinyVendorGroupDefinition>,
+}
+
+impl DestinyWorldContent {
+    // pub fn destiny_achievement_definition(&self) -> &HashMap<String, DestinyAchievementDefinition> {
+    //     &self.destiny_achievement_definition
+    // }
+
+    pub fn destiny_activity_definition(&self) -> &HashMap<String, DestinyActivityDefinition> {
+        &self.destiny_activity_definition
+    }
+
+    pub fn destiny_activity_graph_definition(&self) -> &HashMap<String, DestinyActivityGraphDefinition> {
+        &self.destiny_activity_graph_definition
+    }
+
+    // pub fn destiny_activity_interactable_definition(&self) -> &HashMap<String, DestinyActivityInteractableDefinition> {
+    //     &self.destiny_activity_interactable_definition
+    // }
+
+    pub fn destiny_activity_mode_definition(&self) -> &HashMap<String, DestinyActivityModeDefinition> {
+        &self.destiny_activity_mode_definition
+    }
+
+    pub fn destiny_activity_modifier_definition(&self) -> &HashMap<String, DestinyActivityModifierDefinition> {
+        &self.destiny_activity_modifier_definition
+    }
+
+    pub fn destiny_activity_type_definition(&self) -> &HashMap<String, DestinyActivityTypeDefinition> {
+        &self.destiny_activity_type_definition
+    }
+
+    // pub fn destiny_art_dye_channel_definition(&self) -> &HashMap<String, DestinyArtDyeChannelDefinition> {
+    //     &self.destiny_art_dye_channel_definition
+    // }
+
+    pub fn destiny_art_dye_reference_definition(&self) -> &HashMap<String, DestinyArtDyeReference> {
+        &self.destiny_art_dye_reference_definition
+    }
+
+    pub fn destiny_artifact_definition(&self) -> &HashMap<String, DestinyArtifactDefinition> {
+        &self.destiny_artifact_definition
+    }
+
+    // pub fn destiny_bond_definition(&self) -> &HashMap<String, DestinyBondDefinition> {
+    //     &self.destiny_bond_definition
+    // }
+
+    pub fn destiny_breaker_type_definition(&self) -> &HashMap<String, DestinyBreakerTypeDefinition> {
+        &self.destiny_breaker_type_definition
+    }
+
+    // pub fn destiny_character_customization_category_definition(&self) -> &HashMap<String, DestinyCharacterCustomizationCategoryDefinition> {
+    //     &self.destiny_character_customization_category_definition
+    // }
+
+    // pub fn destiny_character_customization_option_definition(&self) -> &HashMap<String, DestinyCharacterCustomizationOptionDefinition> {
+    //     &self.destiny_character_customization_option_definition
+    // }
+
+    pub fn destiny_checklist_definition(&self) -> &HashMap<String, DestinyChecklistDefinition> {
+        &self.destiny_checklist_definition
+    }
+
+    pub fn destiny_class_definition(&self) -> &HashMap<String, DestinyClassDefinition> {
+        &self.destiny_class_definition
+    }
+
+    pub fn destiny_collectible_definition(&self) -> &HashMap<String, DestinyCollectibleDefinition> {
+        &self.destiny_collectible_definition
+    }
+
+    pub fn destiny_damage_type_definition(&self) -> &HashMap<String, DestinyDamageTypeDefinition> {
+        &self.destiny_damage_type_definition
+    }
+
+    pub fn destiny_destination_definition(&self) -> &HashMap<String, DestinyDestinationDefinition> {
+        &self.destiny_destination_definition
+    }
+
+    pub fn destiny_energy_type_definition(&self) -> &HashMap<String, DestinyEnergyTypeDefinition> {
+        &self.destiny_energy_type_definition
+    }
+
+    // pub fn destiny_entitlement_offer_definition(&self) -> &HashMap<String, DestinyEntitlementOfferDefinition> {
+    //     &self.destiny_entitlement_offer_definition
+    // }
+
+    pub fn destiny_equipment_slot_definition(&self) -> &HashMap<String, DestinyEquipmentSlotDefinition> {
+        &self.destiny_equipment_slot_definition
+    }
+
+    pub fn destiny_faction_definition(&self) -> &HashMap<String, DestinyFactionDefinition> {
+        &self.destiny_faction_definition
+    }
+
+    pub fn destiny_gender_definition(&self) -> &HashMap<String, DestinyGenderDefinition> {
+        &self.destiny_gender_definition
+    }
+
+    pub fn destiny_item_category_definition(&self) -> &HashMap<String, DestinyItemCategoryDefinition> {
+        &self.destiny_item_category_definition
+    }
+
+    pub fn destiny_item_tier_type_definition(&self) -> &HashMap<String, DestinyItemTierTypeDefinition> {
+        &self.destiny_item_tier_type_definition
+    }
+
+    pub fn destiny_inventory_bucket_definition(&self) -> &HashMap<String, DestinyInventoryBucketDefinition> {
+        &self.destiny_inventory_bucket_definition
+    }
+
+    pub fn destiny_inventory_item_definition(&self) -> &HashMap<String, DestinyInventoryItemDefinition> {
+        &self.destiny_inventory_item_definition
+    }
+
+    // pub fn destiny_inventory_item_lite_definition(&self) -> &HashMap<String, DestinyInventoryItemLiteDefinition> {
+    //     &self.destiny_inventory_item_lite_definition
+    // }
+
+    pub fn destiny_location_definition(&self) -> &HashMap<String, DestinyLocationDefinition> {
+        &self.destiny_location_definition
+    }
+
+    pub fn destiny_lore_definition(&self) -> &HashMap<String, DestinyLoreDefinition> {
+        &self.destiny_lore_definition
+    }
+
+    pub fn destiny_material_requirement_set_definition(&self) -> &HashMap<String, DestinyMaterialRequirementSetDefinition> {
+        &self.destiny_material_requirement_set_definition
+    }
+
+    pub fn destiny_medal_tier_definition(&self) -> &HashMap<String, DestinyMedalTierDefinition> {
+        &self.destiny_medal_tier_definition
+    }
+
+    pub fn destiny_metric_definition(&self) -> &HashMap<String, DestinyMetricDefinition> {
+        &self.destiny_metric_definition
+    }
+
+    pub fn destiny_milestone_definition(&self) -> &HashMap<String, DestinyMilestoneDefinition> {
+        &self.destiny_milestone_definition
+    }
+
+    // pub fn destiny_node_step_summary_definition(&self) -> &HashMap<String, DestinyNodeStepSummaryDefinition> {
+    //     &self.destiny_node_step_summary_definition
+    // }
+
+    pub fn destiny_objective_definition(&self) -> &HashMap<String, DestinyObjectiveDefinition> {
+        &self.destiny_objective_definition
+    }
+
+    pub fn destiny_place_definition(&self) -> &HashMap<String, DestinyPlaceDefinition> {
+        &self.destiny_place_definition
+    }
+
+    // pub fn destiny_platform_bucket_mapping_definition(&self) -> &HashMap<String, DestinyPlatformBucketMappingDefinition> {
+    //     &self.destiny_platform_bucket_mapping_definition
+    // }
+
+    pub fn destiny_plug_set_definition(&self) -> &HashMap<String, DestinyPlugSetDefinition> {
+        &self.destiny_plug_set_definition
+    }
+
+    pub fn destiny_power_cap_definition(&self) -> &HashMap<String, DestinyPowerCapDefinition> {
+        &self.destiny_power_cap_definition
+    }
+
+    pub fn destiny_presentation_node_definition(&self) -> &HashMap<String, DestinyPresentationNodeDefinition> {
+        &self.destiny_presentation_node_definition
+    }
+
+    pub fn destiny_progression_definition(&self) -> &HashMap<String, DestinyProgressionDefinition> {
+        &self.destiny_progression_definition
+    }
+
+    pub fn destiny_progression_level_requirement_definition(&self) -> &HashMap<String, DestinyProgressionLevelRequirementDefinition> {
+        &self.destiny_progression_level_requirement_definition
+    }
+
+    pub fn destiny_progression_mapping_definition(&self) -> &HashMap<String, DestinyProgressionMappingDefinition> {
+        &self.destiny_progression_mapping_definition
+    }
+
+    pub fn destiny_race_definition(&self) -> &HashMap<String, DestinyRaceDefinition> {
+        &self.destiny_race_definition
+    }
+
+    pub fn destiny_record_definition(&self) -> &HashMap<String, DestinyRecordDefinition> {
+        &self.destiny_record_definition
+    }
+
+    pub fn destiny_report_reason_category_definition(&self) -> &HashMap<String, DestinyReportReasonCategoryDefinition> {
+        &self.destiny_report_reason_category_definition
+    }
+
+    // pub fn destiny_reward_adjuster_pointer_definition(&self) -> &HashMap<String, DestinyRewardAdjusterPointerDefinition> {
+    //     &self.destiny_reward_adjuster_pointer_definition
+    // }
+
+    // pub fn destiny_reward_adjuster_progression_map_definition(&self) -> &HashMap<String, DestinyRewardAdjusterProgressionMapDefinition> {
+    //     &self.destiny_reward_adjuster_progression_map_definition
+    // }
+
+    // pub fn destiny_reward_item_list_definition(&self) -> &HashMap<String, DestinyRewardItemListDefinition> {
+    //     &self.destiny_reward_item_list_definition
+    // }
+
+    // pub fn destiny_reward_mapping_definition(&self) -> &HashMap<String, DestinyRewardMappingDefinition> {
+    //     &self.destiny_reward_mapping_definition
+    // }
+
+    // pub fn destiny_reward_sheet_definition(&self) -> &HashMap<String, DestinyRewardSheetDefinition> {
+    //     &self.destiny_reward_sheet_definition
+    // }
+
+    pub fn destiny_reward_source_definition(&self) -> &HashMap<String, DestinyRewardSourceDefinition> {
+        &self.destiny_reward_source_definition
+    }
+
+    // pub fn destiny_sack_reward_item_list_definition(&self) -> &HashMap<String, DestinySackRewardItemListDefinition> {
+    //     &self.destiny_sack_reward_item_list_definition
+    // }
+
+    pub fn destiny_sandbox_pattern_definition(&self) -> &HashMap<String, DestinySandboxPatternDefinition> {
+        &self.destiny_sandbox_pattern_definition
+    }
+
+    pub fn destiny_sandbox_perk_definition(&self) -> &HashMap<String, DestinySandboxPerkDefinition> {
+        &self.destiny_sandbox_perk_definition
+    }
+
+    pub fn destiny_season_definition(&self) -> &HashMap<String, DestinySeasonDefinition> {
+        &self.destiny_season_definition
+    }
+
+    pub fn destiny_season_pass_definition(&self) -> &HashMap<String, DestinySeasonPassDefinition> {
+        &self.destiny_season_pass_definition
+    }
+
+    pub fn destiny_socket_category_definition(&self) -> &HashMap<String, DestinySocketCategoryDefinition> {
+        &self.destiny_socket_category_definition
+    }
+
+    pub fn destiny_socket_type_definition(&self) -> &HashMap<String, DestinySocketTypeDefinition> {
+        &self.destiny_socket_type_definition
+    }
+
+    pub fn destiny_stat_definition(&self) -> &HashMap<String, DestinyStatDefinition> {
+        &self.destiny_stat_definition
+    }
+
+    pub fn destiny_stat_group_definition(&self) -> &HashMap<String, DestinyStatGroupDefinition> {
+        &self.destiny_stat_group_definition
+    }
+
+    pub fn destiny_talent_grid_definition(&self) -> &HashMap<String, DestinyTalentGridDefinition> {
+        &self.destiny_talent_grid_definition
+    }
+
+    pub fn destiny_trait_definition(&self) -> &HashMap<String, DestinyTraitDefinition> {
+        &self.destiny_trait_definition
+    }
+
+    pub fn destiny_trait_category_definition(&self) -> &HashMap<String, DestinyTraitCategoryDefinition> {
+        &self.destiny_trait_category_definition
+    }
+
+    // pub fn destiny_unlock_count_mapping_definition(&self) -> &HashMap<String, DestinyUnlockCountMappingDefinition> {
+    //     &self.destiny_unlock_count_mapping_definition
+    // }
+
+    pub fn destiny_unlock_definition(&self) -> &HashMap<String, DestinyUnlockDefinition> {
+        &self.destiny_unlock_definition
+    }
+
+    // pub fn destiny_unlock_event_definition(&self) -> &HashMap<String, DestinyUnlockEventDefinition> {
+    //     &self.destiny_unlock_event_definition
+    // }
+
+    // pub fn destiny_unlock_expression_mapping_definition(&self) -> &HashMap<String, DestinyUnlockExpressionMappingDefinition> {
+    //     &self.destiny_unlock_expression_mapping_definition
+    // }
+
+    pub fn destiny_unlock_value_definition(&self) -> &HashMap<String, DestinyUnlockValueDefinition> {
+        &self.destiny_unlock_value_definition
+    }
+
+    pub fn destiny_vendor_definition(&self) -> &HashMap<String, DestinyVendorDefinition> {
+        &self.destiny_vendor_definition
+    }
+
+    pub fn destiny_vendor_group_definition(&self) -> &HashMap<String, DestinyVendorGroupDefinition> {
+        &self.destiny_vendor_group_definition
+    }
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Dates.DateRange
