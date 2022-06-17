@@ -46,12 +46,12 @@ pub async fn get_destiny_manifest(
 #[serde(rename_all = "PascalCase")]
 pub struct BungieResponse<T> {
     detailed_error_trace: Option<String>,
-    error_code: Option<i32>,
-    error_status: Option<String>,
-    message: Option<String>,
-    message_data: Option<HashMap<String, String>>,
-    response: Option<T>,
-    throttle_seconds: Option<i32>,
+    error_code: i32,
+    error_status: String,
+    message: String,
+    message_data: HashMap<String, String>,
+    response: T,
+    throttle_seconds: i32,
 }
 
 impl<T> BungieResponse<T> {
@@ -59,27 +59,27 @@ impl<T> BungieResponse<T> {
         self.detailed_error_trace.as_ref()
     }
 
-    pub fn error_code(&self) -> Option<i32> {
+    pub fn error_code(&self) -> i32 {
         self.error_code
     }
 
-    pub fn error_status(&self) -> Option<&String> {
+    pub fn error_status(&self) -> &str {
         self.error_status.as_ref()
     }
 
-    pub fn message(&self) -> Option<&String> {
+    pub fn message(&self) -> &str {
         self.message.as_ref()
     }
 
-    pub fn message_data(&self) -> Option<&HashMap<String, String>> {
-        self.message_data.as_ref()
+    pub fn message_data(&self) -> &HashMap<String, String> {
+        &self.message_data
     }
 
-    pub fn response(&self) -> Option<&T> {
-        self.response.as_ref()
+    pub fn response(&self) -> &T {
+        &self.response
     }
 
-    pub fn throttle_seconds(&self) -> Option<i32> {
+    pub fn throttle_seconds(&self) -> i32 {
         self.throttle_seconds
     }
 }
@@ -91,15 +91,15 @@ impl<T> BungieResponse<T> {
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DestinyManifest {
-    icon_image_pyramid_info: Option<Vec<ImagePyramidEntry>>,
-    json_world_component_content_paths: Option<HashMap<String, HashMap<String, String>>>,
-    json_world_content_paths: Option<HashMap<String, String>>,
-    mobile_asset_content_path: Option<String>,
-    mobile_clan_banner_database_path: Option<String>,
-    mobile_gear_asset_data_bases: Option<Vec<GearAssetDataBaseDefinition>>,
-    mobile_gear_c_d_n: Option<HashMap<String, String>>,
-    mobile_world_content_paths: Option<HashMap<String, String>>,
-    version: Option<String>,
+    icon_image_pyramid_info: Vec<ImagePyramidEntry>,
+    json_world_component_content_paths: HashMap<String, HashMap<String, String>>,
+    json_world_content_paths: HashMap<String, String>,
+    mobile_asset_content_path: String,
+    mobile_clan_banner_database_path: String,
+    mobile_gear_asset_data_bases: Vec<GearAssetDataBaseDefinition>,
+    mobile_gear_c_d_n: HashMap<String, String>,
+    mobile_world_content_paths: HashMap<String, String>,
+    version: String,
 }
 
 impl DestinyManifest {
@@ -111,8 +111,8 @@ impl DestinyManifest {
     /// image itself. (this lets us avoid sending largely redundant path info
     /// with every entity, at the expense of the smaller versions of the image
     /// being less discoverable) 
-    pub fn icon_image_pyramid_info(&self) -> Option<&Vec<ImagePyramidEntry>> {
-        self.icon_image_pyramid_info.as_ref()
+    pub fn icon_image_pyramid_info(&self) -> &Vec<ImagePyramidEntry> {
+        &self.icon_image_pyramid_info
     }
 
     /// This points to the generated JSON that contains all the Definitions.
@@ -122,39 +122,39 @@ impl DestinyManifest {
     /// definition.
     /// 
     /// WARNING: This is unsafe and subject to change - do not depend on data in these files staying around long-term
-    pub fn json_world_component_content_paths(&self) -> Option<&HashMap<String, HashMap<String, String>>> {
-        self.json_world_component_content_paths.as_ref()
+    pub fn json_world_component_content_paths(&self) -> &HashMap<String, HashMap<String, String>> {
+        &self.json_world_component_content_paths
     }
 
     /// This points to the generated JSON that contains all the Definitions.
     /// 
     /// Each key is a locale. The value is a path to the aggregated world
     /// definitions (warning: large file!) 
-    pub fn json_world_content_paths(&self) -> Option<&HashMap<String, String>> {
-        self.json_world_content_paths.as_ref()
+    pub fn json_world_content_paths(&self) -> &HashMap<String, String> {
+        &self.json_world_content_paths
     }
 
-    pub fn mobile_asset_content_path(&self) -> Option<&String> {
+    pub fn mobile_asset_content_path(&self) -> &str {
         self.mobile_asset_content_path.as_ref()
     }
 
-    pub fn mobile_clan_banner_database_path(&self) -> Option<&String> {
+    pub fn mobile_clan_banner_database_path(&self) -> &str {
         self.mobile_clan_banner_database_path.as_ref()
     }
 
-    pub fn mobile_gear_asset_data_bases(&self) -> Option<&Vec<GearAssetDataBaseDefinition>> {
-        self.mobile_gear_asset_data_bases.as_ref()
+    pub fn mobile_gear_asset_data_bases(&self) -> &Vec<GearAssetDataBaseDefinition> {
+        &self.mobile_gear_asset_data_bases
     }
 
-    pub fn mobile_gear_cdn(&self) -> Option<&HashMap<String, String>> {
-        self.mobile_gear_c_d_n.as_ref()
+    pub fn mobile_gear_cdn(&self) -> &HashMap<String, String> {
+        &self.mobile_gear_c_d_n
     }
 
-    pub fn mobile_world_content_paths(&self) -> Option<&HashMap<String, String>> {
-        self.mobile_world_content_paths.as_ref()
+    pub fn mobile_world_content_paths(&self) -> &HashMap<String, String> {
+        &self.mobile_world_content_paths
     }
 
-    pub fn version(&self) -> Option<&String> {
+    pub fn version(&self) -> &str {
         self.version.as_ref()
     }
 }
