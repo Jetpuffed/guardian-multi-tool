@@ -1,8 +1,6 @@
 use std::collections::HashMap;
-use std::error::Error;
 
 use chrono::prelude::*;
-use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
 /* Definitions with no known documentation:
@@ -26,63 +24,6 @@ use serde::{Deserialize, Serialize};
  *     DestinyUnlockEventDefinition
  *     DestinyUnlockExpressionMappingDefinition
  */
-
-pub const BASE_URL: &str = "https://www.bungie.net";
-
-/// https://bungie-net.github.io/#Destiny2.GetDestinyManifest
-pub async fn get_destiny_manifest(
-    c: &Client,
-) -> Result<BungieResponse<DestinyManifest>, Box<dyn Error>> {
-    const PATH: &str = "/platform/destiny2/manifest";
-
-    match c.get([BASE_URL, PATH].join("")).send().await {
-        Ok(resp) => return Ok(resp.json::<BungieResponse<DestinyManifest>>().await?),
-        Err(e) => panic!("{}", e),
-    }
-}
-
-/// Generic response
-#[derive(Debug, Deserialize, Serialize)]
-#[serde(rename_all = "PascalCase")]
-pub struct BungieResponse<T> {
-    detailed_error_trace: Option<String>,
-    error_code: i32,
-    error_status: String,
-    message: String,
-    message_data: HashMap<String, String>,
-    response: T,
-    throttle_seconds: i32,
-}
-
-impl<T> BungieResponse<T> {
-    pub fn detailed_error_trace(&self) -> Option<&String> {
-        self.detailed_error_trace.as_ref()
-    }
-
-    pub fn error_code(&self) -> i32 {
-        self.error_code
-    }
-
-    pub fn error_status(&self) -> &str {
-        self.error_status.as_ref()
-    }
-
-    pub fn message(&self) -> &str {
-        self.message.as_ref()
-    }
-
-    pub fn message_data(&self) -> &HashMap<String, String> {
-        &self.message_data
-    }
-
-    pub fn response(&self) -> &T {
-        &self.response
-    }
-
-    pub fn throttle_seconds(&self) -> i32 {
-        self.throttle_seconds
-    }
-}
 
 /// DestinyManifest is the external-facing contract for just the properties
 /// needed by those calling the Destiny Platform.
@@ -533,6 +474,22 @@ impl DestinyWorldContent {
     pub fn destiny_vendor_group_definition(&self) -> &HashMap<String, DestinyVendorGroupDefinition> {
         &self.destiny_vendor_group_definition
     }
+}
+
+/// The types of membership the Accounts system supports. This is the external
+/// facing enum used in place of the internal-only Bungie.SharedDefinitions.MembershipType.
+/// 
+/// https://bungie-net.github.io/multi/schema_BungieMembershipType.html#schema_BungieMembershipType
+pub enum BungieMembershipType {
+    None = 0,
+    TigerXbox = 1,
+    TigerPsn = 2,
+    TigerSteam = 3,
+    TigerBlizzard = 4,
+    TigerStadia = 5,
+    TigerDemon = 10,
+    BungieNext = 254,
+    All = -1,
 }
 
 /// https://bungie-net.github.io/#/components/schemas/Dates.DateRange
