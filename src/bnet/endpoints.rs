@@ -1,26 +1,12 @@
 use std::collections::HashMap;
 
-use super::{bnet_entities::*, Result};
-
-use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
-pub const BASE_URL: &str = "https://www.bungie.net";
+pub mod destiny;
 
-/// https://bungie-net.github.io/#Destiny2.GetDestinyManifest
-pub async fn get_destiny_manifest(c: &Client,) -> Result<BungieResponse<DestinyManifest>> {
-    const PATH: &str = "/platform/destiny2/manifest";
-
-    match c.get([BASE_URL, PATH].join("")).send().await {
-        Ok(resp) => return Ok(resp.json::<BungieResponse<DestinyManifest>>().await?),
-        Err(e) => panic!("{}", e),
-    }
-}
-
-/// Generic endpoint response
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "PascalCase")]
-pub struct BungieResponse<T> {
+pub struct Response<T> {
     detailed_error_trace: Option<String>,
     error_code: i32,
     error_status: String,
@@ -30,7 +16,7 @@ pub struct BungieResponse<T> {
     throttle_seconds: i32,
 }
 
-impl<T> BungieResponse<T> {
+impl<T> Response<T> {
     pub fn detailed_error_trace(&self) -> Option<&String> {
         self.detailed_error_trace.as_ref()
     }
